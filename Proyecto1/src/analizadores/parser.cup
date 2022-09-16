@@ -1,0 +1,35 @@
+package analizadores;
+import java_cup.runtime.Symbol;
+
+/*
+%{
+
+        //declaractiones java, funcitones, metodos,
+}%
+*/
+
+//definicion de terminales
+terminal prInicio;
+terminal prFin;
+terminal nEntero;
+terminal nDecimal;
+terminal cadena;
+terminal prTrue;
+terminal prFalse;
+//terminal charAscii;
+terminal charNormal;
+terminal plus,minus,per,div,prExponent,prMod,leftPar,rightPar;
+
+//definicion de no terminales
+non terminal INICIO;
+
+//gramaticas
+start with INICIO;
+
+INICIO::= prInicio plus minus per div prExponent prMod leftPar rightPar prFin;
+
+/*
+INSTRUCCIONES::= INSTRUCCIONES nEntero
+                | nDecimal
+;
+*/
