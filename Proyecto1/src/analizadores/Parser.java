@@ -6,6 +6,7 @@
 package analizadores;
 
 import java_cup.runtime.Symbol;
+import java.io.*;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -31,7 +32,10 @@ public class Parser extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\002\000\002\002\004\000\002\002\014" });
+    "\000\013\000\002\002\004\000\002\002\005\000\002\003" +
+    "\004\000\002\003\003\000\002\004\004\000\002\004\004" +
+    "\000\002\005\007\000\002\007\003\000\002\007\003\000" +
+    "\002\007\003\000\002\007\003" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -39,12 +43,18 @@ public class Parser extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\015\000\004\004\004\001\002\000\004\014\007\001" +
-    "\002\000\004\002\006\001\002\000\004\002\001\001\002" +
-    "\000\004\015\010\001\002\000\004\016\011\001\002\000" +
-    "\004\017\012\001\002\000\004\020\013\001\002\000\004" +
-    "\021\014\001\002\000\004\022\015\001\002\000\004\023" +
-    "\016\001\002\000\004\005\017\001\002\000\004\002\000" +
+    "\000\025\000\004\004\004\001\002\000\006\003\012\037" +
+    "\013\001\002\000\004\002\006\001\002\000\004\002\001" +
+    "\001\002\000\004\047\027\001\002\000\010\003\ufffe\005" +
+    "\ufffe\037\ufffe\001\002\000\010\003\012\005\026\037\013" +
+    "\001\002\000\006\003\012\037\013\001\002\000\004\051" +
+    "\014\001\002\000\004\040\015\001\002\000\012\041\022" +
+    "\042\021\043\016\044\020\001\002\000\004\045\ufff8\001" +
+    "\002\000\004\045\023\001\002\000\004\045\ufff7\001\002" +
+    "\000\004\045\ufff9\001\002\000\004\045\ufffa\001\002\000" +
+    "\004\047\ufffb\001\002\000\010\003\ufffc\005\ufffc\037\ufffc" +
+    "\001\002\000\010\003\uffff\005\uffff\037\uffff\001\002\000" +
+    "\004\002\000\001\002\000\010\003\ufffd\005\ufffd\037\ufffd" +
     "\001\002" });
 
   /** Access to parse-action table. */
@@ -53,11 +63,15 @@ public class Parser extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\015\000\004\002\004\001\001\000\002\001\001\000" +
+    "\000\025\000\004\002\004\001\001\000\010\003\010\004" +
+    "\007\005\006\001\001\000\002\001\001\000\002\001\001" +
+    "\000\002\001\001\000\002\001\001\000\006\004\024\005" +
+    "\006\001\001\000\006\004\023\005\006\001\001\000\002" +
+    "\001\001\000\002\001\001\000\004\007\016\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001" });
+    "" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -93,6 +107,16 @@ public class Parser extends java_cup.runtime.lr_parser {
 
   /** <code>error</code> Symbol index. */
   public int error_sym() {return 1;}
+
+
+
+    public void syntax_error(Symbol s){
+        System.out.println("Error R de sintaxis en: " + " Linea "+(s.right)+" columna "+(s.left) + " No se esperaba un " + s.value );
+    }
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+       System.out.println("Error NR de sintaxis en: " + " Linea "+(s.right)+" columna "+(s.left) + " No se esperaba un " + s.value );
+    }
 
 
 /** Cup generated class to encapsulate user supplied action code.*/
@@ -134,11 +158,92 @@ class CUP$Parser$actions {
           return CUP$Parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 1: // INICIO ::= prInicio plus minus per div prExponent prMod leftPar rightPar prFin 
+          case 1: // INICIO ::= prInicio INSTRUCCIONES prFin 
             {
               Object RESULT =null;
 
-              CUP$Parser$result = parser.getSymbolFactory().newSymbol("INICIO",0, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-9)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
+              CUP$Parser$result = parser.getSymbolFactory().newSymbol("INICIO",0, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
+            }
+          return CUP$Parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 2: // INSTRUCCIONES ::= INSTRUCCIONES INSTRUCCION 
+            {
+              Object RESULT =null;
+
+              CUP$Parser$result = parser.getSymbolFactory().newSymbol("INSTRUCCIONES",1, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
+            }
+          return CUP$Parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 3: // INSTRUCCIONES ::= INSTRUCCION 
+            {
+              Object RESULT =null;
+
+              CUP$Parser$result = parser.getSymbolFactory().newSymbol("INSTRUCCIONES",1, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
+            }
+          return CUP$Parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 4: // INSTRUCCION ::= DECLARACION dotComma 
+            {
+              Object RESULT =null;
+
+              CUP$Parser$result = parser.getSymbolFactory().newSymbol("INSTRUCCION",2, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
+            }
+          return CUP$Parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 5: // INSTRUCCION ::= error INSTRUCCION 
+            {
+              Object RESULT =null;
+
+              CUP$Parser$result = parser.getSymbolFactory().newSymbol("INSTRUCCION",2, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
+            }
+          return CUP$Parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 6: // DECLARACION ::= prIngresar varName prComo DATATYPE prConValor 
+            {
+              Object RESULT =null;
+
+              CUP$Parser$result = parser.getSymbolFactory().newSymbol("DECLARACION",3, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-4)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
+            }
+          return CUP$Parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 7: // DATATYPE ::= prNumber 
+            {
+              Object RESULT =null;
+
+              CUP$Parser$result = parser.getSymbolFactory().newSymbol("DATATYPE",5, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
+            }
+          return CUP$Parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 8: // DATATYPE ::= prChain 
+            {
+              Object RESULT =null;
+
+              CUP$Parser$result = parser.getSymbolFactory().newSymbol("DATATYPE",5, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
+            }
+          return CUP$Parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 9: // DATATYPE ::= prBoolean 
+            {
+              Object RESULT =null;
+
+              CUP$Parser$result = parser.getSymbolFactory().newSymbol("DATATYPE",5, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
+            }
+          return CUP$Parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 10: // DATATYPE ::= prChar 
+            {
+              Object RESULT =null;
+
+              CUP$Parser$result = parser.getSymbolFactory().newSymbol("DATATYPE",5, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
 

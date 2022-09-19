@@ -1,12 +1,18 @@
 package analizadores;
 import java_cup.runtime.Symbol;
+import java.io.*;
 
-/*
-%{
 
-        //declaractiones java, funcitones, metodos,
-}%
-*/
+parser code
+{:
+    public void syntax_error(Symbol s){
+        System.out.println("Error R de sintaxis en: " + " Linea "+(s.right)+" columna "+(s.left) + " No se esperaba un " + s.value );
+    }
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+       System.out.println("Error NR de sintaxis en: " + " Linea "+(s.right)+" columna "+(s.left) + " No se esperaba un " + s.value );
+    }
+:}
 
 //definicion de terminales
 terminal prInicio;
@@ -16,20 +22,37 @@ terminal nDecimal;
 terminal cadena;
 terminal prTrue;
 terminal prFalse;
-//terminal charAscii;
-terminal charNormal;
+terminal charAscii;
+terminal charNormal,multiline;
 terminal plus,minus,per,div,prExponent,prMod,leftPar,rightPar;
-
+terminal mayor,menor,mayorigual,menorigual,equals,notEquals;
+terminal prOr,prAnd,prNot;
+terminal prIngresar,prComo,prNumber,prChain,prBoolean,prChar,prConValor;
+terminal comment;
+terminal dotComma,comma;
+terminal varName;
 //definicion de no terminales
-non terminal INICIO;
 
+non terminal INICIO,INSTRUCCIONES,INSTRUCCION,DECLARACION,EXPRESION;
+non terminal DATATYPE;
 //gramaticas
 start with INICIO;
 
-INICIO::= prInicio plus minus per div prExponent prMod leftPar rightPar prFin;
+INICIO::= prInicio INSTRUCCIONES  prFin;
 
-/*
-INSTRUCCIONES::= INSTRUCCIONES nEntero
-                | nDecimal
+
+INSTRUCCIONES::= INSTRUCCIONES INSTRUCCION
+                | INSTRUCCION
 ;
-*/
+
+INSTRUCCION::= DECLARACION dotComma 
+            | error INSTRUCCION
+;
+
+DECLARACION::= prIngresar varName prComo DATATYPE prConValor;
+
+DATATYPE::= prNumber
+          | prChain
+          | prBoolean
+          | prChar
+;
