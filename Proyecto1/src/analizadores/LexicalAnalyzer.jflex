@@ -105,6 +105,13 @@ varName= [_]([A-Za-z]|[0-9]+)+[_]
     ")"     { System.out.println("Reconocio token: <rightPar> lexema: "+yytext()); 
               return new Symbol(Simbolos.rightPar, yycolumn, yyline, yytext());
             }
+    "["     { System.out.println("Reconocio token: <leftCor> lexema: "+yytext()); 
+              return new Symbol(Simbolos.leftCor, yycolumn, yyline, yytext());
+            }
+
+    "]"     { System.out.println("Reconocio token: <rightCor> lexema: "+yytext()); 
+              return new Symbol(Simbolos.rightCor, yycolumn, yyline, yytext());
+            }
     ";"     { System.out.println("Reconocio token: <dotComma> lexema: "+yytext()); 
               return new Symbol(Simbolos.dotComma, yycolumn, yyline, yytext());
             }

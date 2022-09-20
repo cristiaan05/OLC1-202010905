@@ -31,10 +31,16 @@ terminal prIngresar,prComo,prNumber,prChain,prBoolean,prChar,prConValor;
 terminal comment;
 terminal dotComma,comma;
 terminal varName;
-//definicion de no terminales
+terminal rightCor,leftCor;
 
+
+//definicion de no terminales
 non terminal INICIO,INSTRUCCIONES,INSTRUCCION,DECLARACION,EXPRESION;
-non terminal DATATYPE;
+non terminal DATATYPE,VARIABLES,LISTAVAR,DECLA;
+non terminal NUMERICA,BOOLEANA,CARACTER;
+non terminal SUMA,RESTA,MULTIPLICACION,DIVISION,POTENCIA,MODULO,PARENTESIS,OPERANDO1,OPERANDO2;
+
+
 //gramaticas
 start with INICIO;
 
@@ -45,14 +51,77 @@ INSTRUCCIONES::= INSTRUCCIONES INSTRUCCION
                 | INSTRUCCION
 ;
 
-INSTRUCCION::= DECLARACION dotComma 
-            | error INSTRUCCION
+INSTRUCCION::= DECLARACION dotComma
+             | error dotComma
 ;
 
-DECLARACION::= prIngresar varName prComo DATATYPE prConValor;
+DECLARACION::= prIngresar LISTAVAR prComo DECLA;
 
-DATATYPE::= prNumber
-          | prChain
-          | prBoolean
-          | prChar
+LISTAVAR::= LISTAVAR comma varName
+          | varName
 ;
+
+DECLA::= prNumber prConValor NUMERICA
+       |  prBoolean prConValor BOOLEANA
+       |  prChar prConValor CARACTER
+       |  prChain prConValor cadena
+;   
+
+//       prNumber prConValor EXPRESION
+ //     |   prNumber prConValor nEntero
+//      |   prNumber prConValor nDecimal
+//      |   prBoolean prConValor EXPRESION
+ //     |   DATATYPE
+
+
+NUMERICA::= EXPRESION
+          |   prNumber prConValor nEntero
+          |   prNumber prConValor nDecimal
+;
+
+BOOLEANA::= prTrue
+          | prFalse
+;
+
+CARACTER::= charAscii
+          | charNormal
+;
+
+
+//DATATYPE::= prChain prConValor cadena
+//          | prChar prConValor charAscii
+//          | prChar prConValor charNormal
+//;
+
+
+
+EXPRESION::= SUMA
+           | RESTA
+           | MULTIPLICACION
+           | DIVISION
+           | POTENCIA
+           | MODULO
+           | PARENTESIS
+;
+
+SUMA::= OPERANDO1 plus OPERANDO2;
+RESTA::= OPERANDO1 minus OPERANDO2;
+MULTIPLICACION::= OPERANDO1 per OPERANDO2;
+DIVISION::= OPERANDO1 div OPERANDO2;
+POTENCIA::= OPERANDO1 prExponent OPERANDO2;
+MODULO::= OPERANDO1 prMod OPERANDO2;
+PARENTESIS::= leftPar EXPRESION rightPar;
+
+OPERANDO1::= leftCor EXPRESION rightCor
+          | nEntero
+          | nDecimal
+          | varName
+;
+
+OPERANDO2::= leftCor EXPRESION rightCor
+          | nEntero
+          | nDecimal
+          | varName
+;
+
+//  | pare1 relacional pare2 

@@ -16,6 +16,7 @@ public class Simbolos {
   public static final int multiline = 11;
   public static final int comma = 38;
   public static final int prExponent = 16;
+  public static final int rightCor = 40;
   public static final int varName = 39;
   public static final int nEntero = 4;
   public static final int rightPar = 19;
@@ -43,6 +44,7 @@ public class Simbolos {
   public static final int per = 14;
   public static final int notEquals = 25;
   public static final int div = 15;
+  public static final int leftCor = 41;
   public static final int prMod = 17;
   public static final int charAscii = 9;
   public static final int dotComma = 37;
@@ -88,7 +90,9 @@ public class Simbolos {
   "comment",
   "dotComma",
   "comma",
-  "varName"
+  "varName",
+  "rightCor",
+  "leftCor"
   };
 }
 
