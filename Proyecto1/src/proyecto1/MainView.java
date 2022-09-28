@@ -100,7 +100,7 @@ public class MainView extends javax.swing.JFrame {
         });
 
         textArea.setColumns(20);
-        textArea.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        textArea.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         textArea.setRows(5);
         jScrollPane1.setViewportView(textArea);
 

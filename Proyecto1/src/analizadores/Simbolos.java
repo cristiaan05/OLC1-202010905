@@ -14,6 +14,7 @@ public class Simbolos {
   public static final int minus = 13;
   public static final int prChar = 34;
   public static final int multiline = 11;
+  public static final int tkAsignar = 42;
   public static final int comma = 38;
   public static final int prExponent = 16;
   public static final int rightCor = 40;
@@ -92,7 +93,8 @@ public class Simbolos {
   "comma",
   "varName",
   "rightCor",
-  "leftCor"
+  "leftCor",
+  "tkAsignar"
   };
 }
 

@@ -32,14 +32,23 @@ terminal comment;
 terminal dotComma,comma;
 terminal varName;
 terminal rightCor,leftCor;
+terminal tkAsignar;
 
 
 //definicion de no terminales
-non terminal INICIO,INSTRUCCIONES,INSTRUCCION,DECLARACION,EXPRESION;
-non terminal DATATYPE,VARIABLES,LISTAVAR,DECLA;
-non terminal NUMERICA,BOOLEANA,CARACTER;
-non terminal SUMA,RESTA,MULTIPLICACION,DIVISION,POTENCIA,MODULO,PARENTESIS,OPERANDO1,OPERANDO2;
+non terminal INICIO,INSTRUCCIONES,INSTRUCCION,DECLARACION,ASIGNACION,EXPRESION;
+non terminal LISTAVAR,DECLA;
+//non terminal NUMERICA,
+non terminal BOOLEANA,CARACTER;
+non terminal COMENTARIOS;
+//non terminal SUMA,RESTA,MULTIPLICACION,DIVISION,POTENCIA,MODULO,PARENTESIS,OPERANDO1,OPERANDO2;
 
+
+precedence left plus,minus;
+precedence left per,div,prMod;
+precedence left prExponent;
+precedence left mayor,menor,mayorigual,menorigual,equals,notEquals;
+precedence left prOr,prAnd;
 
 //gramaticas
 start with INICIO;
@@ -52,16 +61,24 @@ INSTRUCCIONES::= INSTRUCCIONES INSTRUCCION
 ;
 
 INSTRUCCION::= DECLARACION dotComma
+             | ASIGNACION dotComma
+             | COMENTARIOS
              | error dotComma
 ;
 
 DECLARACION::= prIngresar LISTAVAR prComo DECLA;
 
+ASIGNACION::= LISTAVAR tkAsignar EXPRESION;
+
+COMENTARIOS::= multiline
+             | comment
+;
+
 LISTAVAR::= LISTAVAR comma varName
           | varName
 ;
 
-DECLA::= prNumber prConValor NUMERICA
+DECLA::= prNumber prConValor EXPRESION
        |  prBoolean prConValor BOOLEANA
        |  prChar prConValor CARACTER
        |  prChain prConValor cadena
@@ -70,14 +87,14 @@ DECLA::= prNumber prConValor NUMERICA
 //       prNumber prConValor EXPRESION
  //     |   prNumber prConValor nEntero
 //      |   prNumber prConValor nDecimal
-//      |   prBoolean prConValor EXPRESION
+//      |   prBoolean prConValor BOOLEANA
  //     |   DATATYPE
 
-
-NUMERICA::= EXPRESION
-          |   prNumber prConValor nEntero
-          |   prNumber prConValor nDecimal
-;
+/*
+NUMERICA::= nEntero
+          | nDecimal
+;*/
+// EXPRESION
 
 BOOLEANA::= prTrue
           | prFalse
@@ -95,33 +112,61 @@ CARACTER::= charAscii
 
 
 
-EXPRESION::= SUMA
+EXPRESION::= EXPRESION plus EXPRESION
+          |  EXPRESION minus EXPRESION
+          |  EXPRESION per EXPRESION
+          |  EXPRESION div EXPRESION
+          |  EXPRESION prExponent leftCor EXPRESION rightCor
+          |  EXPRESION prMod EXPRESION
+          |  nDecimal
+          |  leftPar EXPRESION rightPar
+          |  leftCor EXPRESION rightCor
+          |  nEntero
+          |  varName
+          |  EXPRESION mayor EXPRESION
+          |  EXPRESION menor EXPRESION
+          |  EXPRESION mayorigual EXPRESION
+          |  EXPRESION menorigual EXPRESION
+          |  EXPRESION equals EXPRESION
+          |  EXPRESION notEquals EXPRESION
+          |  EXPRESION prOr EXPRESION
+          |  EXPRESION prAnd EXPRESION
+          |  prNot EXPRESION
+;
+
+/*SUMA
            | RESTA
            | MULTIPLICACION
            | DIVISION
            | POTENCIA
            | MODULO
            | PARENTESIS
-;
+*/
 
+/*
 SUMA::= OPERANDO1 plus OPERANDO2;
+
 RESTA::= OPERANDO1 minus OPERANDO2;
+
 MULTIPLICACION::= OPERANDO1 per OPERANDO2;
+
 DIVISION::= OPERANDO1 div OPERANDO2;
+
 POTENCIA::= OPERANDO1 prExponent OPERANDO2;
+
 MODULO::= OPERANDO1 prMod OPERANDO2;
+
 PARENTESIS::= leftPar EXPRESION rightPar;
-
-OPERANDO1::= leftCor EXPRESION rightCor
-          | nEntero
+*/
+/*
+OPERANDO1::= nEntero
           | nDecimal
           | varName
 ;
 
-OPERANDO2::= leftCor EXPRESION rightCor
-          | nEntero
+OPERANDO2::= nEntero
           | nDecimal
           | varName
 ;
-
+*/
 //  | pare1 relacional pare2 

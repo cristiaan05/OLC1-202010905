@@ -94,7 +94,7 @@ varName= [_]([A-Za-z]|[0-9]+)+[_]
               return new Symbol(Simbolos.prExponent, yycolumn, yyline, yytext());
             }
 
-    "modulo"    { System.out.println("Reconocio palabra_reservada, lexema:"+yytext());
+    "mod"    { System.out.println("Reconocio palabra_reservada, lexema:"+yytext());
               return new Symbol(Simbolos.prMod, yycolumn, yyline, yytext());
             }
 
@@ -128,7 +128,7 @@ varName= [_]([A-Za-z]|[0-9]+)+[_]
               return new Symbol(Simbolos.mayorigual, yycolumn, yyline, yytext());
             }
     "menor_o_igual"   { System.out.println("Reconocio token: <menorigual> lexema: "+yytext()); 
-              return new Symbol(Simbolos.menorigual, yycolumn, yyline, yytext());
+                return new Symbol(Simbolos.menorigual, yycolumn, yyline, yytext());
             }
     "es_igual"     { System.out.println("Reconocio token: <equals> lexema: "+yytext()); 
               return new Symbol(Simbolos.equals, yycolumn, yyline, yytext());
@@ -165,6 +165,9 @@ varName= [_]([A-Za-z]|[0-9]+)+[_]
             }
    "con_valor"  { System.out.println("Reconocio palabra_reservada, lexema:"+yytext());
               return new Symbol(Simbolos.prConValor, yycolumn, yyline, yytext());
+            }
+   "->"  { System.out.println("Reconocio token: <tkAsignar> lexema: "+yytext()); 
+              return new Symbol(Simbolos.tkAsignar, yycolumn, yyline, yytext());
             }
 
 
