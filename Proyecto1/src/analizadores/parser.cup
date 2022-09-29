@@ -15,32 +15,30 @@ parser code
 :}
 
 //definicion de terminales
-terminal prInicio;
-terminal prFin;
-terminal nEntero;
-terminal nDecimal;
-terminal cadena;
-terminal prTrue;
-terminal prFalse;
-terminal charAscii;
-terminal charNormal,multiline;
+terminal prInicio,prFin;
+terminal nEntero,nDecimal,cadena,prTrue,prFalse,charAscii,charNormal;
+terminal comment,multiline;
 terminal plus,minus,per,div,prExponent,prMod,leftPar,rightPar;
 terminal mayor,menor,mayorigual,menorigual,equals,notEquals;
 terminal prOr,prAnd,prNot;
 terminal prIngresar,prComo,prNumber,prChain,prBoolean,prChar,prConValor;
-terminal comment;
 terminal dotComma,comma;
 terminal varName;
 terminal rightCor,leftCor;
 terminal tkAsignar;
-
+terminal prIf,prEntonces,prEndIf,prElse,prElseIf;
+terminal prSegun, prHacer,prEndSegun,tkInterLeft,tkInterRight;
+terminal prFor,prHasta, prCon, prIncremental, prEndFor;
+terminal prWhile,prEndWhile;
 
 //definicion de no terminales
 non terminal INICIO,INSTRUCCIONES,INSTRUCCION,DECLARACION,ASIGNACION,EXPRESION;
 non terminal LISTAVAR,DECLA;
 //non terminal NUMERICA,
 non terminal BOOLEANA,CARACTER;
-non terminal COMENTARIOS;
+non terminal IF,ELSEIF,COMENTARIOS;
+non terminal SWITCH,CASES,CASE;
+non terminal FOR,WHILE;
 //non terminal SUMA,RESTA,MULTIPLICACION,DIVISION,POTENCIA,MODULO,PARENTESIS,OPERANDO1,OPERANDO2;
 
 
@@ -62,6 +60,10 @@ INSTRUCCIONES::= INSTRUCCIONES INSTRUCCION
 
 INSTRUCCION::= DECLARACION dotComma
              | ASIGNACION dotComma
+             | IF
+             | SWITCH
+             | FOR
+             | WHILE
              | COMENTARIOS
              | error dotComma
 ;
@@ -69,6 +71,34 @@ INSTRUCCION::= DECLARACION dotComma
 DECLARACION::= prIngresar LISTAVAR prComo DECLA;
 
 ASIGNACION::= LISTAVAR tkAsignar EXPRESION;
+
+IF::= prIf EXPRESION prEntonces INSTRUCCIONES prEndIf
+    | prIf EXPRESION prEntonces INSTRUCCIONES prElse INSTRUCCIONES prEndIf
+    | prIf EXPRESION prEntonces INSTRUCCIONES ELSEIF prElse INSTRUCCIONES prEndIf
+;
+
+ELSEIF::= prElseIf EXPRESION prEntonces INSTRUCCIONES
+        | ELSEIF prElseIf EXPRESION prEntonces INSTRUCCIONES
+;
+
+SWITCH::= prSegun EXPRESION prHacer CASES prEndSegun;
+
+CASES::= CASES CASE
+        | CASE
+;
+
+CASE::= tkInterLeft EXPRESION tkInterRight prEntonces INSTRUCCIONES 
+      | CASE prElse prEntonces INSTRUCCIONES
+;
+
+FOR::= prFor varName tkAsignar EXPRESION prHasta EXPRESION prHacer INSTRUCCIONES prEndFor
+    |   prFor varName tkAsignar EXPRESION prHasta EXPRESION prHacer prEndFor
+    |   prFor varName tkAsignar EXPRESION prHasta EXPRESION prCon prIncremental EXPRESION prHacer INSTRUCCIONES prEndFor
+;
+
+WHILE::= prWhile EXPRESION prHacer INSTRUCCIONES prEndWhile
+        | prWhile EXPRESION prHacer prEndWhile
+;
 
 COMENTARIOS::= multiline
              | comment
@@ -123,6 +153,8 @@ EXPRESION::= EXPRESION plus EXPRESION
           |  leftCor EXPRESION rightCor
           |  nEntero
           |  varName
+          |  prTrue
+          |  prFalse
           |  EXPRESION mayor EXPRESION
           |  EXPRESION menor EXPRESION
           |  EXPRESION mayorigual EXPRESION

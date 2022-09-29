@@ -26,6 +26,8 @@ multiline= [\/]\*[^*]*\*+([^/*][^*]*\*+)*[\/]
 charAscii= '[\$][\{][0-9]+[\}]'
 comment= [\/][\/][^\n]*
 varName= [_]([A-Za-z]|[0-9]+)+[_]
+interAbre= [\¿]
+interCierra= [\?]
 //[[!]|[#-&]|[(-\/]|[:]|[<-@]|[\x5B]|[\x5D-\x5F]|[{-}]]
 //["][^"]*["]  
 // cadena con salto de linea [\"]([^\"\n]|(\\\"))*[\"]
@@ -170,7 +172,57 @@ varName= [_]([A-Za-z]|[0-9]+)+[_]
               return new Symbol(Simbolos.tkAsignar, yycolumn, yyline, yytext());
             }
 
-
+    "si"  { System.out.println("Reconocio palabra_reservada, lexema:"+yytext());
+              return new Symbol(Simbolos.prIf, yycolumn, yyline, yytext());
+            }
+    "entonces"  { System.out.println("Reconocio palabra_reservada, lexema:"+yytext());
+              return new Symbol(Simbolos.prEntonces, yycolumn, yyline, yytext());
+            }
+    "fin_si"  { System.out.println("Reconocio palabra_reservada, lexema:"+yytext());
+              return new Symbol(Simbolos.prEndIf, yycolumn, yyline, yytext());
+            }
+    "de_lo_contrario"  { System.out.println("Reconocio palabra_reservada, lexema:"+yytext());
+              return new Symbol(Simbolos.prElse, yycolumn, yyline, yytext());
+            }
+    "o_si"  { System.out.println("Reconocio palabra_reservada 'o_si', lexema:"+yytext());
+              return new Symbol(Simbolos.prElseIf, yycolumn, yyline, yytext());
+            }
+    "segun"  { System.out.println("Reconocio palabra_reservada 'segun', lexema:"+yytext());
+              return new Symbol(Simbolos.prSegun, yycolumn, yyline, yytext());
+            }
+    "hacer"  { System.out.println("Reconocio palabra_reservada 'hacer', lexema:"+yytext());
+              return new Symbol(Simbolos.prHacer, yycolumn, yyline, yytext());
+            }
+     {interAbre}  { System.out.println("Reconocio token: <tkInterLeft> lexema: "+yytext()); 
+              return new Symbol(Simbolos.tkInterLeft, yycolumn, yyline, yytext());
+            }
+     {interCierra}  { System.out.println("Reconocio token: <tkInterRight> lexema: "+yytext()); 
+              return new Symbol(Simbolos.tkInterRight, yycolumn, yyline, yytext());
+            }
+    "fin_segun"  { System.out.println("Reconocio palabra_reservada 'fin segun', lexema:"+yytext());
+              return new Symbol(Simbolos.prEndSegun, yycolumn, yyline, yytext());
+            }
+    "para"  { System.out.println("Reconocio palabra_reservada 'Para', lexema:"+yytext());
+              return new Symbol(Simbolos.prFor, yycolumn, yyline, yytext());
+            }
+    "hasta"  { System.out.println("Reconocio palabra_reservada 'hasta', lexema:"+yytext());
+              return new Symbol(Simbolos.prHasta, yycolumn, yyline, yytext());
+            }
+    "fin_para"  { System.out.println("Reconocio palabra_reservada 'Fin Para', lexema:"+yytext());
+              return new Symbol(Simbolos.prEndFor, yycolumn, yyline, yytext());
+            }
+    "con"  { System.out.println("Reconocio palabra_reservada 'con', lexema:"+yytext());
+              return new Symbol(Simbolos.prCon, yycolumn, yyline, yytext());
+            }
+    "incremental"  { System.out.println("Reconocio palabra_reservada 'incremental', lexema:"+yytext());
+              return new Symbol(Simbolos.prIncremental, yycolumn, yyline, yytext());
+            }
+    "mientras"  { System.out.println("Reconocio palabra_reservada 'mientras', lexema:"+yytext());
+              return new Symbol(Simbolos.prWhile, yycolumn, yyline, yytext());
+            }
+    "fin_mientras"  { System.out.println("Reconocio palabra_reservada 'Fin mientras', lexema:"+yytext());
+              return new Symbol(Simbolos.prEndWhile, yycolumn, yyline, yytext());
+            }
 }
 
 [ \t\r\n\f]         {  /*este es un comentario en java, omitirlos*/ }
