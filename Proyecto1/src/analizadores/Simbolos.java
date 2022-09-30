@@ -11,23 +11,30 @@ public class Simbolos {
   public static final int prCon = 55;
   public static final int charNormal = 10;
   public static final int prHasta = 54;
+  public static final int prEndFunction = 67;
   public static final int prIngresar = 30;
   public static final int prEndFor = 57;
   public static final int plus = 13;
+  public static final int prMetodo = 63;
   public static final int minus = 14;
   public static final int prChar = 35;
   public static final int multiline = 12;
+  public static final int prEjecutar = 68;
   public static final int tkAsignar = 42;
   public static final int comma = 38;
   public static final int prExponent = 17;
   public static final int rightCor = 40;
   public static final int varName = 39;
   public static final int nEntero = 4;
+  public static final int prFunction = 66;
   public static final int rightPar = 20;
+  public static final int prDo = 60;
+  public static final int prReturn = 62;
   public static final int prConValor = 36;
   public static final int menor = 22;
   public static final int EOF = 0;
   public static final int nDecimal = 5;
+  public static final int prDoWhile = 61;
   public static final int prEntonces = 44;
   public static final int prComo = 31;
   public static final int prEndWhile = 59;
@@ -42,6 +49,7 @@ public class Simbolos {
   public static final int prSegun = 48;
   public static final int menorigual = 24;
   public static final int prHacer = 49;
+  public static final int prPrintnl = 70;
   public static final int prFor = 53;
   public static final int prFin = 3;
   public static final int prTrue = 7;
@@ -50,15 +58,18 @@ public class Simbolos {
   public static final int prAnd = 28;
   public static final int prFalse = 8;
   public static final int prElseIf = 47;
+  public static final int prPrint = 69;
   public static final int mayorigual = 23;
   public static final int prOr = 27;
   public static final int tkInterLeft = 51;
   public static final int prChain = 33;
+  public static final int prParametros = 65;
   public static final int prElse = 46;
   public static final int prInicio = 2;
   public static final int per = 15;
   public static final int notEquals = 26;
   public static final int prIf = 43;
+  public static final int prEndMetodo = 64;
   public static final int prEndIf = 45;
   public static final int div = 16;
   public static final int leftCor = 41;
@@ -128,7 +139,18 @@ public class Simbolos {
   "prIncremental",
   "prEndFor",
   "prWhile",
-  "prEndWhile"
+  "prEndWhile",
+  "prDo",
+  "prDoWhile",
+  "prReturn",
+  "prMetodo",
+  "prEndMetodo",
+  "prParametros",
+  "prFunction",
+  "prEndFunction",
+  "prEjecutar",
+  "prPrint",
+  "prPrintnl"
   };
 }
 

@@ -223,6 +223,39 @@ interCierra= [\?]
     "fin_mientras"  { System.out.println("Reconocio palabra_reservada 'Fin mientras', lexema:"+yytext());
               return new Symbol(Simbolos.prEndWhile, yycolumn, yyline, yytext());
             }
+    "repetir"  { System.out.println("Reconocio palabra_reservada 'repetir', lexema:"+yytext());
+              return new Symbol(Simbolos.prDo, yycolumn, yyline, yytext());
+            }
+    "hasta_que"  { System.out.println("Reconocio palabra_reservada 'hasta_que', lexema:"+yytext());
+              return new Symbol(Simbolos.prDoWhile, yycolumn, yyline, yytext());
+            }
+    "retornar"  { System.out.println("Reconocio palabra_reservada 'return', lexema:"+yytext());
+              return new Symbol(Simbolos.prReturn, yycolumn, yyline, yytext());
+            }
+    "metodo"  { System.out.println("Reconocio palabra_reservada 'metodo', lexema:"+yytext());
+              return new Symbol(Simbolos.prMetodo, yycolumn, yyline, yytext());
+            }
+    "fin_metodo"  { System.out.println("Reconocio palabra_reservada 'fin_metodo', lexema:"+yytext());
+              return new Symbol(Simbolos.prEndMetodo, yycolumn, yyline, yytext());
+            }
+    "con_parametros"  { System.out.println("Reconocio palabra_reservada 'con_parametros', lexema:"+yytext());
+              return new Symbol(Simbolos.prParametros, yycolumn, yyline, yytext());
+            }
+    "funcion"  { System.out.println("Reconocio palabra_reservada 'funcion', lexema:"+yytext());
+              return new Symbol(Simbolos.prFunction, yycolumn, yyline, yytext());
+            }
+    "fin_funcion"  { System.out.println("Reconocio palabra_reservada 'fin_funcion', lexema:"+yytext());
+              return new Symbol(Simbolos.prEndFunction, yycolumn, yyline, yytext());
+            }
+    "ejecutar"  { System.out.println("Reconocio palabra_reservada 'ejecutar', lexema:"+yytext());
+              return new Symbol(Simbolos.prEjecutar, yycolumn, yyline, yytext());
+            }
+    "imprimir"  { System.out.println("Reconocio palabra_reservada 'imprimir', lexema:"+yytext());
+              return new Symbol(Simbolos.prPrint, yycolumn, yyline, yytext());
+            }
+    "imprimir_nl"  { System.out.println("Reconocio palabra_reservada 'imprimir nl', lexema:"+yytext());
+              return new Symbol(Simbolos.prPrintnl, yycolumn, yyline, yytext());
+            }
 }
 
 [ \t\r\n\f]         {  /*este es un comentario en java, omitirlos*/ }

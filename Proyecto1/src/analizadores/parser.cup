@@ -29,7 +29,10 @@ terminal tkAsignar;
 terminal prIf,prEntonces,prEndIf,prElse,prElseIf;
 terminal prSegun, prHacer,prEndSegun,tkInterLeft,tkInterRight;
 terminal prFor,prHasta, prCon, prIncremental, prEndFor;
-terminal prWhile,prEndWhile;
+terminal prWhile,prEndWhile,prDo,prDoWhile,prReturn;
+terminal prMetodo,prEndMetodo,prParametros;
+terminal prFunction,prEndFunction;
+terminal prEjecutar,prPrint,prPrintnl;
 
 //definicion de no terminales
 non terminal INICIO,INSTRUCCIONES,INSTRUCCION,DECLARACION,ASIGNACION,EXPRESION;
@@ -38,7 +41,10 @@ non terminal LISTAVAR,DECLA;
 non terminal BOOLEANA,CARACTER;
 non terminal IF,ELSEIF,COMENTARIOS;
 non terminal SWITCH,CASES,CASE;
-non terminal FOR,WHILE;
+non terminal FOR,WHILE,DOWHILE,RETURN;
+non terminal DATATYPE,PARAMETROS,METODO,METODOP;
+non terminal FUNCTIONP,FUNCTION;
+non terminal CALL,PRINT;
 //non terminal SUMA,RESTA,MULTIPLICACION,DIVISION,POTENCIA,MODULO,PARENTESIS,OPERANDO1,OPERANDO2;
 
 
@@ -47,6 +53,8 @@ precedence left per,div,prMod;
 precedence left prExponent;
 precedence left mayor,menor,mayorigual,menorigual,equals,notEquals;
 precedence left prOr,prAnd;
+precedence left prNumber,prChain,prChar,prBoolean;
+precedence left comma,varName;
 
 //gramaticas
 start with INICIO;
@@ -64,7 +72,14 @@ INSTRUCCION::= DECLARACION dotComma
              | SWITCH
              | FOR
              | WHILE
+             | DOWHILE
+             | RETURN dotComma
+             | METODO
              | COMENTARIOS
+             | FUNCTION
+             | CALL dotComma
+             | PRINT dotComma
+             | error INSTRUCCION
              | error dotComma
 ;
 
@@ -100,6 +115,43 @@ WHILE::= prWhile EXPRESION prHacer INSTRUCCIONES prEndWhile
         | prWhile EXPRESION prHacer prEndWhile
 ;
 
+DOWHILE::= prDo INSTRUCCIONES prDoWhile EXPRESION
+        |   prDo prDoWhile EXPRESION
+;
+
+RETURN::= prReturn EXPRESION;
+
+METODO::= prMetodo varName METODOP prEndMetodo;
+
+METODOP::= prParametros leftPar PARAMETROS rightPar INSTRUCCIONES 
+        |   INSTRUCCIONES 
+;
+
+PARAMETROS::= varName DATATYPE
+            |  PARAMETROS comma varName DATATYPE 
+;
+
+DATATYPE::= prNumber
+        |   prChain
+        |   prBoolean
+        |   prChar
+;
+
+FUNCTION::= prFunction varName DATATYPE FUNCTIONP prEndFunction;
+
+FUNCTIONP::= prParametros leftPar PARAMETROS rightPar INSTRUCCIONES
+          | INSTRUCCIONES
+;
+
+CALL::= prEjecutar varName leftPar rightPar
+    |   prEjecutar varName leftPar PARAMETROS rightPar
+;
+
+PRINT::= prPrint EXPRESION 
+       | prPrintnl EXPRESION
+       | prPrint INSTRUCCION 
+       | prPrintnl INSTRUCCION
+;
 COMENTARIOS::= multiline
              | comment
 ;
@@ -164,6 +216,8 @@ EXPRESION::= EXPRESION plus EXPRESION
           |  EXPRESION prOr EXPRESION
           |  EXPRESION prAnd EXPRESION
           |  prNot EXPRESION
+          |  cadena
+          | error EXPRESION
 ;
 
 /*SUMA
