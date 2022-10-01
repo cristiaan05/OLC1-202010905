@@ -6,11 +6,11 @@ import java.io.*;
 parser code
 {:
     public void syntax_error(Symbol s){
-        System.out.println("Error R de sintaxis en: " + " Linea "+(s.right)+" columna "+(s.left) + " No se esperaba un " + s.value );
+        System.out.println("Se recupero de Error de sintaxis en: " + " Linea "+(s.right)+" columna "+(s.left) + " No se esperaba un " + s.value );
     }
 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
-       System.out.println("Error NR de sintaxis en: " + " Linea "+(s.right)+" columna "+(s.left) + " No se esperaba un " + s.value );
+       System.out.println("No se Pudo recuperar de Error de sintaxis en: " + " Linea "+(s.right)+" columna "+(s.left) + " No se esperaba un " + s.value );
     }
 :}
 
@@ -44,7 +44,7 @@ non terminal SWITCH,CASES,CASE;
 non terminal FOR,WHILE,DOWHILE,RETURN;
 non terminal DATATYPE,PARAMETROS,METODO,METODOP;
 non terminal FUNCTIONP,FUNCTION;
-non terminal CALL,PRINT;
+non terminal CALL,LISTAEXPCALL,PRINT;
 //non terminal SUMA,RESTA,MULTIPLICACION,DIVISION,POTENCIA,MODULO,PARENTESIS,OPERANDO1,OPERANDO2;
 
 
@@ -78,7 +78,7 @@ INSTRUCCION::= DECLARACION dotComma
              | COMENTARIOS
              | FUNCTION
              | CALL dotComma
-             | PRINT dotComma
+             | PRINT
              | error INSTRUCCION
              | error dotComma
 ;
@@ -145,12 +145,15 @@ FUNCTIONP::= prParametros leftPar PARAMETROS rightPar INSTRUCCIONES
 
 CALL::= prEjecutar varName leftPar rightPar
     |   prEjecutar varName leftPar PARAMETROS rightPar
+    |   prEjecutar varName leftPar LISTAEXPCALL rightPar
 ;
 
-PRINT::= prPrint EXPRESION 
-       | prPrintnl EXPRESION
-       | prPrint INSTRUCCION 
-       | prPrintnl INSTRUCCION
+LISTAEXPCALL::= EXPRESION
+            |  LISTAEXPCALL comma EXPRESION
+;
+
+PRINT::= prPrint EXPRESION dotComma
+       | prPrintnl EXPRESION dotComma
 ;
 COMENTARIOS::= multiline
              | comment

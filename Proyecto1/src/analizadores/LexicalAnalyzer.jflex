@@ -1,7 +1,69 @@
 package analizadores;
 import java_cup.runtime.*;
-
+import java.io.*;
 %%
+
+%{ 
+    public static int contador=1;
+    public static String lexicalErrors="";
+    public static String headHtml=""
+                        +"<!DOCTYPE html>"
+               +" <html lang=\"es\">"
+
+               +" <head>"
+                    +"<meta charset=\"UTF-8\">"
+                    +"<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">"
+                    +"<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
+                    +"<link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css\" rel=\"stylesheet\"integrity=\"sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT\" crossorigin=\"anonymous\">"
+                    +"<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8\"crossorigin=\"anonymous\"></script>"
+                    +"<title>REPORTE DE ERRORES LEXICOS</title>"
+                +"</head>"
+                +"<style>"
+               +" body{"
+                    +"background-color:#eab5f7;"
+                +"}"
+                +"h3{"
+                    +"position: relative; "
+                    +"padding-left: 40%;"
+                    +"padding-top: 20px;"
+                +"}"    
+                +"h5{"
+                    +"position: relative; "
+                    +"padding-left: 8%;"
+                    +"padding-top: 20px;"
+                +"}  "
+                +"#tabla{"
+                    +"width: 80%;"
+                   +" margin: 20px;"
+                    +"padding-left: 100px;"
+                    +"left: 125px;"
+                    +"position: relative;"
+                +"}"
+
+                +"</style>"
+
+                +"<body>"
+                    +"<h3>TABLA DE TOKENS</h3>"
+                    +"<h5>CRISTIAN FERNANDO HERNANDEZ TELLO</h5>"
+                    +"<h5>202010905</h5>"
+                      +"<table id=\"tabla\" class=\"table table-striped\">"
+                        +"<thead class=\"table-dark\">"
+                          +"<tr>"
+                            +"<th scope=\"col\">NO</th>"
+                            +"<th scope=\"col\">TIPO</th>"
+                            +"<th scope=\"col\">LEXEMA</th>"
+                            +"<th scope=\"col\">FILA</th>"
+                            +"<th scope=\"col\">COLUMNA</th>"
+                          +"</tr>"
+                        +"</thead>"
+                        +"<tbody>";
+    public static String erroresHTML="";
+    public static String closeHTML=""  
+                        +"</tbody>"
+                      +"</table>"
+                +"</body>"
+                +"</html>";
+%}
 
 //directrices
 
@@ -43,6 +105,15 @@ interCierra= [\?]
                     return new Symbol(Simbolos.prInicio, yycolumn, yyline, yytext());
                   }
     "fin"         { System.out.println("Reconocio palabra_reservada, lexema:"+yytext());
+                    try{
+                        PrintWriter writer = new PrintWriter("ReporteLexico.html");
+                        writer.println(headHtml);
+                        writer.println(erroresHTML);
+                        writer.println(closeHTML);
+                        writer.close();
+                    }catch (Exception e) {
+                       System.out.println("Error");
+                    }
                     return new Symbol(Simbolos.prFin, yycolumn, yyline, yytext()); 
                   }
     {entero}      {   System.out.println("Reconocio token:<entero> lexema:"+yytext());
@@ -262,7 +333,10 @@ interCierra= [\?]
 
 
 .   {
+    contador+=1;
+    erroresHTML+="<tr><th scope=\"row\">"+contador+"</th><td>Léxico</td><td>"+yytext()+"</td><td>"+(yyline+1)+"</td><td>"+(yycolumn+1)+"</td> </tr>";
     System.out.println("Error Lexico : "+yytext()+ "Linea"+(yyline+1)+" Columna "+yycolumn);    
+
 }
 
 

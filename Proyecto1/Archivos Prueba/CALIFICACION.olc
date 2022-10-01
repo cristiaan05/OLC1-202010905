@@ -202,7 +202,7 @@ si _varB_ entonces
 			imprimir_nl "el valor es mayor a 2";
 	fin_segun
 de_lo_contrario
-		  imprimir_nl “Estas definiendo bien los valores c:”;
+		  imprimir_nl "Estas definiendo bien los valores c:";
 fin_si
 
 
@@ -250,10 +250,10 @@ de_lo_contrario
 	imprimir_nl "Debes ingresar un valor mayor o igual a 1";
 	fin_si
 fin_funcion
-
+/*
 imprimir "El fibonacci de 5 es ";
 imprimir _fibonacci_(5);
 imprimir_nl ".";
-
+*/
 fin 
 
