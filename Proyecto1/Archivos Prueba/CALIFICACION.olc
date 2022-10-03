@@ -55,16 +55,16 @@ ingresar _operaciones1Avanzadas6_  Como numeRo con_valor (5*8) mod (1+5+6);   //
 ingresar _operaciones1Avanzadas7_  Como numeRo con_valor (5*8) mod ((5+3) potencia [8]); //   40
 ingresar _operaciones1Avanzadas8_  Como numeRo con_valor (5*8) mod ((5+ (2 potencia[2*2])) potencia [8]);  
 
-ingresar _operacionRela1_ como BooleaNa con_valor 5+5>5;  //verdadera
-ingresar _operacionRela3_1_ como booleana con_valor _operaciones1Basica_ mayor 8; // falsa
-ingresar _operacionRela3_2_ como BooLeana con_valor (_operaciones1Basica_+6) Mayor_o_igual 8;// verdadera
-ingresar _operacionRela3_3_ como booleana con_valor (_operaciones1Basica_+6) menor_o_igual 8;// verdadera
-ingresar _operacionRela4_ como booleAna con_valor _operaciones1Basica_ es_iGual 8;// falsa
-ingresar _operacionRela31_ como booleana con_valor (_operaciones1Basica_+6) menor 8;//falsa
-ingresar _operacionRela5_ como booleana con_valor _operaciones1Basica_ es_igual _operaciones1Basica_;//true
-ingresar _operacionRela6_ como BooleanA con_valor _operaciones1Basica_ es_iguAl _operaciones1Basica_+1;//false
-ingresar _operacionRela7_ como boolEana con_valor _operaciones1Basica_ es_igual (_operaciones1Basica_)*(8+5);//false
-ingresar _operacionRela5_ como bOoleAna con_valor _operaciones1Basica_ es_difeErente _operaciones1Basica_;//false
+ingresar _operacionRela1_ como BooleaN con_valor 5+5>5;  //verdadera
+ingresar _operacionRela3_1_ como boolean con_valor _operaciones1Basica_ mayor 8; // falsa
+ingresar _operacionRela3_2_ como BooLean con_valor (_operaciones1Basica_+6) Mayor_o_igual 8;// verdadera
+ingresar _operacionRela3_3_ como boolean con_valor (_operaciones1Basica_+6) menor_o_igual 8;// verdadera
+ingresar _operacionRela4_ como booleAn con_valor _operaciones1Basica_ es_iGual 8;// falsa
+ingresar _operacionRela31_ como boolean con_valor (_operaciones1Basica_+6) menor 8;//falsa
+ingresar _operacionRela5_ como boolean con_valor _operaciones1Basica_ es_igual _operaciones1Basica_;//true
+ingresar _operacionRela6_ como Boolean con_valor _operaciones1Basica_ es_iguAl _operaciones1Basica_+1;//false
+ingresar _operacionRela7_ como boolEan con_valor _operaciones1Basica_ es_igual (_operaciones1Basica_)*(8+5);//false
+ingresar _operacionRela5_ como bOoleAn con_valor _operaciones1Basica_ es_difeErente _operaciones1Basica_;//false
 
 
 

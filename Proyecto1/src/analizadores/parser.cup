@@ -1,17 +1,27 @@
 package analizadores;
 import java_cup.runtime.Symbol;
 import java.io.*;
-
+import javax.swing.JOptionPane;
 
 parser code
 {:
+    public static String pythonText="";
+    public static String noRecuperable="";
+    public static String recuperable="";
+    public static int contador=0;
     public void syntax_error(Symbol s){
-        System.out.println("Se recupero de Error de sintaxis en: " + " Linea "+(s.right)+" columna "+(s.left) + " No se esperaba un " + s.value );
+        contador+=1;
+        recuperable+="<tr><th scope=\"row\">"+contador+"</th><td>Sintáctico Recuperable</td><td>"+(s.value)+"</td><td>"+((s.right))+"</td><td>"+(s.left)+"</td> </tr>";
+        System.out.println("Se recupero de Error de sintaxis en: " + " Linea "+(s.right+1)+" columna "+(s.left+1) + " No se esperaba un " + s.value );
     }
 
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
-       System.out.println("No se Pudo recuperar de Error de sintaxis en: " + " Linea "+(s.right)+" columna "+(s.left) + " No se esperaba un " + s.value );
+        contador+=1;
+        noRecuperable+="<tr><th scope=\"row\">"+contador+"</th><td>Sintáctico No Recuperable</td><td>"+(s.value)+"</td><td>"+((s.right))+"</td><td>"+(s.left)+"</td> </tr>";
+        JOptionPane.showMessageDialog(null, "Ocurrio un error sintactico y no me pude recuperar, revise su pseudocodigo por favor");
+        System.out.println("No se Pudo recuperar de Error de sintaxis en: " + " Linea "+(s.right+1)+" columna "+(s.left+1) + " No se esperaba un " + s.value );
     }
+
 :}
 
 //definicion de terminales
@@ -59,8 +69,8 @@ precedence left comma,varName;
 //gramaticas
 start with INICIO;
 
-INICIO::= prInicio INSTRUCCIONES  prFin;
-
+INICIO::= prInicio INSTRUCCIONES  prFin {: System.out.println(pythonText); :}
+;
 
 INSTRUCCIONES::= INSTRUCCIONES INSTRUCCION
                 | INSTRUCCION
@@ -83,7 +93,8 @@ INSTRUCCION::= DECLARACION dotComma
              | error dotComma
 ;
 
-DECLARACION::= prIngresar LISTAVAR prComo DECLA;
+DECLARACION::= prIngresar LISTAVAR prComo DECLA:d {: pythonText += " = "+d+ "\n";:}
+;
 
 ASIGNACION::= LISTAVAR tkAsignar EXPRESION;
 
@@ -159,34 +170,34 @@ COMENTARIOS::= multiline
              | comment
 ;
 
-LISTAVAR::= LISTAVAR comma varName
-          | varName
+LISTAVAR::= LISTAVAR comma varName:v1 {: pythonText+= ","+ v1;:}
+          | varName:v2 {: pythonText+= v2+"  ";:}
 ;
 
-DECLA::= prNumber prConValor EXPRESION
-       |  prBoolean prConValor BOOLEANA
-       |  prChar prConValor CARACTER
-       |  prChain prConValor cadena
+DECLA::= prNumber prConValor EXPRESION:exp {:RESULT=exp;:}
+       |  prBoolean prConValor BOOLEANA:b {:RESULT=b;:}
+       |  prChar prConValor CARACTER:ch {:RESULT=ch;:}
+       |  prChain prConValor cadena:c {: RESULT= c;:}
 ;   
 
 //       prNumber prConValor EXPRESION
  //     |   prNumber prConValor nEntero
 //      |   prNumber prConValor nDecimal
-//      |   prBoolean prConValor BOOLEANA
+//      |   prBoolean prConValor EXPRESION
  //     |   DATATYPE
 
 /*
-NUMERICA::= nEntero
+NUMERICA::= nEntero 
           | nDecimal
 ;*/
 // EXPRESION
 
-BOOLEANA::= prTrue
-          | prFalse
+BOOLEANA::= prTrue:t {: RESULT= t ;:}
+          | prFalse:f {: RESULT= f ;:}
 ;
 
-CARACTER::= charAscii
-          | charNormal
+CARACTER::= charAscii:ca {: RESULT= ca ;:}
+          | charNormal:cn {: RESULT= cn ;:}
 ;
 
 
@@ -197,65 +208,30 @@ CARACTER::= charAscii
 
 
 
-EXPRESION::= EXPRESION plus EXPRESION
-          |  EXPRESION minus EXPRESION
-          |  EXPRESION per EXPRESION
-          |  EXPRESION div EXPRESION
-          |  EXPRESION prExponent leftCor EXPRESION rightCor
-          |  EXPRESION prMod EXPRESION
-          |  nDecimal
-          |  leftPar EXPRESION rightPar
-          |  leftCor EXPRESION rightCor
-          |  nEntero
-          |  varName
-          |  prTrue
-          |  prFalse
-          |  EXPRESION mayor EXPRESION
-          |  EXPRESION menor EXPRESION
-          |  EXPRESION mayorigual EXPRESION
-          |  EXPRESION menorigual EXPRESION
-          |  EXPRESION equals EXPRESION
-          |  EXPRESION notEquals EXPRESION
-          |  EXPRESION prOr EXPRESION
-          |  EXPRESION prAnd EXPRESION
-          |  prNot EXPRESION
-          |  cadena
+EXPRESION::= EXPRESION:e1 plus:p EXPRESION:e2 {:RESULT=e1+""+p+""+e2;:}
+          |  EXPRESION:e3 minus:m EXPRESION:e4  {:RESULT=e3+""+m+""+e4;:}
+          |  EXPRESION:e5 per:per EXPRESION:e6 {:RESULT=e5+""+per+""+e6;:} 
+          |  EXPRESION:e7 div:div EXPRESION:e8  {:RESULT=e7+""+"/"+""+e8;:}
+          |  EXPRESION:e9 prExponent leftCor:corl EXPRESION:e10 rightCor:rcorl {:RESULT=e9+"**"+"("+""+e10+""+")";:}
+          |  EXPRESION:e11 prMod:mod EXPRESION:e12 {:RESULT=e11+""+"%"+""+e12;:}
+          |  nDecimal:deci  {:RESULT=deci;:}
+          |  leftPar:lp EXPRESION:ep rightPar:rp {:RESULT=lp+""+ep+""+rp;:}
+          |  leftCor:lc EXPRESION:ep2 rightCor:rc  {:RESULT=lc+""+ep2+""+rc;:}
+          |  nEntero:ne {:RESULT=ne;:}
+          |  varName:var {:RESULT=var;:}
+          |  BOOLEANA:bol {:RESULT=bol;:}
+          |  EXPRESION:x mayor:my EXPRESION:x2  {:RESULT=x+""+">"+""+x2;:}
+          |  EXPRESION:x3 menor:me EXPRESION:x4  {:RESULT=x3+""+"<"+""+x4;:}
+          |  EXPRESION:x5 mayorigual:mi EXPRESION:x6 {:RESULT=x5+""+">="+""+x6;:} 
+          |  EXPRESION:x7 menorigual:mei EXPRESION:x8  {:RESULT=x7+""+"<="+""+x8;:}
+          |  EXPRESION:x9 equals:eq EXPRESION:x10 {:RESULT=x9+""+"=="+""+x10;:}
+          |  EXPRESION:x11 notEquals:ne EXPRESION:x12 {:RESULT=x11+""+"!="+""+x12;:}
+          |  EXPRESION:x13 prOr:po EXPRESION:x14 {:RESULT=x13+""+"or"+""+x14;:}
+          |  EXPRESION:x15 prAnd:pa EXPRESION:x16 {:RESULT=x15+""+"and"+""+x16;:}
+          |  prNot:pno EXPRESION:x17 {:RESULT="not"+""+x17;:}
+          |  cadena:ca {:RESULT=ca;:}
           | error EXPRESION
 ;
 
-/*SUMA
-           | RESTA
-           | MULTIPLICACION
-           | DIVISION
-           | POTENCIA
-           | MODULO
-           | PARENTESIS
-*/
 
-/*
-SUMA::= OPERANDO1 plus OPERANDO2;
 
-RESTA::= OPERANDO1 minus OPERANDO2;
-
-MULTIPLICACION::= OPERANDO1 per OPERANDO2;
-
-DIVISION::= OPERANDO1 div OPERANDO2;
-
-POTENCIA::= OPERANDO1 prExponent OPERANDO2;
-
-MODULO::= OPERANDO1 prMod OPERANDO2;
-
-PARENTESIS::= leftPar EXPRESION rightPar;
-*/
-/*
-OPERANDO1::= nEntero
-          | nDecimal
-          | varName
-;
-
-OPERANDO2::= nEntero
-          | nDecimal
-          | varName
-;
-*/
-//  | pare1 relacional pare2 

@@ -1,10 +1,12 @@
 package analizadores;
 import java_cup.runtime.*;
 import java.io.*;
+import javax.swing.JOptionPane;
+import proyecto1.MainView;
 %%
 
 %{ 
-    public static int contador=1;
+    public static int contador=0;
     public static String lexicalErrors="";
     public static String headHtml=""
                         +"<!DOCTYPE html>"
@@ -105,12 +107,21 @@ interCierra= [\?]
                     return new Symbol(Simbolos.prInicio, yycolumn, yyline, yytext());
                   }
     "fin"         { System.out.println("Reconocio palabra_reservada, lexema:"+yytext());
+                    Parser sintaxis= new Parser();
                     try{
                         PrintWriter writer = new PrintWriter("ReporteLexico.html");
                         writer.println(headHtml);
                         writer.println(erroresHTML);
+                        writer.println("<tr><th scope=\"row\">--------</th><td scope=\"row\">------</td><td scope=\"row\">ERRORES SINTACTICOS</td><td scope=\"row\">--------</td><td scope=\"row\">--------</td> </tr>");
+                        writer.println(sintaxis.noRecuperable);
+                        writer.println(sintaxis.recuperable);
                         writer.println(closeHTML);
                         writer.close();
+                        contador+=sintaxis.contador;
+                        if (contador>=1) {
+                            JOptionPane.showMessageDialog(null, "Su pseudocodigo contiene errores lexicos o sintacticos, no se realizo la traduccion");
+                        }
+                        System.out.println("Error Total: "+contador);
                     }catch (Exception e) {
                        System.out.println("Error");
                     }
@@ -335,7 +346,7 @@ interCierra= [\?]
 .   {
     contador+=1;
     erroresHTML+="<tr><th scope=\"row\">"+contador+"</th><td>Léxico</td><td>"+yytext()+"</td><td>"+(yyline+1)+"</td><td>"+(yycolumn+1)+"</td> </tr>";
-    System.out.println("Error Lexico : "+yytext()+ "Linea"+(yyline+1)+" Columna "+yycolumn);    
+    System.out.println("Error Lexico : "+yytext()+ "Linea"+(yyline+1)+" Columna "+(yycolumn+1));    
 
 }
 

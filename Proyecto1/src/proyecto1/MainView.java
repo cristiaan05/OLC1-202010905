@@ -27,6 +27,7 @@ public class MainView extends javax.swing.JFrame {
     /**
      * Creates new form MainView
      */
+     public static String codigoPyhton="";
     public MainView() {
         initComponents();
     }
@@ -111,6 +112,11 @@ public class MainView extends javax.swing.JFrame {
         viewCGolang.setText("View Code Golang");
 
         viewCPython.setText("View Code Python");
+        viewCPython.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewCPythonMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout contenedorLayout = new javax.swing.GroupLayout(contenedor);
         contenedor.setLayout(contenedorLayout);
@@ -279,7 +285,10 @@ public class MainView extends javax.swing.JFrame {
             );
             Parser sintactico = new Parser(lexico);
             sintactico.parse();
-            
+            int total=0;
+            total=Lexical_Analyzer.contador;
+            totalErrores(String.valueOf(total));
+            codigoPyhton=sintactico.pythonText;
         }catch(Exception e){
             
         }
@@ -316,6 +325,13 @@ public class MainView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_fileSaveAsActionPerformed
 
+    private void viewCPythonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewCPythonMouseClicked
+        System.out.println("Abri traduccion python");
+        PythonView vistaPythonView=new PythonView();
+        vistaPythonView.setVisible(true);
+        vistaPythonView.setTraduccion(codigoPyhton);
+    }//GEN-LAST:event_viewCPythonMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -327,6 +343,9 @@ public class MainView extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> {
             new MainView().setVisible(true);
         });
+    }
+    public void totalErrores(String errores){
+        labelErrores.setText(errores);
     }
     
     public String textoIngresado(){

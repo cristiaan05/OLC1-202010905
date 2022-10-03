@@ -18,6 +18,7 @@ public class Proyecto1 {
         // TODO code application logic here
         MainView vista=new MainView();
         vista.setVisible(true);
+        
         //String entrada=vista.textoIngresado();
         /*try{
             Lexical_Analyzer lexico = new Lexical_Analyzer(
@@ -41,5 +42,7 @@ public class Proyecto1 {
         // "\"".*"\""   cadena
         
     }
+    
+
     
 }
