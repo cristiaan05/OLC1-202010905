@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 
 parser code
 {:
+    public static String swcase="";
     public static String pythonText="";
     public static String noRecuperable="";
     public static String recuperable="";
@@ -48,7 +49,7 @@ terminal prEjecutar,prPrint,prPrintnl;
 non terminal INICIO,INSTRUCCIONES,INSTRUCCION,DECLARACION,ASIGNACION,EXPRESION;
 non terminal LISTAVAR,DECLA;
 //non terminal NUMERICA,
-non terminal BOOLEANA,CARACTER;
+non terminal BOOLEANA,CONDICION,CARACTER;
 non terminal IF,ELSEIF,COMENTARIOS;
 non terminal SWITCH,CASES,CASE;
 non terminal FOR,WHILE,DOWHILE,RETURN;
@@ -72,20 +73,20 @@ start with INICIO;
 INICIO::= prInicio INSTRUCCIONES  prFin {: System.out.println(pythonText); :}
 ;
 
-INSTRUCCIONES::= INSTRUCCIONES INSTRUCCION
-                | INSTRUCCION
+INSTRUCCIONES::= INSTRUCCIONES:ins INSTRUCCION:is {:RESULT= ins+""+is;:}
+                | INSTRUCCION:in {:RESULT=in;:}
 ;
 
-INSTRUCCION::= DECLARACION dotComma
-             | ASIGNACION dotComma
+INSTRUCCION::= DECLARACION:de dotComma {:RESULT=de;:}
+             | ASIGNACION:as dotComma {:RESULT=as;:}
              | IF
              | SWITCH
-             | FOR
+             | FOR:f {:RESULT=f;:}
              | WHILE
              | DOWHILE
              | RETURN dotComma
              | METODO
-             | COMENTARIOS
+             | COMENTARIOS:comen {:RESULT=comen;:}
              | FUNCTION
              | CALL dotComma
              | PRINT
@@ -96,29 +97,35 @@ INSTRUCCION::= DECLARACION dotComma
 DECLARACION::= prIngresar LISTAVAR prComo DECLA:d {: pythonText += " = "+d+ "\n";:}
 ;
 
-ASIGNACION::= LISTAVAR tkAsignar EXPRESION;
+ASIGNACION::= LISTAVAR:li tkAsignar EXPRESION:exp {:RESULT= li+" = " +exp+"\n";:};
 
-IF::= prIf EXPRESION prEntonces INSTRUCCIONES prEndIf
-    | prIf EXPRESION prEntonces INSTRUCCIONES prElse INSTRUCCIONES prEndIf
-    | prIf EXPRESION prEntonces INSTRUCCIONES ELSEIF prElse INSTRUCCIONES prEndIf
+IF::= prIf EXPRESION:e prEntonces INSTRUCCIONES:i prEndIf {:pythonText+= "if "+e+":"+"\n"+"     "+i+"\n" ;:}
+    | prIf EXPRESION:e2 prEntonces INSTRUCCIONES:i2 prElse INSTRUCCIONES:ie prEndIf {:pythonText+="if "+e2+":"+"\n"+"    "+i2+"\n"+"else:"+"\n"+"    "+ie+"\n";:}
+    | prIf EXPRESION:e3 prEntonces INSTRUCCIONES:i3 ELSEIF:elif prElse INSTRUCCIONES:ie2 prEndIf{:pythonText+=
+        "if "+e3+":"+"\n"+"     "+i3+"\n"+elif+"\n"+"else:"+"\n"+"      "+ie2+"\n"
+    ;:}
 ;
 
-ELSEIF::= prElseIf EXPRESION prEntonces INSTRUCCIONES
-        | ELSEIF prElseIf EXPRESION prEntonces INSTRUCCIONES
+ELSEIF::= prElseIf EXPRESION:e prEntonces INSTRUCCIONES:i {:RESULT="elif "+e+":"+"\n"+"     "+i+"\n";:}
+        | ELSEIF:eif prElseIf EXPRESION:e1 prEntonces INSTRUCCIONES:i1 {:RESULT=eif+"elif "+e1+":"+"\n"+"     "+i1+"\n";:}
 ;
 
-SWITCH::= prSegun EXPRESION prHacer CASES prEndSegun;
-
-CASES::= CASES CASE
-        | CASE
+SWITCH::= prSegun EXPRESION:e prHacer CASES:c prEndSegun
+           {: pythonText+="if "+e+""+c+"\n";:}
 ;
 
-CASE::= tkInterLeft EXPRESION tkInterRight prEntonces INSTRUCCIONES 
-      | CASE prElse prEntonces INSTRUCCIONES
+CASES::= CASES:ca CASE:c0 {:RESULT=ca+"elif "+""+swcase+""+c0;:}
+        | CASE:c {:RESULT=c;:}
 ;
 
-FOR::= prFor varName tkAsignar EXPRESION prHasta EXPRESION prHacer INSTRUCCIONES prEndFor
+CASE::= tkInterLeft EXPRESION:e tkInterRight prEntonces INSTRUCCIONES:i {:RESULT= "=="+e+":"+"\n"+"    "+i+"\n";:}
+      | CASE:c prElse prEntonces INSTRUCCIONES:i1 {:RESULT=c+"else:"+"\n"+"     "+i1+"\n" ;:}
+;
+
+FOR::= prFor varName:v tkAsignar EXPRESION:e prHasta EXPRESION:ee prHacer INSTRUCCIONES:i prEndFor
+        {:RESULT=pythonText+="for "+v+ " in range(" +e+","+ee+")"+":"+"\n"+"       "+i+"\n" ;:}
     |   prFor varName tkAsignar EXPRESION prHasta EXPRESION prHacer prEndFor
+        
     |   prFor varName tkAsignar EXPRESION prHasta EXPRESION prCon prIncremental EXPRESION prHacer INSTRUCCIONES prEndFor
 ;
 
@@ -166,46 +173,38 @@ LISTAEXPCALL::= EXPRESION
 PRINT::= prPrint EXPRESION dotComma
        | prPrintnl EXPRESION dotComma
 ;
-COMENTARIOS::= multiline
-             | comment
+
+COMENTARIOS::= multiline:ml {: RESULT= "\""+ml+"\"";:}
+             | comment:com  {: RESULT= "#"+com;:}
 ;
 
-LISTAVAR::= LISTAVAR comma varName:v1 {: pythonText+= ","+ v1;:}
-          | varName:v2 {: pythonText+= v2+"  ";:}
+LISTAVAR::= LISTAVAR:l comma varName:v1 {: RESULT= l+","+ v1;:}
+          | varName:v2 {: RESULT= v2+"  ";:}
 ;
 
 DECLA::= prNumber prConValor EXPRESION:exp {:RESULT=exp;:}
        |  prBoolean prConValor BOOLEANA:b {:RESULT=b;:}
+       |  prBoolean prConValor CONDICION:con {:RESULT=con;:}
        |  prChar prConValor CARACTER:ch {:RESULT=ch;:}
        |  prChain prConValor cadena:c {: RESULT= c;:}
 ;   
 
-//       prNumber prConValor EXPRESION
- //     |   prNumber prConValor nEntero
-//      |   prNumber prConValor nDecimal
-//      |   prBoolean prConValor EXPRESION
- //     |   DATATYPE
 
-/*
-NUMERICA::= nEntero 
-          | nDecimal
-;*/
-// EXPRESION
+BOOLEANA::= prTrue:t {: RESULT= "true" ;:}
+          | prFalse:f {: RESULT= "false" ;:}
+;
 
-BOOLEANA::= prTrue:t {: RESULT= t ;:}
-          | prFalse:f {: RESULT= f ;:}
+CONDICION::= EXPRESION:x mayor:my EXPRESION:x1  {:RESULT=x+""+">"+""+x1;:}
+          |  EXPRESION:x2 menor:me EXPRESION:x3  {:RESULT=x2+""+"<"+""+x3;:}
+          |  EXPRESION:x4 mayorigual:mi EXPRESION:x5 {:RESULT=x4+""+">="+""+x5;:} 
+          |  EXPRESION:x6 menorigual:mei EXPRESION:x7  {:RESULT=x6+""+"<="+""+x7;:}
+          |  EXPRESION:x8 equals:eq EXPRESION:x9 {:RESULT=x8+""+"=="+""+x9;:}
+          |  EXPRESION:x10 notEquals:ne EXPRESION:x11 {:RESULT=x10+""+"!="+""+x11;:}
 ;
 
 CARACTER::= charAscii:ca {: RESULT= ca ;:}
           | charNormal:cn {: RESULT= cn ;:}
 ;
-
-
-//DATATYPE::= prChain prConValor cadena
-//          | prChar prConValor charAscii
-//          | prChar prConValor charNormal
-//;
-
 
 
 EXPRESION::= EXPRESION:e1 plus:p EXPRESION:e2 {:RESULT=e1+""+p+""+e2;:}
@@ -219,7 +218,7 @@ EXPRESION::= EXPRESION:e1 plus:p EXPRESION:e2 {:RESULT=e1+""+p+""+e2;:}
           |  leftCor:lc EXPRESION:ep2 rightCor:rc  {:RESULT=lc+""+ep2+""+rc;:}
           |  nEntero:ne {:RESULT=ne;:}
           |  varName:var {:RESULT=var;:}
-          |  BOOLEANA:bol {:RESULT=bol;:}
+          |  BOOLEANA:bool {:RESULT=bool;:}
           |  EXPRESION:x mayor:my EXPRESION:x2  {:RESULT=x+""+">"+""+x2;:}
           |  EXPRESION:x3 menor:me EXPRESION:x4  {:RESULT=x3+""+"<"+""+x4;:}
           |  EXPRESION:x5 mayorigual:mi EXPRESION:x6 {:RESULT=x5+""+">="+""+x6;:} 
@@ -230,7 +229,7 @@ EXPRESION::= EXPRESION:e1 plus:p EXPRESION:e2 {:RESULT=e1+""+p+""+e2;:}
           |  EXPRESION:x15 prAnd:pa EXPRESION:x16 {:RESULT=x15+""+"and"+""+x16;:}
           |  prNot:pno EXPRESION:x17 {:RESULT="not"+""+x17;:}
           |  cadena:ca {:RESULT=ca;:}
-          | error EXPRESION
+          |  error EXPRESION
 ;
 
 

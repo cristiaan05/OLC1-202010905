@@ -10,7 +10,7 @@ package proyecto1;
  * @author Cristian
  */
 public class Proyecto1 {
-
+    
     /**
      * @param args the command line arguments
      */
@@ -18,7 +18,7 @@ public class Proyecto1 {
         // TODO code application logic here
         MainView vista=new MainView();
         vista.setVisible(true);
-        
+
         //String entrada=vista.textoIngresado();
         /*try{
             Lexical_Analyzer lexico = new Lexical_Analyzer(
