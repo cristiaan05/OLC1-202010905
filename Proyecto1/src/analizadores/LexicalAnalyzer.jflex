@@ -45,7 +45,7 @@ import proyecto1.MainView;
                 +"</style>"
 
                 +"<body>"
-                    +"<h3>TABLA DE TOKENS</h3>"
+                    +"<h3>TABLA DE ERRORES</h3>"
                     +"<h5>CRISTIAN FERNANDO HERNANDEZ TELLO</h5>"
                     +"<h5>202010905</h5>"
                       +"<table id=\"tabla\" class=\"table table-striped\">"
@@ -109,7 +109,7 @@ interCierra= [\?]
     "fin"         { System.out.println("Reconocio palabra_reservada, lexema:"+yytext());
                     Parser sintaxis= new Parser();
                     try{
-                        PrintWriter writer = new PrintWriter("ReporteLexico.html");
+                        PrintWriter writer = new PrintWriter("ReporteErrores.html");
                         writer.println(headHtml);
                         writer.println(erroresHTML);
                         writer.println("<tr><th scope=\"row\">--------</th><td scope=\"row\">------</td><td scope=\"row\">ERRORES SINTACTICOS</td><td scope=\"row\">--------</td><td scope=\"row\">--------</td> </tr>");

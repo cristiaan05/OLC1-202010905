@@ -1,0 +1,202 @@
+//definicion de terminales
+terminal prInicio,prFin;
+terminal nEntero,nDecimal,cadena,prTrue,prFalse,charAscii,charNormal;
+terminal comment,multiline;
+terminal plus,minus,per,div,prExponent,prMod,leftPar,rightPar;
+terminal mayor,menor,mayorigual,menorigual,equals,notEquals;
+terminal prOr,prAnd,prNot;
+terminal prIngresar,prComo,prNumber,prChain,prBoolean,prChar,prConValor;
+terminal dotComma,comma;
+terminal varName;
+terminal rightCor,leftCor;
+terminal tkAsignar;
+terminal prIf,prEntonces,prEndIf,prElse,prElseIf;
+terminal prSegun, prHacer,prEndSegun,tkInterLeft,tkInterRight;
+terminal prFor,prHasta, prCon, prIncremental, prEndFor;
+terminal prWhile,prEndWhile,prDo,prDoWhile,prReturn;
+terminal prMetodo,prEndMetodo,prParametros;
+terminal prFunction,prEndFunction;
+terminal prEjecutar,prPrint,prPrintnl;
+
+//definicion de no terminales
+non terminal INICIO,INSTRUCCIONES,INSTRUCCION,DECLARACION,ASIGNACION,EXPRESION;
+non terminal LISTAVAR,DECLA;
+//non terminal NUMERICA,
+non terminal BOOLEANA,CONDICION,CARACTER;
+non terminal IF,ELSEIF,COMENTARIOS;
+non terminal SWITCH,CASES,CASE;
+non terminal FOR,WHILE,DOWHILE,RETURN;
+non terminal DATATYPE,PARAMETROS,METODO,METODOP;
+non terminal FUNCTIONP,FUNCTION;
+non terminal CALL,LISTAEXPCALL,PRINT;
+//non terminal SUMA,RESTA,MULTIPLICACION,DIVISION,POTENCIA,MODULO,PARENTESIS,OPERANDO1,OPERANDO2;
+
+
+precedence left plus,minus;
+precedence left per,div,prMod;
+precedence left prExponent;
+precedence left mayor,menor,mayorigual,menorigual,equals,notEquals;
+precedence left prOr,prAnd;
+precedence left prNumber,prChain,prChar,prBoolean;
+precedence left comma,varName;
+
+//gramaticas
+start with INICIO;
+
+INICIO::= prInicio INSTRUCCIONES  prFin
+;
+
+INSTRUCCIONES::= INSTRUCCIONES INSTRUCCION
+                | INSTRUCCION
+;
+
+INSTRUCCION::= DECLARACION dotComma 
+             | ASIGNACION dotComma
+             | IF
+             | SWITCH
+             | FOR
+             | WHILE
+             | DOWHILE
+             | RETURN dotComma
+             | METODO
+             | COMENTARIOS
+             | FUNCTION
+             | CALL dotComma
+             | PRINT
+             | error INSTRUCCION
+             | error dotComma
+;
+
+DECLARACION::= prIngresar LISTAVAR prComo DECLA
+;
+
+ASIGNACION::= LISTAVAR tkAsignar EXPRESION; 
+
+IF::= prIf EXPRESION prEntonces INSTRUCCIONES prEndIf
+    | prIf EXPRESION prEntonces INSTRUCCIONES prElse INSTRUCCIONES prEndIf
+    | prIf EXPRESION prEntonces INSTRUCCIONES ELSEIF prElse INSTRUCCIONES prEndIf
+;
+
+ELSEIF::= prElseIf EXPRESION prEntonces INSTRUCCIONES
+        | ELSEIF prElseIf EXPRESION prEntonces INSTRUCCIONES
+;
+
+SWITCH::= prSegun EXPRESION prHacer CASES prEndSegun
+;
+
+CASES::= CASES CASE
+        | CASE
+;
+
+CASE::= tkInterLeft EXPRESION tkInterRight prEntonces INSTRUCCIONES
+      | CASE prElse prEntonces INSTRUCCIONES
+;
+
+FOR::= prFor varName tkAsignar EXPRESION prHasta EXPRESION prHacer INSTRUCCIONES prEndFor
+    |   prFor varName tkAsignar EXPRESION prHasta EXPRESION prHacer prEndFor
+        
+    |   prFor varName tkAsignar EXPRESION prHasta EXPRESION prCon prIncremental EXPRESION prHacer INSTRUCCIONES prEndFor
+;
+
+WHILE::= prWhile EXPRESION prHacer INSTRUCCIONES prEndWhile
+        | prWhile EXPRESION prHacer prEndWhile
+;
+
+DOWHILE::= prDo INSTRUCCIONES prDoWhile EXPRESION
+        |   prDo prDoWhile EXPRESION
+;
+
+RETURN::= prReturn EXPRESION;
+
+METODO::= prMetodo varName METODOP prEndMetodo;
+
+METODOP::= prParametros leftPar PARAMETROS rightPar INSTRUCCIONES 
+        |   INSTRUCCIONES 
+;
+
+PARAMETROS::= varName DATATYPE
+            |  PARAMETROS comma varName DATATYPE 
+;
+
+DATATYPE::= prNumber
+        |   prChain
+        |   prBoolean
+        |   prChar
+;
+
+FUNCTION::= prFunction varName DATATYPE FUNCTIONP prEndFunction;
+
+FUNCTIONP::= prParametros leftPar PARAMETROS rightPar INSTRUCCIONES
+          | INSTRUCCIONES
+;
+
+CALL::= prEjecutar varName leftPar rightPar
+    |   prEjecutar varName leftPar PARAMETROS rightPar
+    |   prEjecutar varName leftPar LISTAEXPCALL rightPar
+;
+
+LISTAEXPCALL::= EXPRESION
+            |  LISTAEXPCALL comma EXPRESION
+;
+
+PRINT::= prPrint EXPRESION dotComma
+       | prPrintnl EXPRESION dotComma
+;
+
+COMENTARIOS::= multiline
+             | comment
+;
+
+LISTAVAR::= LISTAVAR comma varName
+          | varName
+;
+
+DECLA::= prNumber prConValor EXPRESION
+       |  prBoolean prConValor BOOLEANA
+       |  prBoolean prConValor CONDICION
+       |  prChar prConValor CARACTER
+       |  prChain prConValor cadena
+;   
+
+
+BOOLEANA::= prTrue
+          | prFalse
+;
+
+CONDICION::= EXPRESION mayor EXPRESION:x1
+          |  EXPRESION menor EXPRESION:x3 
+          |  EXPRESION mayorigual EXPRESION
+          |  EXPRESION menorigual EXPRESION
+          |  EXPRESION equals EXPRESION
+          |  EXPRESION notEquals EXPRESION
+;
+
+CARACTER::= charAscii
+          | charNormal
+;
+
+
+EXPRESION::= EXPRESION plus EXPRESION
+          |  EXPRESI minus EXPRESION
+          |  EXPRESION per EXPRESION
+          |  EXPRESION div EXPRESION
+          |  EXPRESION prExponent leftCor EXPRESION rightCor 
+          |  EXPRESION prMod EXPRESION
+          |  nDecimal
+          |  leftPar EXPRESION rightPar
+          |  leftCor EXPRESION rightCor
+          |  nEntero 
+          |  varName
+          |  BOOLEANA
+          |  EXPRESIO mayor EXPRESION
+          |  EXPRESION menor EXPRESION
+          |  EXPRESION mayorigual EXPRESION
+          |  EXPRESION menorigual EXPRESION
+          |  EXPRESION equals EXPRESION
+          |  EXPRESION notEquals EXPRESION
+          |  EXPRESION prOr EXPRESION
+          |  EXPRESION prAnd EXPRESION
+          |  prNot EXPRESION
+          |  cadena
+          |  error EXPRESION
+;

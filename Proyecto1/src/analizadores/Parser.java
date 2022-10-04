@@ -962,102 +962,102 @@ public class Parser extends java_cup.runtime.lr_parser {
                        +" graph[nodesep=\"0.75\"]label=\"Arbol Sintactico\";"
                        +" node [shape=box];"
                        +" rankdir = \"TB\" "
-                        +"global[label=\"PSEUDOCODIGO\" width=2];"
-                       +" prInicio[label=\"prInicio\"  width = 2];"
-                       +" Instr[label=\"INSTRUCCIONES\" width = 2];"
-                       +" prFin[label=\"prFin\"  width = 2];"
-                       +" intru[label=\"INSTRUCCION\", width = 2];"
-                       +" impre[label=\"IMPRESION\", width = 2];"
-                       +" decla[label=\"DECLARACION\",width =2];"
-                       +" asig[label=\"ASIGNACION\", width=2];"
-                       +" conSI[label=\"CONDICIONAL SI\", width=2];"
-                       +" segun[label=\"SEGUN\", width=2];"
+                        +"global[label=\"PSEUDOCODIGO\" width=2];\n"
+                       +" prInicio[label=\"prInicio\"  width = 2];\n"
+                       +" Instr[label=\"INSTRUCCIONES\" width = 2];\n"
+                       +" prFin[label=\"prFin\"  width = 2];\n"
+                       +" intru[label=\"INSTRUCCION\", width = 2];\n"
+                       +" impre[label=\"IMPRESION\", width = 2];\n"
+                       +" decla[label=\"DECLARACION\",width =2];\n"
+                       +" asig[label=\"ASIGNACION\", width=2];\n"
+                       +" conSI[label=\"CONDICIONAL SI\", width=2];\n"
+                       +" segun[label=\"SEGUN\", width=2];\n"
                        +"     /*imrpesion*/"
-                       +" impLn0[label=\"imprimir_nl\",width =2];"
-                       +" impN0[label=\"imprimir\",width =2];"
-                       +" parIz0[label=\"Parentesis izq\"];"
-                       +" caden0[label=\"cadena\", width =2];"
-                       +" parDe0[label=\"Parentesis der\"];"
-                       +" varia0[label=\"variable\", width =2];"
-                       +" puncoma0[label=\"puntoycoma\",width =2];"
+                       +" impLn0[label=\"imprimir_nl\",width =2];\n"
+                       +" impN0[label=\"imprimir\",width =2];\n"
+                       +" parIz0[label=\"Parentesis izq\"];\n"
+                       +" caden0[label=\"cadena\", width =2];\n"
+                       +" parDe0[label=\"Parentesis der\"];\n"
+                       +" varia0[label=\"variable\", width =2];\n"
+                       +" puncoma0[label=\"puntoycoma\",width =2];\n"
                        +" /*declaracion*/"
-                       +" prIngresar0[label=\"prIngresar\", width=2];"
-                       +" varName0[label=\"id\", width=2];"
-                       +" prComo0[label=\"prComo\",width=2];"
-                     +"   tipoDato0[label=\"tipodedato\",width=2];"
-                      +"  prConValor0[label=\"prconvalor\",width=2];"
-                      +"  EXP0[label=\"EXPRESION\",width=2];"
-                      +"  dotComma0[label=\"PUNTO Y COMA\",width=2];"
+                       +" prIngresar0[label=\"prIngresar\", width=2];\n"
+                       +" varName0[label=\"id\", width=2];\n"
+                       +" prComo0[label=\"prComo\",width=2];\n"
+                     +"   tipoDato0[label=\"tipodedato\",width=2];\n"
+                      +"  prConValor0[label=\"prconvalor\",width=2];\n"
+                      +"  EXP0[label=\"EXPRESION\",width=2];\n"
+                      +"  dotComma0[label=\"PUNTO Y COMA\",width=2];\n"
                       +"  /*asignacion*/"
-                      +"  varName1[label=\"varName\",width=2];"
-                      +"  tkAsignar0[label=\"tkAsignar\",width=2];"
-                      +"  EXP1[label=\"EXPRESION\",width=2];"
-                      +"  dotComma1[label=\"PUNTO Y COMA\",width=2];"
+                      +"  varName_0[label=\"varName\",width=2];\n"
+                      +"  tkAsignar_0[label=\"tkAsignar\",width=2];\n"
+                      +"  EXP_0[label=\"EXPRESION\",width=2];\n"
+                      +"  dotComma_0[label=\"PUNTO Y COMA\",width=2];\n"
                       +"  /*condicional si*/"
-                      +"  prIf0[label=\"prIf\",width=2];"
-                      +"  EXP2[label=\"EXPRESOIN\",width=2];"
-                      +"  prElse0[label=\"prElse\",width=2];"
-                      +"  prElseIf0[label=\"prElseIf\",width=2];"
-                      +"  prEntonces0[label=\"prEntonces\",width=2];"
-                      +"  INS0[label=\"INSTRUCCION\",width=2];"
-                      +"  prEndIf0[label=\"prEndIf\",width=2];"
+                      +"  prIf_0[label=\"prIf\",width=2];\n"
+                      +"  EXP_0[label=\"EXPRESOIN\",width=2];\n"
+                      +"  prElse_0[label=\"prElse\",width=2];\n"
+                      +"  prElseIf_0[label=\"prElseIf\",width=2];\n"
+                      +"  prEntonces_0[label=\"prEntonces\",width=2];\n"
+                      +"  INS_0[label=\"INSTRUCCION\",width=2];\n"
+                      +"  prEndIf_0[label=\"prEndIf\",width=2];\n"
                         
                       +"  /*condicional segun*/"
-                      +"  prSegun0[label=\"prSegun\",width=2];"
-                      +"  prEntonces1[label=\"prEntonces\",width=2];"
-                      +"  INS1[label=\"INSTRUCCIONES\",width=2];"
-                      +"  prHacer0[label=\"prHacer\",width=2];"
-                      +"  tkInterLeft0[label=\"¿\",width=2];"
-                      +"  EXP3[label=\"EXPRESION\",width=2];"
-                      +"  tkInterRight0[label=\"?\",width=2];"
-                      +"  prEndSegun0[label=\"prEndSegun\",width=2];"
+                      +"  prSegun_0[label=\"prSegun\",width=2];\n"
+                      +"  prEntonces_0[label=\"prEntonces\",width=2];\n"
+                      +"  INS_0[label=\"INSTRUCCIONES\",width=2];\n"
+                      +"  prHacer_0[label=\"prHacer\",width=2];\n"
+                      +"  tkInterLeft_0[label=\"¿\",width=2];\n"
+                      +"  EXP_0[label=\"EXPRESION\",width=2];\n"
+                      +"  tkInterRight_0[label=\"?\",width=2];\n"
+                      +"  prEndSegun_0[label=\"prEndSegun\",width=2];\n"
                         
-                      +"  global -> Instr;"
-                      +"  global -> prFin;"
-                      +"  global -> prInicio;"
-                      +"  Instr -> intru;"
-                      +"  intru -> impre;"
-                      +"  intru -> decla;"
-                      +"  intru -> asig;"
-                      +"  intru-> conSI;"
-                      +"  intru -> segun;"
-                      +"  decla -> prIngresar0;"
-                  +"      decla -> varName0;"
-                  +"      decla -> prComo0;"
-                  +"      decla -> tipoDato0;"
-                  +"      decla -> prConValor0;"
-                        +"decla -> EXP0;"
-                        +"decla ->dotComma0;"
+                      +"  global -> Instr;\n"
+                      +"  global -> prFin;\n"
+                      +"  global -> prInicio;\n"
+                      +"  Instr -> intru;\n"
+                      +"  intru -> impre;\n"
+                      +"  intru -> decla;\n"
+                      +"  intru -> asig;\n"
+                      +"  intru-> conSI;\n"
+                      +"  intru -> segun;\n"
+                      +"  decla -> prIngresar0;\n"
+                  +"      decla -> varName0;\n"
+                  +"      decla -> prComo0;\n"
+                  +"      decla -> tipoDato0;\n"
+                  +"      decla -> prConValor0;\n"
+                        +"decla -> EXP0;\n"
+                        +"decla ->dotComma0;\n"
                         
-                       +" impre -> impLn0;"
-                       +" impre -> impN0;"
-                       +" impre -> varia0;"
-                       +" impre -> caden0;"
-                       +" impre -> puncoma0;"
-                       +" impre -> parIz0;"
-                       +" impre -> parDe0;"
+                       +" impre -> impLn0;\n"
+                       +" impre -> impN0;\n"
+                       +" impre -> varia0;\n"
+                       +" impre -> caden0;\n"
+                       +" impre -> puncoma0;\n"
+                       +" impre -> parIz0;\n"
+                       +" impre -> parDe0;\n"
                         
-                       +" asig -> varName1;"
-                        +"asig -> tkAsignar0;"
-                        +"asig -> EXP1;"
-                       +" asig -> dotComma1;"
+                       +" asig -> varName1;\n"
+                        +"asig -> tkAsignar0;\n"
+                        +"asig -> EXP1;\n"
+                       +" asig -> dotComma1;\n"
                         
-                      +"  conSI -> prIf0;"
-                      +"  conSI -> EXP2;"
-                      +"  conSI -> prEntonces0;"
-                      +"  conSI -> INS0;"
-                      +"  conSI -> prEndIf0;"
-                      +"  conSI -> prElseIf0;"
-                       +" conSI -> prElse0;"
+                      +"  conSI -> prIf_0;\n"
+                      +"  conSI -> EXP_0;\n"
+                      +"  conSI -> prEntonces_0;\n"
+                      +"  conSI -> INS_0;\n"
+                      +"  conSI -> prEndIf_0;\n"
+                      +"  conSI -> prElseIf_0;\n"
+                       +" conSI -> prElse_0;\n"
                         
-                       +" segun -> prSegun0;"
-                       +" segun -> prHacer0;"
-                       +" segun -> tkInterLeft0;"
-                       +" segun -> EXP3;"
-                        +"segun -> tkInterRight0;"
-                        +"segun -> prEntonces1;"
-                       +" segun -> INS1;"
-                       +" segun -> prEndSegun0;";
+                       +" segun -> prSegun_0;\n"
+                       +" segun -> prHacer_0;\n"
+                       +" segun -> tkInterLeft_0;\n"
+                       +" segun -> EXP_0;\n"
+                        +"segun -> tkInterRight_0;\n"
+                        +"segun -> prEntonces_0;\n"
+                       +" segun -> INS_0;\n"
+                       +" segun -> prEndSegun_0;\n";
        
        String pie = "}";
       try{
@@ -1181,7 +1181,7 @@ class CUP$Parser$actions {
 		int dleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int dright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object d = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		RESULT=as;
+		RESULT=pythonText+=as;
                  cuerpoArbol+= "dotComma"+(conta+1)+"[label=\""+d+"\", width = 2, group="+(contadorG+1)+ "]\n"+"dotComma0"+conta +"-> dotComma0"+(conta+1)+";\n";
                     
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("INSTRUCCION",2, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -1288,7 +1288,10 @@ class CUP$Parser$actions {
           case 16: // INSTRUCCION ::= PRINT 
             {
               Object RESULT =null;
-
+		int prileft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
+		int priright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
+		Object pri = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
+		RESULT= pythonText+=pri;
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("INSTRUCCION",2, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1324,10 +1327,10 @@ class CUP$Parser$actions {
 		int dleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int dright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object d = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 pythonText += " = "+d+ "\n";
-               cuerpoArbol+= "prIngresar"+(conta+1)+"[label=\""+a+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prIngresar0"+conta+ "-> ing"+(conta+1)+";\n";            
-               cuerpoArbol+= "prComo"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"pcomo"+conta+ "-> pcomo"+(conta+1)+";\n";
-               cuerpoArbol+= "tipoDato"+(conta+1)+"[label="+d+", width = 2, group="+(contadorG+1)+ "]\n"+"prtp"+conta +"-> prtp"+(conta+1)+";\n";
+		RESULT= " = "+d+ "\n";
+               cuerpoArbol+= "prIngresar"+(conta+1)+"[label=\""+a+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prIngresar"+conta+ "-> prIngresar"+(conta+1)+";\n";            
+               cuerpoArbol+= "prComo"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prComo"+conta+ "-> prComo"+(conta+1)+";\n";
+               cuerpoArbol+= "tipoDato"+(conta+1)+"[label="+d+", width = 2, group="+(contadorG+1)+ "]\n"+"tipoDato"+conta +"-> tipoDato"+(conta+1)+";\n";
                conta+=1;
             
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("DECLARACION",3, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -1753,7 +1756,10 @@ class CUP$Parser$actions {
           case 56: // PRINT ::= prPrint EXPRESION dotComma 
             {
               Object RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
+		RESULT="print("+e+");"+"\n";
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("PRINT",29, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1762,7 +1768,10 @@ class CUP$Parser$actions {
           case 57: // PRINT ::= prPrintnl EXPRESION dotComma 
             {
               Object RESULT =null;
-
+		int eeleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int eeright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Object ee = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
+		RESULT="print("+ee+");"+"\n";
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("PRINT",29, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
