@@ -5,6 +5,10 @@ import javax.swing.JOptionPane;
 
 parser code
 {:
+    public static int conta=0;
+    public static int contadorVar=0;
+    public static int contadorG=0;
+    public static String cuerpoArbol="";
     public static String swcase="";
     public static String pythonText="";
     public static String noRecuperable="";
@@ -21,6 +25,122 @@ parser code
         noRecuperable+="<tr><th scope=\"row\">"+contador+"</th><td>Sintáctico No Recuperable</td><td>"+(s.value)+"</td><td>"+((s.right))+"</td><td>"+(s.left)+"</td> </tr>";
         JOptionPane.showMessageDialog(null, "Ocurrio un error sintactico y no me pude recuperar, revise su pseudocodigo por favor");
         System.out.println("No se Pudo recuperar de Error de sintaxis en: " + " Linea "+(s.right+1)+" columna "+(s.left+1) + " No se esperaba un " + s.value );
+    }
+
+    public void graficarArbol(){
+        
+        String cabeza="digraph G {"
+                       +" graph[nodesep=\"0.75\"]label=\"Arbol Sintactico\";"
+                       +" node [shape=box];"
+                       +" rankdir = \"TB\" "
+                        +"global[label=\"PSEUDOCODIGO\" width=2];"
+                       +" prInicio[label=\"prInicio\"  width = 2];"
+                       +" Instr[label=\"INSTRUCCIONES\" width = 2];"
+                       +" prFin[label=\"prFin\"  width = 2];"
+                       +" intru[label=\"INSTRUCCION\", width = 2];"
+                       +" impre[label=\"IMPRESION\", width = 2];"
+                       +" decla[label=\"DECLARACION\",width =2];"
+                       +" asig[label=\"ASIGNACION\", width=2];"
+                       +" conSI[label=\"CONDICIONAL SI\", width=2];"
+                       +" segun[label=\"SEGUN\", width=2];"
+                       +"     /*imrpesion*/"
+                       +" impLn0[label=\"imprimir_nl\",width =2];"
+                       +" impN0[label=\"imprimir\",width =2];"
+                       +" parIz0[label=\"Parentesis izq\"];"
+                       +" caden0[label=\"cadena\", width =2];"
+                       +" parDe0[label=\"Parentesis der\"];"
+                       +" varia0[label=\"variable\", width =2];"
+                       +" puncoma0[label=\"puntoycoma\",width =2];"
+                       +" /*declaracion*/"
+                       +" prIngresar0[label=\"prIngresar\", width=2];"
+                       +" varName0[label=\"id\", width=2];"
+                       +" prComo0[label=\"prComo\",width=2];"
+                     +"   tipoDato0[label=\"tipodedato\",width=2];"
+                      +"  prConValor0[label=\"prconvalor\",width=2];"
+                      +"  EXP0[label=\"EXPRESION\",width=2];"
+                      +"  dotComma0[label=\"PUNTO Y COMA\",width=2];"
+                      +"  /*asignacion*/"
+                      +"  varName1[label=\"varName\",width=2];"
+                      +"  tkAsignar0[label=\"tkAsignar\",width=2];"
+                      +"  EXP1[label=\"EXPRESION\",width=2];"
+                      +"  dotComma1[label=\"PUNTO Y COMA\",width=2];"
+                      +"  /*condicional si*/"
+                      +"  prIf0[label=\"prIf\",width=2];"
+                      +"  EXP2[label=\"EXPRESOIN\",width=2];"
+                      +"  prElse0[label=\"prElse\",width=2];"
+                      +"  prElseIf0[label=\"prElseIf\",width=2];"
+                      +"  prEntonces0[label=\"prEntonces\",width=2];"
+                      +"  INS0[label=\"INSTRUCCION\",width=2];"
+                      +"  prEndIf0[label=\"prEndIf\",width=2];"
+                        
+                      +"  /*condicional segun*/"
+                      +"  prSegun0[label=\"prSegun\",width=2];"
+                      +"  prEntonces1[label=\"prEntonces\",width=2];"
+                      +"  INS1[label=\"INSTRUCCIONES\",width=2];"
+                      +"  prHacer0[label=\"prHacer\",width=2];"
+                      +"  tkInterLeft0[label=\"¿\",width=2];"
+                      +"  EXP3[label=\"EXPRESION\",width=2];"
+                      +"  tkInterRight0[label=\"?\",width=2];"
+                      +"  prEndSegun0[label=\"prEndSegun\",width=2];"
+                        
+                      +"  global -> Instr;"
+                      +"  global -> prFin;"
+                      +"  global -> prInicio;"
+                      +"  Instr -> intru;"
+                      +"  intru -> impre;"
+                      +"  intru -> decla;"
+                      +"  intru -> asig;"
+                      +"  intru-> conSI;"
+                      +"  intru -> segun;"
+                      +"  decla -> prIngresar0;"
+                  +"      decla -> varName0;"
+                  +"      decla -> prComo0;"
+                  +"      decla -> tipoDato0;"
+                  +"      decla -> prConValor0;"
+                        +"decla -> EXP0;"
+                        +"decla ->dotComma0;"
+                        
+                       +" impre -> impLn0;"
+                       +" impre -> impN0;"
+                       +" impre -> varia0;"
+                       +" impre -> caden0;"
+                       +" impre -> puncoma0;"
+                       +" impre -> parIz0;"
+                       +" impre -> parDe0;"
+                        
+                       +" asig -> varName1;"
+                        +"asig -> tkAsignar0;"
+                        +"asig -> EXP1;"
+                       +" asig -> dotComma1;"
+                        
+                      +"  conSI -> prIf0;"
+                      +"  conSI -> EXP2;"
+                      +"  conSI -> prEntonces0;"
+                      +"  conSI -> INS0;"
+                      +"  conSI -> prEndIf0;"
+                      +"  conSI -> prElseIf0;"
+                       +" conSI -> prElse0;"
+                        
+                       +" segun -> prSegun0;"
+                       +" segun -> prHacer0;"
+                       +" segun -> tkInterLeft0;"
+                       +" segun -> EXP3;"
+                        +"segun -> tkInterRight0;"
+                        +"segun -> prEntonces1;"
+                       +" segun -> INS1;"
+                       +" segun -> prEndSegun0;";
+       
+       String pie = "}";
+      try{
+            PrintWriter writer = new PrintWriter("Arbol202010905.dot");
+            writer.println(cabeza);
+            writer.println(cuerpoArbol);
+            writer.println(pie);
+            writer.close();
+            System.out.println("Finalizo");
+            }catch (Exception e) {
+                System.out.println("Error");
+            }
     }
 
 :}
@@ -70,7 +190,12 @@ precedence left comma,varName;
 //gramaticas
 start with INICIO;
 
-INICIO::= prInicio INSTRUCCIONES  prFin {: System.out.println(pythonText); :}
+INICIO::= prInicio:in INSTRUCCIONES  prFin:fn {: 
+        cuerpoArbol+="prInicio1"+ "[label=\""+in+"\",width = 2, group=\"0\"]\n"+"prInicio"+"->"+"prInicio1"+"\n;";
+        cuerpoArbol+= "prFin1"+"[label=\""+fn+"\", width = 2, group=\"0\"]\n"+"prFin"+ "->" +"prFin1"+ "\n;";
+        System.out.println(pythonText);
+        graficarArbol();
+:}
 ;
 
 INSTRUCCIONES::= INSTRUCCIONES:ins INSTRUCCION:is {:RESULT= ins+""+is;:}
@@ -78,7 +203,9 @@ INSTRUCCIONES::= INSTRUCCIONES:ins INSTRUCCION:is {:RESULT= ins+""+is;:}
 ;
 
 INSTRUCCION::= DECLARACION:de dotComma {:RESULT=de;:}
-             | ASIGNACION:as dotComma {:RESULT=as;:}
+             | ASIGNACION:as dotComma:d {:RESULT=as;
+                 cuerpoArbol+= "dotComma"+(conta+1)+"[label=\""+d+"\", width = 2, group="+(contadorG+1)+ "]\n"+"dotComma0"+conta +"-> dotComma0"+(conta+1)+";\n";
+                    :}
              | IF
              | SWITCH
              | FOR:f {:RESULT=f;:}
@@ -94,13 +221,22 @@ INSTRUCCION::= DECLARACION:de dotComma {:RESULT=de;:}
              | error dotComma
 ;
 
-DECLARACION::= prIngresar LISTAVAR prComo DECLA:d {: pythonText += " = "+d+ "\n";:}
+DECLARACION::= prIngresar:a LISTAVAR prComo:b DECLA:d {: pythonText += " = "+d+ "\n";
+               cuerpoArbol+= "prIngresar"+(conta+1)+"[label=\""+a+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prIngresar0"+conta+ "-> ing"+(conta+1)+";\n";            
+               cuerpoArbol+= "prComo"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"pcomo"+conta+ "-> pcomo"+(conta+1)+";\n";
+               cuerpoArbol+= "tipoDato"+(conta+1)+"[label="+d+", width = 2, group="+(contadorG+1)+ "]\n"+"prtp"+conta +"-> prtp"+(conta+1)+";\n";
+               conta+=1;
+            :}
 ;
 
 ASIGNACION::= LISTAVAR:li tkAsignar EXPRESION:exp {:RESULT= li+" = " +exp+"\n";:};
 
-IF::= prIf EXPRESION:e prEntonces INSTRUCCIONES:i prEndIf {:pythonText+= "if "+e+":"+"\n"+"     "+i+"\n" ;:}
-    | prIf EXPRESION:e2 prEntonces INSTRUCCIONES:i2 prElse INSTRUCCIONES:ie prEndIf {:pythonText+="if "+e2+":"+"\n"+"    "+i2+"\n"+"else:"+"\n"+"    "+ie+"\n";:}
+IF::= prIf EXPRESION:e prEntonces INSTRUCCIONES:i prEndIf 
+     {:pythonText+= "if "+e+":"+"\n"+"     "+i+"\n" ;
+
+      :}
+    | prIf EXPRESION:e2 prEntonces INSTRUCCIONES:i2 prElse INSTRUCCIONES:ie prEndIf
+     {:pythonText+="if "+e2+":"+"\n"+"    "+i2+"\n"+"else:"+"\n"+"    "+ie+"\n";:}
     | prIf EXPRESION:e3 prEntonces INSTRUCCIONES:i3 ELSEIF:elif prElse INSTRUCCIONES:ie2 prEndIf{:pythonText+=
         "if "+e3+":"+"\n"+"     "+i3+"\n"+elif+"\n"+"else:"+"\n"+"      "+ie2+"\n"
     ;:}
@@ -115,7 +251,7 @@ SWITCH::= prSegun EXPRESION:e prHacer CASES:c prEndSegun
 ;
 
 CASES::= CASES:ca CASE:c0 {:RESULT=ca+"elif "+""+swcase+""+c0;:}
-        | CASE:c {:RESULT=c;:}
+        | CASE:c {:RESULT=c+"\n";:}
 ;
 
 CASE::= tkInterLeft EXPRESION:e tkInterRight prEntonces INSTRUCCIONES:i {:RESULT= "=="+e+":"+"\n"+"    "+i+"\n";:}
@@ -178,15 +314,40 @@ COMENTARIOS::= multiline:ml {: RESULT= "\""+ml+"\"";:}
              | comment:com  {: RESULT= "#"+com;:}
 ;
 
-LISTAVAR::= LISTAVAR:l comma varName:v1 {: RESULT= l+","+ v1;:}
-          | varName:v2 {: RESULT= v2+"  ";:}
+LISTAVAR::= LISTAVAR:l comma varName:v1 {: RESULT= l+","+ v1;
+            cuerpoArbol+= "varName"+(contadorVar+1)+"[label=\""+v1+"\", width = 2, group="+(contadorG+1)+ "]\n"+"varName"+contadorVar+ "-> varName"+(contadorVar+1)+";\n";
+            contadorVar+=1;
+            :}
+          | varName:v2 {: RESULT= v2+"  ";
+                cuerpoArbol+= "varName"+(contadorVar+1)+"[label=\""+v2+"\", width = 2, group="+(contadorG+1)+ "]\n"+"varName"+contadorVar+ "-> varName"+(contadorVar+1)+";\n";
+                contadorVar+=1;
+                :}
 ;
 
-DECLA::= prNumber prConValor EXPRESION:exp {:RESULT=exp;:}
-       |  prBoolean prConValor BOOLEANA:b {:RESULT=b;:}
-       |  prBoolean prConValor CONDICION:con {:RESULT=con;:}
-       |  prChar prConValor CARACTER:ch {:RESULT=ch;:}
-       |  prChain prConValor cadena:c {: RESULT= c;:}
+DECLA::= prNumber prConValor:b EXPRESION:exp {:RESULT=exp;
+         cuerpoArbol+= "prConValor"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prConValor"+contador+ "-> prConValor"+(conta+1)+";\n";
+         cuerpoArbol+= "EXP"+(conta+1)+"[label=\""+exp+"\", width = 2, group="+(contadorG+1)+ "]\n"+"EXP"+conta +"-> EXP"+(conta+1)+";\n";    
+        :}
+       |  prBoolean prConValor:a BOOLEANA:b {:RESULT=b;
+         cuerpoArbol+= "prConValor"+(conta+1)+"[label=\""+a+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prConValor"+conta+ "-> prConValor"+(conta+1)+";\n";
+         cuerpoArbol+= "EXP"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"EXP"+conta +"-> EXP"+(conta+1)+";\n";    
+        
+        :}
+       |  prBoolean prConValor:b CONDICION:con {:RESULT=con;
+         cuerpoArbol+= "prConValor"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prConValor"+conta+ "-> prConValor"+(conta+1)+";\n";
+         cuerpoArbol+= "EXP"+(conta+1)+"[label=\""+con+"\", width = 2, group="+(contadorG+1)+ "]\n"+"EXP"+conta +"-> EXP"+(conta+1)+";\n";    
+        
+        :}
+       |  prChar prConValor:b CARACTER:ch {:RESULT=ch;
+          cuerpoArbol+= "prConValor"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prConValor"+conta+ "-> prConValor"+(conta+1)+";\n";
+         cuerpoArbol+= "EXP"+(conta+1)+"[label=\""+ch+"\", width = 2, group="+(contadorG+1)+ "]\n"+"EXP"+conta +"-> EXP"+(conta+1)+";\n";    
+         
+        :}
+       |  prChain prConValor:b cadena:c {: RESULT= c;
+        cuerpoArbol+= "prConValor"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prConValor"+conta+ "-> prConValor"+(conta+1)+";\n";
+         cuerpoArbol+= "EXP"+(conta+1)+"[label="+c+", width = 2, group="+(contadorG+1)+ "]\n"+"EXP"+conta +"-> EXP"+(conta+1)+";\n";    
+         
+        :}
 ;   
 
 

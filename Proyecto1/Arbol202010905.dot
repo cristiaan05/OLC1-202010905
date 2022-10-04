@@ -1,0 +1,47 @@
+digraph G { graph[nodesep="0.75"]label="Arbol Sintactico"; node [shape=box]; rankdir = "TB" global[label="PSEUDOCODIGO" width=2]; prInicio[label="prInicio"  width = 2]; Instr[label="INSTRUCCIONES" width = 2]; prFin[label="prFin"  width = 2]; intru[label="INSTRUCCION", width = 2]; impre[label="IMPRESION", width = 2]; decla[label="DECLARACION",width =2]; asig[label="ASIGNACION", width=2]; conSI[label="CONDICIONAL SI", width=2]; segun[label="SEGUN", width=2];     /*imrpesion*/ impLn0[label="imprimir_nl",width =2]; impN0[label="imprimir",width =2]; parIz0[label="Parentesis izq"]; caden0[label="cadena", width =2]; parDe0[label="Parentesis der"]; varia0[label="variable", width =2]; puncoma0[label="puntoycoma",width =2]; /*declaracion*/ prIngresar0[label="prIngresar", width=2]; varName0[label="id", width=2]; prComo0[label="prComo",width=2];   tipoDato0[label="tipodedato",width=2];  prConValor0[label="prconvalor",width=2];  EXP0[label="EXPRESION",width=2];  dotComma0[label="PUNTO Y COMA",width=2];  /*asignacion*/  varName1[label="varName",width=2];  tkAsignar0[label="tkAsignar",width=2];  EXP1[label="EXPRESION",width=2];  dotComma1[label="PUNTO Y COMA",width=2];  /*condicional si*/  prIf0[label="prIf",width=2];  EXP2[label="EXPRESOIN",width=2];  prElse0[label="prElse",width=2];  prElseIf0[label="prElseIf",width=2];  prEntonces0[label="prEntonces",width=2];  INS0[label="INSTRUCCION",width=2];  prEndIf0[label="prEndIf",width=2];  /*condicional segun*/  prSegun0[label="prSegun",width=2];  prEntonces1[label="prEntonces",width=2];  INS1[label="INSTRUCCIONES",width=2];  prHacer0[label="prHacer",width=2];  tkInterLeft0[label="¿",width=2];  EXP3[label="EXPRESION",width=2];  tkInterRight0[label="?",width=2];  prEndSegun0[label="prEndSegun",width=2];  global -> Instr;  global -> prFin;  global -> prInicio;  Instr -> intru;  intru -> impre;  intru -> decla;  intru -> asig;  intru-> conSI;  intru -> segun;  decla -> prIngresar0;      decla -> varName0;      decla -> prComo0;      decla -> tipoDato0;      decla -> prConValor0;decla -> EXP0;decla ->dotComma0; impre -> impLn0; impre -> impN0; impre -> varia0; impre -> caden0; impre -> puncoma0; impre -> parIz0; impre -> parDe0; asig -> varName1;asig -> tkAsignar0;asig -> EXP1; asig -> dotComma1;  conSI -> prIf0;  conSI -> EXP2;  conSI -> prEntonces0;  conSI -> INS0;  conSI -> prEndIf0;  conSI -> prElseIf0; conSI -> prElse0; segun -> prSegun0; segun -> prHacer0; segun -> tkInterLeft0; segun -> EXP3;segun -> tkInterRight0;segun -> prEntonces1; segun -> INS1; segun -> prEndSegun0;
+varName1[label="_variable1_", width = 2, group=1]
+varName0-> varName1;
+prConValor1[label="cOn_valor", width = 2, group=1]
+prConValor0-> prConValor1;
+EXP1[label="5", width = 2, group=1]
+EXP0-> EXP1;
+prIngresar1[label="Ingresar", width = 2, group=1]
+prIngresar00-> ing1;
+prComo1[label="coMo", width = 2, group=1]
+pcomo0-> pcomo1;
+tipoDato1[label=5, width = 2, group=1]
+prtp0-> prtp1;
+varName2[label="_variable2_", width = 2, group=1]
+varName1-> varName2;
+prConValor2[label="cOn_valor", width = 2, group=1]
+prConValor0-> prConValor2;
+EXP2[label="50", width = 2, group=1]
+EXP1-> EXP2;
+prIngresar2[label="Ingresar", width = 2, group=1]
+prIngresar01-> ing2;
+prComo2[label="coMo", width = 2, group=1]
+pcomo1-> pcomo2;
+tipoDato2[label=50, width = 2, group=1]
+prtp1-> prtp2;
+varName3[label="_v1_", width = 2, group=1]
+varName2-> varName3;
+varName4[label="_v2_", width = 2, group=1]
+varName3-> varName4;
+varName5[label="_v3_", width = 2, group=1]
+varName4-> varName5;
+prConValor3[label="con_vAlor", width = 2, group=1]
+prConValor2-> prConValor3;
+EXP3[label="esta es una cadena", width = 2, group=1]
+EXP2-> EXP3;
+prIngresar3[label="ingresaR", width = 2, group=1]
+prIngresar02-> ing3;
+prComo3[label="cOmo", width = 2, group=1]
+pcomo2-> pcomo3;
+tipoDato3[label="esta es una cadena", width = 2, group=1]
+prtp2-> prtp3;
+prInicio1[label="inicio",width = 2, group="0"]
+prInicio->prInicio1
+;prFin1[label="fin", width = 2, group="0"]
+prFin->prFin1
+;
+}

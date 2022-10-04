@@ -934,6 +934,10 @@ public class Parser extends java_cup.runtime.lr_parser {
 
 
 
+    public static int conta=0;
+    public static int contadorVar=0;
+    public static int contadorG=0;
+    public static String cuerpoArbol="";
     public static String swcase="";
     public static String pythonText="";
     public static String noRecuperable="";
@@ -950,6 +954,122 @@ public class Parser extends java_cup.runtime.lr_parser {
         noRecuperable+="<tr><th scope=\"row\">"+contador+"</th><td>Sintáctico No Recuperable</td><td>"+(s.value)+"</td><td>"+((s.right))+"</td><td>"+(s.left)+"</td> </tr>";
         JOptionPane.showMessageDialog(null, "Ocurrio un error sintactico y no me pude recuperar, revise su pseudocodigo por favor");
         System.out.println("No se Pudo recuperar de Error de sintaxis en: " + " Linea "+(s.right+1)+" columna "+(s.left+1) + " No se esperaba un " + s.value );
+    }
+
+    public void graficarArbol(){
+        
+        String cabeza="digraph G {"
+                       +" graph[nodesep=\"0.75\"]label=\"Arbol Sintactico\";"
+                       +" node [shape=box];"
+                       +" rankdir = \"TB\" "
+                        +"global[label=\"PSEUDOCODIGO\" width=2];"
+                       +" prInicio[label=\"prInicio\"  width = 2];"
+                       +" Instr[label=\"INSTRUCCIONES\" width = 2];"
+                       +" prFin[label=\"prFin\"  width = 2];"
+                       +" intru[label=\"INSTRUCCION\", width = 2];"
+                       +" impre[label=\"IMPRESION\", width = 2];"
+                       +" decla[label=\"DECLARACION\",width =2];"
+                       +" asig[label=\"ASIGNACION\", width=2];"
+                       +" conSI[label=\"CONDICIONAL SI\", width=2];"
+                       +" segun[label=\"SEGUN\", width=2];"
+                       +"     /*imrpesion*/"
+                       +" impLn0[label=\"imprimir_nl\",width =2];"
+                       +" impN0[label=\"imprimir\",width =2];"
+                       +" parIz0[label=\"Parentesis izq\"];"
+                       +" caden0[label=\"cadena\", width =2];"
+                       +" parDe0[label=\"Parentesis der\"];"
+                       +" varia0[label=\"variable\", width =2];"
+                       +" puncoma0[label=\"puntoycoma\",width =2];"
+                       +" /*declaracion*/"
+                       +" prIngresar0[label=\"prIngresar\", width=2];"
+                       +" varName0[label=\"id\", width=2];"
+                       +" prComo0[label=\"prComo\",width=2];"
+                     +"   tipoDato0[label=\"tipodedato\",width=2];"
+                      +"  prConValor0[label=\"prconvalor\",width=2];"
+                      +"  EXP0[label=\"EXPRESION\",width=2];"
+                      +"  dotComma0[label=\"PUNTO Y COMA\",width=2];"
+                      +"  /*asignacion*/"
+                      +"  varName1[label=\"varName\",width=2];"
+                      +"  tkAsignar0[label=\"tkAsignar\",width=2];"
+                      +"  EXP1[label=\"EXPRESION\",width=2];"
+                      +"  dotComma1[label=\"PUNTO Y COMA\",width=2];"
+                      +"  /*condicional si*/"
+                      +"  prIf0[label=\"prIf\",width=2];"
+                      +"  EXP2[label=\"EXPRESOIN\",width=2];"
+                      +"  prElse0[label=\"prElse\",width=2];"
+                      +"  prElseIf0[label=\"prElseIf\",width=2];"
+                      +"  prEntonces0[label=\"prEntonces\",width=2];"
+                      +"  INS0[label=\"INSTRUCCION\",width=2];"
+                      +"  prEndIf0[label=\"prEndIf\",width=2];"
+                        
+                      +"  /*condicional segun*/"
+                      +"  prSegun0[label=\"prSegun\",width=2];"
+                      +"  prEntonces1[label=\"prEntonces\",width=2];"
+                      +"  INS1[label=\"INSTRUCCIONES\",width=2];"
+                      +"  prHacer0[label=\"prHacer\",width=2];"
+                      +"  tkInterLeft0[label=\"¿\",width=2];"
+                      +"  EXP3[label=\"EXPRESION\",width=2];"
+                      +"  tkInterRight0[label=\"?\",width=2];"
+                      +"  prEndSegun0[label=\"prEndSegun\",width=2];"
+                        
+                      +"  global -> Instr;"
+                      +"  global -> prFin;"
+                      +"  global -> prInicio;"
+                      +"  Instr -> intru;"
+                      +"  intru -> impre;"
+                      +"  intru -> decla;"
+                      +"  intru -> asig;"
+                      +"  intru-> conSI;"
+                      +"  intru -> segun;"
+                      +"  decla -> prIngresar0;"
+                  +"      decla -> varName0;"
+                  +"      decla -> prComo0;"
+                  +"      decla -> tipoDato0;"
+                  +"      decla -> prConValor0;"
+                        +"decla -> EXP0;"
+                        +"decla ->dotComma0;"
+                        
+                       +" impre -> impLn0;"
+                       +" impre -> impN0;"
+                       +" impre -> varia0;"
+                       +" impre -> caden0;"
+                       +" impre -> puncoma0;"
+                       +" impre -> parIz0;"
+                       +" impre -> parDe0;"
+                        
+                       +" asig -> varName1;"
+                        +"asig -> tkAsignar0;"
+                        +"asig -> EXP1;"
+                       +" asig -> dotComma1;"
+                        
+                      +"  conSI -> prIf0;"
+                      +"  conSI -> EXP2;"
+                      +"  conSI -> prEntonces0;"
+                      +"  conSI -> INS0;"
+                      +"  conSI -> prEndIf0;"
+                      +"  conSI -> prElseIf0;"
+                       +" conSI -> prElse0;"
+                        
+                       +" segun -> prSegun0;"
+                       +" segun -> prHacer0;"
+                       +" segun -> tkInterLeft0;"
+                       +" segun -> EXP3;"
+                        +"segun -> tkInterRight0;"
+                        +"segun -> prEntonces1;"
+                       +" segun -> INS1;"
+                       +" segun -> prEndSegun0;";
+       
+       String pie = "}";
+      try{
+            PrintWriter writer = new PrintWriter("Arbol202010905.dot");
+            writer.println(cabeza);
+            writer.println(cuerpoArbol);
+            writer.println(pie);
+            writer.close();
+            System.out.println("Finalizo");
+            }catch (Exception e) {
+                System.out.println("Error");
+            }
     }
 
 
@@ -996,7 +1116,18 @@ class CUP$Parser$actions {
           case 1: // INICIO ::= prInicio INSTRUCCIONES prFin 
             {
               Object RESULT =null;
-		 System.out.println(pythonText); 
+		int inleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
+		int inright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
+		Object in = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
+		int fnleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
+		int fnright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
+		Object fn = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
+		 
+        cuerpoArbol+="prInicio1"+ "[label=\""+in+"\",width = 2, group=\"0\"]\n"+"prInicio"+"->"+"prInicio1"+"\n;";
+        cuerpoArbol+= "prFin1"+"[label=\""+fn+"\", width = 2, group=\"0\"]\n"+"prFin"+ "->" +"prFin1"+ "\n;";
+        System.out.println(pythonText);
+        graficarArbol();
+
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("INICIO",0, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1047,7 +1178,12 @@ class CUP$Parser$actions {
 		int asleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
 		int asright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Object as = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
+		int dleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
+		int dright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
+		Object d = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		RESULT=as;
+                 cuerpoArbol+= "dotComma"+(conta+1)+"[label=\""+d+"\", width = 2, group="+(contadorG+1)+ "]\n"+"dotComma0"+conta +"-> dotComma0"+(conta+1)+";\n";
+                    
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("INSTRUCCION",2, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1179,10 +1315,21 @@ class CUP$Parser$actions {
           case 19: // DECLARACION ::= prIngresar LISTAVAR prComo DECLA 
             {
               Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-3)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		int dleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int dright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object d = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		 pythonText += " = "+d+ "\n";
+               cuerpoArbol+= "prIngresar"+(conta+1)+"[label=\""+a+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prIngresar0"+conta+ "-> ing"+(conta+1)+";\n";            
+               cuerpoArbol+= "prComo"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"pcomo"+conta+ "-> pcomo"+(conta+1)+";\n";
+               cuerpoArbol+= "tipoDato"+(conta+1)+"[label="+d+", width = 2, group="+(contadorG+1)+ "]\n"+"prtp"+conta +"-> prtp"+(conta+1)+";\n";
+               conta+=1;
+            
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("DECLARACION",3, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-3)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1213,6 +1360,8 @@ class CUP$Parser$actions {
 		int iright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Object i = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		pythonText+= "if "+e+":"+"\n"+"     "+i+"\n" ;
+
+      
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("IF",11, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-4)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1328,7 +1477,7 @@ class CUP$Parser$actions {
 		int cleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int cright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object c = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		RESULT=c;
+		RESULT=c+"\n";
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("CASES",15, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1653,6 +1802,9 @@ class CUP$Parser$actions {
 		int v1right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object v1 = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		 RESULT= l+","+ v1;
+            cuerpoArbol+= "varName"+(contadorVar+1)+"[label=\""+v1+"\", width = 2, group="+(contadorG+1)+ "]\n"+"varName"+contadorVar+ "-> varName"+(contadorVar+1)+";\n";
+            contadorVar+=1;
+            
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("LISTAVAR",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1665,6 +1817,9 @@ class CUP$Parser$actions {
 		int v2right = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object v2 = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		 RESULT= v2+"  ";
+                cuerpoArbol+= "varName"+(contadorVar+1)+"[label=\""+v2+"\", width = 2, group="+(contadorG+1)+ "]\n"+"varName"+contadorVar+ "-> varName"+(contadorVar+1)+";\n";
+                contadorVar+=1;
+                
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("LISTAVAR",6, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1673,10 +1828,16 @@ class CUP$Parser$actions {
           case 62: // DECLA ::= prNumber prConValor EXPRESION 
             {
               Object RESULT =null;
+		int bleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		int expleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int expright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object exp = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		RESULT=exp;
+         cuerpoArbol+= "prConValor"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prConValor"+contador+ "-> prConValor"+(conta+1)+";\n";
+         cuerpoArbol+= "EXP"+(conta+1)+"[label=\""+exp+"\", width = 2, group="+(contadorG+1)+ "]\n"+"EXP"+conta +"-> EXP"+(conta+1)+";\n";    
+        
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("DECLA",7, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1685,10 +1846,17 @@ class CUP$Parser$actions {
           case 63: // DECLA ::= prBoolean prConValor BOOLEANA 
             {
               Object RESULT =null;
+		int aleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int aright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Object a = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		int bleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		RESULT=b;
+         cuerpoArbol+= "prConValor"+(conta+1)+"[label=\""+a+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prConValor"+conta+ "-> prConValor"+(conta+1)+";\n";
+         cuerpoArbol+= "EXP"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"EXP"+conta +"-> EXP"+(conta+1)+";\n";    
+        
+        
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("DECLA",7, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1697,10 +1865,17 @@ class CUP$Parser$actions {
           case 64: // DECLA ::= prBoolean prConValor CONDICION 
             {
               Object RESULT =null;
+		int bleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		int conleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int conright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object con = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		RESULT=con;
+         cuerpoArbol+= "prConValor"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prConValor"+conta+ "-> prConValor"+(conta+1)+";\n";
+         cuerpoArbol+= "EXP"+(conta+1)+"[label=\""+con+"\", width = 2, group="+(contadorG+1)+ "]\n"+"EXP"+conta +"-> EXP"+(conta+1)+";\n";    
+        
+        
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("DECLA",7, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1709,10 +1884,17 @@ class CUP$Parser$actions {
           case 65: // DECLA ::= prChar prConValor CARACTER 
             {
               Object RESULT =null;
+		int bleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		int chleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int chright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object ch = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		RESULT=ch;
+          cuerpoArbol+= "prConValor"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prConValor"+conta+ "-> prConValor"+(conta+1)+";\n";
+         cuerpoArbol+= "EXP"+(conta+1)+"[label=\""+ch+"\", width = 2, group="+(contadorG+1)+ "]\n"+"EXP"+conta +"-> EXP"+(conta+1)+";\n";    
+         
+        
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("DECLA",7, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -1721,10 +1903,17 @@ class CUP$Parser$actions {
           case 66: // DECLA ::= prChain prConValor cadena 
             {
               Object RESULT =null;
+		int bleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		int cleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int cright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Object c = (Object)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		 RESULT= c;
+        cuerpoArbol+= "prConValor"+(conta+1)+"[label=\""+b+"\", width = 2, group="+(contadorG+1)+ "]\n"+"prConValor"+conta+ "-> prConValor"+(conta+1)+";\n";
+         cuerpoArbol+= "EXP"+(conta+1)+"[label="+c+", width = 2, group="+(contadorG+1)+ "]\n"+"EXP"+conta +"-> EXP"+(conta+1)+";\n";    
+         
+        
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("DECLA",7, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;

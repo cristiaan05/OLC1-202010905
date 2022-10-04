@@ -7,6 +7,7 @@ package proyecto1;
 
 import analizadores.Lexical_Analyzer;
 import analizadores.Parser;
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -62,6 +63,7 @@ public class MainView extends javax.swing.JFrame {
         report = new javax.swing.JMenu();
         reportFlowChart = new javax.swing.JMenuItem();
         reportErrors = new javax.swing.JMenuItem();
+        arbolSintaxis = new javax.swing.JMenuItem();
         view = new javax.swing.JMenu();
         userManual = new javax.swing.JMenuItem();
         tecManual = new javax.swing.JMenuItem();
@@ -203,6 +205,14 @@ public class MainView extends javax.swing.JFrame {
         reportErrors.setText("Errors");
         report.add(reportErrors);
 
+        arbolSintaxis.setText("Arbol Sintactico");
+        arbolSintaxis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                arbolSintaxisActionPerformed(evt);
+            }
+        });
+        report.add(arbolSintaxis);
+
         menuBar.add(report);
 
         view.setText("View");
@@ -292,6 +302,8 @@ public class MainView extends javax.swing.JFrame {
         }catch(Exception e){
             
         }
+        
+        
     }//GEN-LAST:event_runButtonMouseClicked
 
     private void cleanButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cleanButtonMouseClicked
@@ -331,6 +343,27 @@ public class MainView extends javax.swing.JFrame {
         vistaPythonView.setVisible(true);
         vistaPythonView.setTraduccion(codigoPyhton);
     }//GEN-LAST:event_viewCPythonMouseClicked
+
+    private void arbolSintaxisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arbolSintaxisActionPerformed
+        String file_input_path = "Arbol202010905.dot";
+                String do_path = "C:\\Program Files\\Graphviz\\bin\\dot.exe";
+
+                String file_get_path = "Arbol_202010905.jpg";
+                try {
+                    ProcessBuilder pBuilder;
+                    pBuilder = new ProcessBuilder(do_path, "-Tjpg", "-o", file_get_path, file_input_path);
+                    pBuilder.redirectErrorStream(true);
+                    pBuilder.start();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                try {
+                    Desktop.getDesktop().open(new File("Arbol_202010905.jpg"));
+                    System.out.println("Genero jpg");
+                } catch (IOException ex) {
+                    System.out.println("Error " + ex.getMessage());
+                }
+    }//GEN-LAST:event_arbolSintaxisActionPerformed
 
     /**
      * @param args the command line arguments
@@ -401,6 +434,7 @@ public class MainView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem arbolSintaxis;
     private javax.swing.JButton cleanButton;
     private javax.swing.JPanel contenedor;
     private javax.swing.JMenu file;
