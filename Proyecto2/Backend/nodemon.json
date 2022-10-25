@@ -1,0 +1,6 @@
+{
+    "watch":["src"],
+    "ext": ".ts,.js,.jison,.txt",
+    "ignore":[],
+    "exec": "npm run build&&node dist/server.js"
+}

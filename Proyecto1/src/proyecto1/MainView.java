@@ -203,6 +203,11 @@ public class MainView extends javax.swing.JFrame {
         report.add(reportFlowChart);
 
         reportErrors.setText("Errors");
+        reportErrors.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportErrorsActionPerformed(evt);
+            }
+        });
         report.add(reportErrors);
 
         arbolSintaxis.setText("Arbol Sintactico");
@@ -218,6 +223,11 @@ public class MainView extends javax.swing.JFrame {
         view.setText("View");
 
         userManual.setText("User Manual");
+        userManual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userManualActionPerformed(evt);
+            }
+        });
         view.add(userManual);
 
         tecManual.setText("Technical Manual");
@@ -364,6 +374,26 @@ public class MainView extends javax.swing.JFrame {
                     System.out.println("Error " + ex.getMessage());
                 }
     }//GEN-LAST:event_arbolSintaxisActionPerformed
+
+    private void reportErrorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportErrorsActionPerformed
+        // TODO add your handling code here:
+        try {
+                    Desktop.getDesktop().open(new File("ReporteErrores.html"));
+                    System.out.println("Genero HTML");
+                } catch (IOException ex) {
+                    System.out.println("Error " + ex.getMessage());
+                }
+    }//GEN-LAST:event_reportErrorsActionPerformed
+
+    private void userManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userManualActionPerformed
+        // TODO add your handling code here:
+        try {
+                    Desktop.getDesktop().open(new File("ManualDeUsuario.pdf"));
+                    System.out.println("Genero PDF");
+                } catch (IOException ex) {
+                    System.out.println("Error " + ex.getMessage());
+                }
+    }//GEN-LAST:event_userManualActionPerformed
 
     /**
      * @param args the command line arguments

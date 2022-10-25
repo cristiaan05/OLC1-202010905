@@ -72,6 +72,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Errors"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reportErrorsActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="arbolSintaxis">
               <Properties>
@@ -92,6 +95,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="User Manual"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="userManualActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="tecManual">
               <Properties>

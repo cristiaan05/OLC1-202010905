@@ -1,0 +1,6 @@
+inicio
+	mientras not (_variable1_ mayor_o_igual 5*5+8/2) hacer
+		imprimir _variable1_;
+		_variable1_ -> _variable1_ + 1;
+	fin_mientras
+fin
