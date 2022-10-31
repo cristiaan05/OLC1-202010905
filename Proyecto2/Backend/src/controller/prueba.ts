@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-
+let parser=require('../../dist/utils/Interpreter/arbol/analizador')
 class ApiController {
     public async funcion1(req: Request, res: Response) {
         try {
@@ -27,6 +27,14 @@ class ApiController {
 
     public async funcion4(req: Request, res: Response) {
         try {
+            res.json({ msg: "hola mundo " + req.headers.nombre });
+        } catch (error) {
+            res.status(400).send({ msg: "error en funcion" });
+        }
+    }
+    public async parser(req: Request, res: Response) {
+        try {
+
             res.json({ msg: "hola mundo " + req.headers.nombre });
         } catch (error) {
             res.status(400).send({ msg: "error en funcion" });
