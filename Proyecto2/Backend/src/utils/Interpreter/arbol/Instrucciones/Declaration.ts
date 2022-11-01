@@ -5,8 +5,12 @@ import Tipo, { DataType, tipoString } from '../Symbol/Type';
 
 export class Declaracion extends Instruccion {
 
-    constructor(public nombre:string,public tipo:string,linea:number,columna:number){
-        super(tipo,linea,columna);
+    constructor(
+        public nombre:string,
+        public tipo:string,
+        public ListInstruccion:Array<Instruccion>,
+        linea:number,columna:number){
+        super(linea,columna);
     }
 
 
@@ -36,6 +40,15 @@ export class Declaracion extends Instruccion {
 
     public ejecutar():any {
         console.log("Encontre una declaracion:--  TIPO:"+this.tipo+" NOMBRE:"+this.nombre+" lo encontre en la linea "+this.linea);
+        for (const instruccion of this.ListInstruccion) {
+            try {
+                //console.log(instruccion)
+                instruccion.ejecutar()
+            } catch (error) {
+                // console.log(error);
+            }
+            
+        }
         //metodo para guardar la variable, tabla de simbolos
 
 

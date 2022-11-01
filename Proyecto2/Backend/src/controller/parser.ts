@@ -45,7 +45,7 @@ export const parse = (req: Request & unknown, res: Response): void => {
         }
         var grafo = '';
         grafo = getDot(instrucciones);
-        console.log(grafo)
+       // console.log(grafo)
         res.json({
             "salida":grafo
         })
@@ -137,7 +137,7 @@ export const parse = (req: Request & unknown, res: Response): void => {
         
         function recorrerAST(padre:String, nPadre:Nodo)
         {
-            console.log("aqui"+padre)
+            //console.log("aqui"+padre)
             for(let hijo of nPadre.getHijos())
 
             {              

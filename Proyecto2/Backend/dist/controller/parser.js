@@ -15,22 +15,22 @@ const parse = (req, res) => {
     var raiz = new Arbol_1.default();
     const ast = parser.parse(peticion.toString());
     //console.log(raiz.recorrer_arbolito3(ast))
-    for (const elemento of ast) {
-        try {
-            const res = elemento.ejecutar();
-            //let grafo = getDot(ast);
-        }
-        catch (error) {
-            console.log(error);
-            // if (error instanceof Issue) {
-            //     singleton.add_errores(error)                
-            // }
-        }
-    }
+    // for (const elemento  of ast) {
+    //     try {            
+    //             const res = elemento.ejecutar();
+    //             //let grafo = getDot(ast);
+    //     } catch (error) {
+    //         console.log(error);
+    //         // if (error instanceof Issue) {
+    //         //     singleton.add_errores(error)                
+    //         // }
+    //     }
+    // }
     var instrucciones = new Nodo_1.default("INSTRUCCIONES", "");
     for (const instruccion of ast) {
         try {
-            instrucciones.agregarHijo_nodo(instruccion.getNodo());
+            instruccion.ejecutar();
+            //instrucciones.agregarHijo_nodo(instruccion.getNodo());
         }
         catch (error) {
             // if (error instanceof Issue) {
@@ -40,7 +40,7 @@ const parse = (req, res) => {
     }
     var grafo = '';
     grafo = getDot(instrucciones);
-    console.log(grafo);
+    // console.log(grafo)
     res.json({
         "salida": grafo
     });
@@ -126,7 +126,7 @@ const parse = (req, res) => {
         return dot;
     }
     function recorrerAST(padre, nPadre) {
-        console.log("aqui" + padre);
+        //console.log("aqui"+padre)
         for (let hijo of nPadre.getHijos()) {
             var nombreHijo = "nodo" + c;
             dot += nombreHijo + "[label=\"" + hijo.getValor() + "\"];\n";
