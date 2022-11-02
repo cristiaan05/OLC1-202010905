@@ -1,39 +1,47 @@
+export default class nodo {
+    public valor:String;
+    public hijos: Array<nodo>;
 
-export default class  Nodo{
-    public id;
-    public hijos:Array<Nodo>;
-    public valor;
-    public tipo;
-    constructor(valor:string,tipo:string){
-        this.id=0;
-        this.valor=valor;
-        this.tipo=tipo;
-        this.hijos=new Array<Nodo>();
-
+    constructor(valor:String) {
+        this.valor=valor;    
+        this.hijos= new Array<nodo>();
     }
-    getValor(){
+
+    public setHijos(hijos:Array<nodo>) {
+        this.hijos = hijos;
+    }
+
+    public getValor():String {
         return this.valor;
     }
-    getTipo(){
-        this.tipo;
-    }
 
-    agregarHijo(hijo:string){
-        this.hijos.push(new Nodo(hijo,""));
-    }
-
-    public agregarHijo_nodo(hijo:Nodo) {
-        this.hijos.push(hijo);
-    }
-    public getHijos():Array<Nodo>
+    public getHijos():Array<nodo>
     {
         return this.hijos;
     }
 
+    public agregarHijo(valor:String) {
+        this.hijos.push(new nodo(valor));
+    }
+
+
+    public agregarHijos(hijos:Array<nodo>){
+        for(let hijo of hijos) {
+            this.hijos.push(hijo);
+        }
+    }
+
+    public agregarHijo_nodo(hijo:nodo) {
+        this.hijos.push(hijo);
+    }
+
+    public agregarPrimerHijo(valor:String) {
+        this.hijos.unshift(new nodo(valor));
+    }
+
+    public agregarPrimerHijo_nodo(hijo:nodo) {
+        this.hijos.unshift(hijo);
+    }
+
+    
 }
-
-
-
-
-//exportar la clase y poder importarla en otras clases 
-//module.exports= Nodo;

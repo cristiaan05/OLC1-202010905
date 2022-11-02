@@ -1,4 +1,4 @@
-import Nodo from '../Ast/Nodo';
+import Nodo from '../Ast/nodo';
 import Tipo from '../Symbol/Type';
 //import { Env } from "../Symbol/Env";
 
@@ -14,6 +14,6 @@ export abstract class Instruccion {
     }
 
     //public abstract interpretar(arbol: Arbol, tabla: tablaSimbolo): any;
-    //public abstract getNodo():Nodo;
+    public abstract getNodo():Nodo;
     public abstract ejecutar():any;
 }

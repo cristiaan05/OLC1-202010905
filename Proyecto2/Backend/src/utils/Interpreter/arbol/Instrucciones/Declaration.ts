@@ -1,16 +1,38 @@
 import { Instruccion } from '../Abstract/Instruccion';
-import Nodo from '../Ast/Nodo';
+import nodo from '../Ast/nodo';
 import Tipo, { DataType, tipoString } from '../Symbol/Type';
 //import { Env } from "../Symbol/Env";
 
 export class Declaracion extends Instruccion {
 
     constructor(
-        public nombre:string,
+        public nombre:string[],
         public tipo:string,
-        public ListInstruccion:Array<Instruccion>,
+        public ListInstruccion:string,
         linea:number,columna:number){
         super(linea,columna);
+    }
+
+    public getNodo() {
+        var nodoDec = new nodo("DECLARACION");
+        //var tipoStr = tipoString(this.tipo);
+        
+        nodoDec.agregarHijo(this.tipo)
+        //tipoStr != null?nodoDec.agregarHijo(tipoStr):tipoStr;
+
+        this.nombre.forEach(id => {
+            nodoDec.agregarHijo(id);
+        });
+
+        nodoDec.agregarHijo(this.ListInstruccion)
+
+        // for (const instru of this.ListInstruccion) {
+        //     //console.log("HELLLO PUTOS")
+        //     //console.log("INSTRU: "+instru)
+        //     nodoDec.agregarHijo(instru.toString());
+        // }
+        //nodoDec.agregarHijo_nodo(this.expresion.getNodo());
+        return nodoDec;
     }
 
 
@@ -39,16 +61,16 @@ export class Declaracion extends Instruccion {
     }*/
 
     public ejecutar():any {
-        console.log("Encontre una declaracion:--  TIPO:"+this.tipo+" NOMBRE:"+this.nombre+" lo encontre en la linea "+this.linea);
-        for (const instruccion of this.ListInstruccion) {
-            try {
-                //console.log(instruccion)
-                instruccion.ejecutar()
-            } catch (error) {
-                // console.log(error);
-            }
+        console.log("Encontre una declaracion:--  TIPO:"+this.tipo+" NOMBRE:"+this.nombre+" EXPRESION: "+this.ListInstruccion+" lo encontre en la linea "+this.linea);
+        // for (const instruccion of this.ListInstruccion) {
+        //     try {
+        //         //console.log(instruccion)
+        //         instruccion.ejecutar()
+        //     } catch (error) {
+        //         // console.log(error);
+        //     }
             
-        }
+        // }
         //metodo para guardar la variable, tabla de simbolos
 
 

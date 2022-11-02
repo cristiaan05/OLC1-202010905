@@ -1,6 +1,6 @@
 import { Instruccion } from '../Abstract/Instruccion';
 import nodo from '../Ast/nodo';
-export class AVector extends Instruccion {
+export class MVector extends Instruccion {
 
     constructor(
         public nombre:string,
@@ -10,18 +10,18 @@ export class AVector extends Instruccion {
     }
     
     public getNodo() {
-        var nodoDec = new nodo("AVECTOR")
+        var nodoDec = new nodo("MVECTOR")
         console.log()
         return nodoDec;
     }
     
     public ejecutar():any {
-        console.log("Accedi a  un vector:-- NOMBRE:"+this.nombre+" lo encontre en la linea "+this.linea);
+        console.log("Modifique a  un vector:-- NOMBRE:"+this.nombre+" lo encontre en la linea "+this.linea);
         for (const instru of this.expresion) {
             try {
+                console.log(instru)
                 instru.ejecutar()
             } catch (error) {
-                
             }
         }
     }

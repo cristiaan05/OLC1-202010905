@@ -4,16 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parse = void 0;
-const Arbol_1 = __importDefault(require("../utils/Interpreter/arbol/Ast/Arbol"));
-const Nodo_1 = __importDefault(require("../utils/Interpreter/arbol/Ast/Nodo"));
+//import Arbol from "../utils/Interpreter/arbol/Ast/Arbol";
+const nodo_1 = __importDefault(require("../utils/Interpreter/arbol/Ast/nodo"));
 const fs = require("fs");
 const parse = (req, res) => {
     let parser = require('../../dist/utils/Interpreter/Arbol/analizador');
     //const env= new Env(null);
     const peticion = req.body.entrada;
     console.log("---" + peticion.toString());
-    var raiz = new Arbol_1.default();
+    //var raiz=new Arbol();
     const ast = parser.parse(peticion.toString());
+    //parser.parserError = function(msg:any, hash:any) { throw 'Unexpected "'+hash.token+'" on line '+hash.line; }
     //console.log(raiz.recorrer_arbolito3(ast))
     // for (const elemento  of ast) {
     //     try {            
@@ -26,11 +27,11 @@ const parse = (req, res) => {
     //         // }
     //     }
     // }
-    var instrucciones = new Nodo_1.default("INSTRUCCIONES", "");
+    var instrucciones = new nodo_1.default("INSTRUCCIONES");
     for (const instruccion of ast) {
         try {
             instruccion.ejecutar();
-            //instrucciones.agregarHijo_nodo(instruccion.getNodo());
+            instrucciones.agregarHijo_nodo(instruccion.getNodo());
         }
         catch (error) {
             // if (error instanceof Issue) {
@@ -40,7 +41,7 @@ const parse = (req, res) => {
     }
     var grafo = '';
     grafo = getDot(instrucciones);
-    // console.log(grafo)
+    console.log(grafo);
     res.json({
         "salida": grafo
     });
@@ -119,7 +120,7 @@ const parse = (req, res) => {
     function getDot(raiz) {
         dot = "";
         dot += "digraph grph {\n";
-        dot += "nodo0[label=\"" + "raiz" + "\"];\n";
+        dot += "nodo0[label=\"" + raiz.getValor().replace("\"", "\\\"") + "\"];\n";
         c = 1;
         recorrerAST("nodo0", raiz);
         dot += "}";
@@ -129,7 +130,8 @@ const parse = (req, res) => {
         //console.log("aqui"+padre)
         for (let hijo of nPadre.getHijos()) {
             var nombreHijo = "nodo" + c;
-            dot += nombreHijo + "[label=\"" + hijo.getValor() + "\"];\n";
+            var primerquite = hijo.getValor().replace("\"", " ");
+            dot += nombreHijo + "[label=\"" + primerquite.replace("\"", " ") + "\"];\n";
             dot += padre + "->" + nombreHijo + ";\n";
             c++;
             recorrerAST(nombreHijo, hijo);

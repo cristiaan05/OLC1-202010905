@@ -8,6 +8,14 @@
     const {Decremento}= require('./Instrucciones/Decremento');
     const {Vector}=require('./Instrucciones/Vector');
     const {AVector}=require('./Instrucciones/Avector');
+    const {MVector}=require('./Instrucciones/MVector');
+    const {If}=require('./Instrucciones/If');
+    const {Elif}=require('./Instrucciones/Elif');
+    const {Print}=require('./Instrucciones/Print');
+    const {Println}=require('./Instrucciones/Println');
+    const {Switch}=require('./Instrucciones/Switch');
+    const {CaseSwitch} =require('./Instrucciones/CaseSwitch');
+    const {While} =require('./Instrucciones/While');
 %}
 
 //--------------------LEXICAL ANALYZER-------------------
@@ -17,7 +25,7 @@
 
 
 //inicio analisis lexico
-cadena [\"][^]*[\"]                                                                    //grammar for strings ""
+cadena  "\""  [^\"]* "\""                                                                  //grammar for strings ""
 char "'"[^']"'"                                                                          //char ''
 decimal [0-9]+("."[0-9]+)\b                                                              //decimal 0.0-9.9                                                      
 varName ([a-zA-Z_])[a-zA-Z0-9_]*
@@ -26,7 +34,7 @@ entero [0-9]+\b
 \s+                                                                               //blank space ignore
 [\/]\*[^*]*\*+([^/*][^*]*\*+)*[\/]                                                //multiline comments    
 [\/][\/][^\n]*                                                                    // line comments
-
+	
 
 "true"				return 'pr_true'
 "false"				return 'pr_false'
@@ -74,8 +82,8 @@ entero [0-9]+\b
 "<"					return 'tkn_menor';
 ">="				return 'tkn_mayorigual';
 ">"					return 'tkn_mayor';
-"="					return 'equals';
 "=="				return 'equalsEquals';
+"="					return 'equals';
 "!="				return 'different';
 
 //operador ternario
@@ -125,10 +133,16 @@ entero [0-9]+\b
 
 //-----------------------SINTAX ANALYZER------------------
 /lex
-%left sum difference
-%left product quotient
-%left potence mod
+%left 'or'
+%left 'and'
+%left 'or'
+%left 'tkn_mayor' 'tkn_menor' 'tkn_mayorigual' 'tkn_menoriugal' 'equalsEquals' 'different'
+%left 'sum' 'difference'
+%left 'product' 'quotient'
+%left 'potence' 'mod'
+%left  'UNOT'
 %left 'increment' 'reduction'
+%left 'parentIzq' 'parentDer'
 
 %start INIT
 //Inicio
@@ -147,11 +161,17 @@ INSTRUCCIONES: INSTRUCCIONES INSTRUCCION { $1.push($2); $$=$1; }
 
 INSTRUCCION: DECLARACION { $$=$1; }
          | ASIGNACION {$$=$1;}
-         | CASTEO {$$=$1;}
+         | CASTEO 'ptcoma' {$$=$1;}
          | INCREMENTO 'ptcoma' {$$=$1;}
          | DECREMENTO 'ptcoma' {$$=$1;}
          | VECTOR {$$=$1;}
          | AVECTOR 'ptcoma' {$$=$1;}
+         | MODIFICAVECTOR  {$$=$1;}
+         | IF {$$=$1;}
+         | SWITCH {$$=$1;}
+         | WHILE {$$=$1;}
+         | PRINT{$$=$1;}
+         | PRINTLN {$$=$1;}
          | error 'ptcoma'{ console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + @1.first_line + ', en la columna: ' + @1.first_column); }
 ;
 
@@ -168,10 +188,12 @@ ASIGNACION: LISTAID 'equals' EXPRESION 'ptcoma' {$$= new Asignacion($1,$3,@1.fir
 ;
 
 
-CASTEO: TIPODATO LISTAID 'equals' 'parentIzq' TIPODATO 'parentDer' EXPRESION 'ptcoma'{
+CASTEO: TIPODATO LISTAID 'equals' 'parentIzq' TIPODATO 'parentDer' EXPRESION {
             $$= new Cast($2,$1,$5,$7,@1.first_line,@1.first_column);
         }
-    | parentIzq' TIPODATO 'parentDer' EXPRESION 'ptcoma'{$$= new Cast("","",$5,$7,@1.first_line,@1.first_column);}
+    | 'parentIzq' TIPODATO 'parentDer' EXPRESION {
+        $$= new Cast("","",$2,$4,@1.first_line,@1.first_column);
+        }
 ;
 
 
@@ -216,8 +238,94 @@ VECTORES2: VECTORES2 'tkn_coma' 'llabre' VECTORES 'llcierra' {$$=$4;}
         | 'llabre' VECTORES 'llcierra' {$$=$2;}
 ;
 
-AVECTOR: 'varName' 'corcheL' EXPRESION 'corcheR' {$$=new AVector($1,$3,@1.first_line,@1.first_column);}
-        | 'varName' 'corcheL' EXPRESION 'corcheR' 'corcheL' EXPRESION 'corcheR' {$$=new AVector($1,$3,@1.first_line,@1.first_column);}
+AVECTOR: 'varName' 'corcheL' EXPVECTORES 'corcheR' {$$=new AVector($1,$3,@1.first_line,@1.first_column);}
+        | 'varName' 'corcheL' EXPVECTORES 'corcheR' 'corcheL' EXPVECTORES 'corcheR' {$$=new AVector($1,$3,@1.first_line,@1.first_column);}
+;
+
+MODIFICAVECTOR: 'varName' 'corcheL' EXPVECTORES 'corcheR' 'equals' EXPVECTORES 'ptcoma' {
+        $$=new MVector($1,$6,@1.first_line,@1.first_column);
+        }
+;
+
+IF:  'pr_if' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {
+        $$=new If($6,$3,@1.first_line,@1.first_column);
+        }
+    | 'pr_if' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' 'pr_else' 'llabre' INSTRUCCIONES 'llcierra' {
+        $$=new If($6,$3,@1.first_line,@1.first_column,undefined,$10);
+        } 
+    | 'pr_if' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' ELIF 'pr_else' 'llabre' INSTRUCCIONES 'llcierra' {
+        $$=new If($6,$3,@1.first_line,@1.first_column,$8,$11);
+        }
+    | 'pr_if' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' ELIF {
+        $$=new If($6,$3,@1.first_line,@1.first_column,$8);
+        }
+    |'pr_if' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {
+        $$=new If($6,$3,@1.first_line,@1.first_column);
+        }
+    | 'pr_if' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' 'pr_else' 'llabre' INSTRUCCIONES 'llcierra' {
+        $$=new If($6,$3,@1.first_line,@1.first_column,undefined,$10);
+        } 
+    | 'pr_if' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' ELIF 'pr_else' 'llabre' INSTRUCCIONES 'llcierra' {
+        $$=new If($6,$3,@1.first_line,@1.first_column,$8,$11);
+        }
+    | 'pr_if' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' ELIF {
+        $$=new If($6,$3,@1.first_line,@1.first_column,$8);
+        }
+;
+
+ELIF: 'pr_elif' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {
+        $$=[new Elif($6,$3,@1.first_line,@1.first_column)];
+        }
+    | ELIF 'pr_elif' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra'  {
+        $1.push(new Elif($7,$4,@1.first_line,@1.first_column));
+        $$=$1;
+        }
+    |'pr_elif' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {
+        $$=[new Elif($6,$3,@1.first_line,@1.first_column)];
+        }
+    | ELIF 'pr_elif' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra'  {
+        $1.push(new Elif($7,$4,@1.first_line,@1.first_column));
+        $$=$1;
+        }
+;
+
+SWITCH: 'pr_switch' 'parentIzq' EXPRESION 'parentDer' 'llabre' CASES 'llcierra' {
+            $$=new Switch($3, $6, @1.first_line, @1.first_column);
+        }
+;
+
+CASES: CASES CASE {$1.push($2); $$=$1;}
+    | CASE {$$=[$1]}
+;
+
+CASE: 'pr_case' EXPRESION 'dospuntos' INSTRUCCIONES {$$ = new CaseSwitch($1, $2, $4, @1.first_line, @1.first_column);}
+    | 'pr_default' 'dospuntos' INSTRUCCIONES {$$ = new CaseSwitch($1, undefined, $3, @1.first_line, @1.first_column);}
+;
+
+WHILE: 'pr_while' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {$$ = new While($3, $6);}
+    | 'pr_while' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {$$ = new While($3, $6);}
+;
+
+PRINT: 'pr_print' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
+    $$=new Print($1,$3,@1.first_line,@1.first_column);
+    }
+; 
+
+PRINTLN: 'pr_println' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
+    $$=new Println($1,$3,@1.first_line,@1.first_column);
+    }
+;   
+
+CONDICIONAL: EXPRESION 'equalsEquals' EXPRESION {$$= $1+$2+$3;}
+        | EXPRESION 'different' EXPRESION{$$= $1+$2+$3;}
+        | EXPRESION 'tkn_mayorigual' EXPRESION {$$= $1+$2+$3;}
+        | EXPRESION 'tkn_menoriugal' EXPRESION {$$= $1+$2+$3;}
+        | EXPRESION 'tkn_mayor' EXPRESION {$$= $1+$2+$3;}
+        | EXPRESION 'tkn_menor' EXPRESION {$$= $1+$2+$3;}
+;
+
+EXPVECTORES: CASTEO {$$=$1}
+    | EXPRESION {$$=$1}
 ;
 
 
@@ -234,21 +342,25 @@ LISTAID: LISTAID 'tkn_coma' 'varName'         {$1.push($3); $$ = $1}
     | 'varName'                     {$$ = [$1]}
 ;
 
-EXPRESION: EXPRESION 'sum' EXPRESION { $1.push($3);  $$= $1;}
-          | EXPRESION 'difference' EXPRESION {$1.push($3);  $$= $1;}
-          | EXPRESION 'product' EXPRESION {$1.push($3);  $$= $1;}
-          | EXPRESION 'quotient' EXPRESION {$1.push($3);  $$= $1;}
-          | EXPRESION 'potence' EXPRESION {$1.push($3);  $$= $1;}
-          | EXPRESION 'mod' EXPRESION {$1.push($3);  $$= $1;}
-          | 'corcheL' EXPRESION 'corcheR' {$$= [$2];}
-          | 'llabre' EXPRESION 'llcierra' {$$= [$2];}
-          | 'tkn_entero' {$$=[$1];}
-          | 'tkn_cadena' {$$=[$1];}
-          | 'tkn_char' {$$=[$1];}
-          | 'tkn_decimal' {$$=[$1];}
-          | 'varName' {$$=[$1];}
-          | 'pr_true' {$$=[$1];}
-          | 'pr_false' {$$=[$1];}
+EXPRESION: EXPRESION 'sum' EXPRESION {$$=$1 + "+" + $3;}
+          | EXPRESION 'difference' EXPRESION {$$=$1 + "-" + $3;}
+          | EXPRESION 'product' EXPRESION {$$=$1 + "*" + $3;}
+          | EXPRESION 'quotient' EXPRESION {$$=$1 + "/" + $3;}
+          | EXPRESION 'potence' EXPRESION {$$=$1 + "^" + $3;}
+          | EXPRESION 'mod' EXPRESION {$$=$1 + "%" + $3;}
+          | EXPRESION 'or' EXPRESION {$$=$1 + $2 + $3;}
+          | EXPRESION 'and' EXPRESION {$$=$1 + $2 + $3;}
+          | 'not' EXPRESION %prec UNOT {$$=$1 +$2;}
+          | 'parentIzq' EXPRESION 'parentDer' {$$= $1 + $2 + $3;}
+          | 'corcheL' EXPRESION 'corcheR' {$$=$1+$2+$3;}
+          | 'llabre' EXPRESION 'llcierra' {$$=$1+$2+$3;}
+          | 'tkn_entero' {$$=$1;}
+          | 'tkn_cadena' {$$=$1;}
+          | 'tkn_char' {$$=$1;}
+          | 'tkn_decimal' {$$=$1;}
+          | 'varName' {$$=$1;}
+          | 'pr_true' {$$=$1;}
+          | 'pr_false' {$$=$1;}
           | INCREMENTO {$$=[$1];}
           | DECREMENTO {$$=[$1];}
           | AVECTOR {$$=[$1];}

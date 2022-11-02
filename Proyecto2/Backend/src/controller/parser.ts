@@ -1,19 +1,20 @@
 import { Response, Request } from "express";
 //import { Env } from "../utils/Interpreter/arbol/Symbol/Env";
 import { Instruccion } from "../utils/Interpreter/arbol/Abstract/Instruccion";
-import Arbol from "../utils/Interpreter/arbol/Ast/Arbol";
-import Nodo from "../utils/Interpreter/arbol/Ast/Nodo";
+//import Arbol from "../utils/Interpreter/arbol/Ast/Arbol";
+import nodo from "../utils/Interpreter/arbol/Ast/nodo";
 const fs = require("fs");
 
 
-export const parse = (req: Request & unknown, res: Response): void => {
+export const parse = (req: Request , res: Response): void => {
     let parser = require('../../dist/utils/Interpreter/Arbol/analizador');
     //const env= new Env(null);
 
     const peticion = req.body.entrada;
     console.log("---" + peticion.toString());
-    var raiz=new Arbol();
+    //var raiz=new Arbol();
     const ast = parser.parse(peticion.toString());
+    //parser.parserError = function(msg:any, hash:any) { throw 'Unexpected "'+hash.token+'" on line '+hash.line; }
     //console.log(raiz.recorrer_arbolito3(ast))
     
 
@@ -31,11 +32,11 @@ export const parse = (req: Request & unknown, res: Response): void => {
     //     }
     // }
 
-    var instrucciones = new Nodo("INSTRUCCIONES","");
+    var instrucciones = new nodo("INSTRUCCIONES");
         for(const instruccion of ast) {
             try {
                 instruccion.ejecutar();
-                //instrucciones.agregarHijo_nodo(instruccion.getNodo());
+                instrucciones.agregarHijo_nodo(instruccion.getNodo());
             } catch (error) {
                 // if (error instanceof Issue) {
                 //     singleton.add_errores(error)                
@@ -43,9 +44,10 @@ export const parse = (req: Request & unknown, res: Response): void => {
                 
             }
         }
+
         var grafo = '';
         grafo = getDot(instrucciones);
-       // console.log(grafo)
+        console.log(grafo)
         res.json({
             "salida":grafo
         })
@@ -124,25 +126,26 @@ export const parse = (req: Request & unknown, res: Response): void => {
         }*/
         var c=0;
         var dot="";
-        function getDot(raiz:Nodo)
+        function getDot(raiz:nodo)
         {
             dot = "";
             dot += "digraph grph {\n";
-            dot += "nodo0[label=\"" + "raiz" + "\"];\n";
+            dot += "nodo0[label=\"" + raiz.getValor().replace("\"", "\\\"") + "\"];\n";
             c = 1;
             recorrerAST("nodo0",raiz);
             dot += "}";
             return dot;
         }
         
-        function recorrerAST(padre:String, nPadre:Nodo)
+        function recorrerAST(padre:String, nPadre:nodo)
         {
             //console.log("aqui"+padre)
             for(let hijo of nPadre.getHijos())
 
             {              
                 var nombreHijo = "nodo" + c;
-                dot += nombreHijo + "[label=\"" + hijo.getValor() + "\"];\n";
+                var primerquite=hijo.getValor().replace("\""," ")
+                dot += nombreHijo + "[label=\"" + primerquite.replace("\"", " ") + "\"];\n";
                 dot += padre + "->" + nombreHijo + ";\n";
                 c++;
                 recorrerAST(nombreHijo,hijo);

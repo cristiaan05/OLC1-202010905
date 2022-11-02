@@ -1,28 +1,35 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Nodo {
-    constructor(valor, tipo) {
-        this.id = 0;
+class nodo {
+    constructor(valor) {
         this.valor = valor;
-        this.tipo = tipo;
         this.hijos = new Array();
+    }
+    setHijos(hijos) {
+        this.hijos = hijos;
     }
     getValor() {
         return this.valor;
     }
-    getTipo() {
-        this.tipo;
+    getHijos() {
+        return this.hijos;
     }
-    agregarHijo(hijo) {
-        this.hijos.push(new Nodo(hijo, ""));
+    agregarHijo(valor) {
+        this.hijos.push(new nodo(valor));
+    }
+    agregarHijos(hijos) {
+        for (let hijo of hijos) {
+            this.hijos.push(hijo);
+        }
     }
     agregarHijo_nodo(hijo) {
         this.hijos.push(hijo);
     }
-    getHijos() {
-        return this.hijos;
+    agregarPrimerHijo(valor) {
+        this.hijos.unshift(new nodo(valor));
+    }
+    agregarPrimerHijo_nodo(hijo) {
+        this.hijos.unshift(hijo);
     }
 }
-exports.default = Nodo;
-//exportar la clase y poder importarla en otras clases 
-//module.exports= Nodo;
+exports.default = nodo;
