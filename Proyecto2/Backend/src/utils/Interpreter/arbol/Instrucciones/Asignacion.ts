@@ -3,14 +3,18 @@ import nodo from '../Ast/nodo';
 export class Asignacion extends Instruccion {
 
     constructor(
-        public nombre:string,
+        public nombre:string[],
         public valor:string,
         linea:number,columna:number){
         super(linea,columna);
     }
     public getNodo() {
         var nodoDec = new nodo("ASIGNACION")
-        console.log()
+        this.nombre.forEach(id => {
+            nodoDec.agregarHijo(id);
+        });
+
+        nodoDec.agregarHijo(this.valor)
         return nodoDec;
     }
     public ejecutar():any {

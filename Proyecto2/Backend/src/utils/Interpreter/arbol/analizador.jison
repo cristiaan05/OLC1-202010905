@@ -16,6 +16,16 @@
     const {Switch}=require('./Instrucciones/Switch');
     const {CaseSwitch} =require('./Instrucciones/CaseSwitch');
     const {While} =require('./Instrucciones/While');
+    const {For} =require('./Instrucciones/For');
+    const {DoWhile} =require('./Instrucciones/DoWhile');
+    const {DoUntil}=require('./Instrucciones/DoUntil');
+    const {Break}=require('./Instrucciones/Break');
+    const {Continue}=require('./Instrucciones/Continue');
+    const {Return}=require('./Instrucciones/Return');
+    const {Funcion}=require('./Instrucciones/Funcion');
+    const {Metodo}=require('./Instrucciones/Metodo');
+    const {Llamada}=require('./Instrucciones/Llamada');
+    const {Tolower}=require('./Instrucciones/ToLower');
 %}
 
 //--------------------LEXICAL ANALYZER-------------------
@@ -170,12 +180,22 @@ INSTRUCCION: DECLARACION { $$=$1; }
          | IF {$$=$1;}
          | SWITCH {$$=$1;}
          | WHILE {$$=$1;}
+         | FOR{$$=$1;}
+         | DOWHILE  {$$ = $1;}
+         | DOUNTIL  {$$ = $1;}
+         | BREAK 'ptcoma' {$$=$1;}
+         | CONTINUE 'ptcoma' {$$=$1;}
+         | RETURN 'ptcoma' {$$=$1;}
+         | FUNCION {$$=$1;}
+         | METODO {$$=$1;}
+         | LLAMADA 'ptcoma' {$$=$1;}
          | PRINT{$$=$1;}
          | PRINTLN {$$=$1;}
+         | TOLOWER{$$=$1;}
          | error 'ptcoma'{ console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + @1.first_line + ', en la columna: ' + @1.first_column); }
 ;
 
-DECLARACION: TIPODATO LISTAID 'equals' EXPRESION 'ptcoma'{
+DECLARACION: TIPODATO LISTAID 'equals' EXPVECTORES 'ptcoma'{
             $$= new Declaracion($2,$1,$4,@1.first_line, @1.first_column);
             }
     | TIPODATO LISTAID 'ptcoma' {
@@ -184,7 +204,9 @@ DECLARACION: TIPODATO LISTAID 'equals' EXPRESION 'ptcoma'{
 
 ;
 
-ASIGNACION: LISTAID 'equals' EXPRESION 'ptcoma' {$$= new Asignacion($1,$3,@1.first_line,@1.first_column);}
+ASIGNACION: LISTAID 'equals' EXPVECTORES 'ptcoma' {
+    $$= new Asignacion($1,$3,@1.first_line,@1.first_column);
+    }
 ;
 
 
@@ -247,19 +269,7 @@ MODIFICAVECTOR: 'varName' 'corcheL' EXPVECTORES 'corcheR' 'equals' EXPVECTORES '
         }
 ;
 
-IF:  'pr_if' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {
-        $$=new If($6,$3,@1.first_line,@1.first_column);
-        }
-    | 'pr_if' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' 'pr_else' 'llabre' INSTRUCCIONES 'llcierra' {
-        $$=new If($6,$3,@1.first_line,@1.first_column,undefined,$10);
-        } 
-    | 'pr_if' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' ELIF 'pr_else' 'llabre' INSTRUCCIONES 'llcierra' {
-        $$=new If($6,$3,@1.first_line,@1.first_column,$8,$11);
-        }
-    | 'pr_if' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' ELIF {
-        $$=new If($6,$3,@1.first_line,@1.first_column,$8);
-        }
-    |'pr_if' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {
+IF:  'pr_if' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {
         $$=new If($6,$3,@1.first_line,@1.first_column);
         }
     | 'pr_if' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' 'pr_else' 'llabre' INSTRUCCIONES 'llcierra' {
@@ -273,20 +283,20 @@ IF:  'pr_if' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierr
         }
 ;
 
-ELIF: 'pr_elif' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {
-        $$=[new Elif($6,$3,@1.first_line,@1.first_column)];
-        }
-    | ELIF 'pr_elif' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra'  {
-        $1.push(new Elif($7,$4,@1.first_line,@1.first_column));
-        $$=$1;
-        }
-    |'pr_elif' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {
+ELIF: 'pr_elif' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {
         $$=[new Elif($6,$3,@1.first_line,@1.first_column)];
         }
     | ELIF 'pr_elif' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra'  {
         $1.push(new Elif($7,$4,@1.first_line,@1.first_column));
         $$=$1;
         }
+ /*   |'pr_elif' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {
+        $$=[new Elif($6,$3,@1.first_line,@1.first_column)];
+        }
+    | ELIF 'pr_elif' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra'  {
+        $1.push(new Elif($7,$4,@1.first_line,@1.first_column));
+        $$=$1;
+        }*/
 ;
 
 SWITCH: 'pr_switch' 'parentIzq' EXPRESION 'parentDer' 'llabre' CASES 'llcierra' {
@@ -303,13 +313,90 @@ CASE: 'pr_case' EXPRESION 'dospuntos' INSTRUCCIONES {$$ = new CaseSwitch($1, $2,
 ;
 
 WHILE: 'pr_while' 'parentIzq' EXPRESION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {$$ = new While($3, $6);}
-    | 'pr_while' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {$$ = new While($3, $6);}
+  //  | 'pr_while' 'parentIzq' CONDICIONAL 'parentDer' 'llabre' INSTRUCCIONES 'llcierra' {$$ = new While($3, $6);}
 ;
+
+FOR: 'pr_for' 'parentIzq' INICIALIZACION CONDICION ACTUALIZACION 'parentDer' 'llabre' INSTRUCCIONES 'llcierra'{
+      $$ = new For($3, $4, $5, $8, @1.first_line, @1.first_column);
+    }
+;
+
+INICIALIZACION: DECLARACION       {$$ = [$1]}
+        | ASIGNACION              {$$ = [$1]}
+;
+
+CONDICION:  EXPRESION {$$ = $1}
+   // |  CONDICIONAL  {$$ = $1}
+;
+
+ACTUALIZACION: ptcoma INCREMENTO          {$$ = [$2]}
+    | ptcoma DECREMENTO          {$$ = [$2]}
+    | ptcoma ASIGNACION         {$$ = [$2]}
+;
+
+DOWHILE: 'pr_do' 'llabre' INSTRUCCIONES 'llcierra' 'pr_while' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
+    $$ = new DoWhile($7, $3);
+    }
+   /* |'pr_do' 'llabre' INSTRUCCIONES 'llcierra' 'pr_while' 'parentIzq' CONDICIONAL 'parentDer' 'ptcoma' {
+    $$ = new DoWhile($7, $3);
+    }*/
+;
+
+DOUNTIL: 'pr_do' 'llabre' INSTRUCCIONES 'llcierra' 'pr_until' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
+        $$ = new DoUntil($7, $3);
+    }
+;
+
+BREAK: 'pr_break' {$$=new Break(@1.first_line, @1.first_column); }
+;
+
+CONTINUE: 'pr_continue' {$$=new Continue(@1.first_line, @1.first_column); }
+;
+
+RETURN : 'pr_return' EXPRESION   { $$= new Return($2, @1.first_line, @1.first_column); }
+    | 'pr_return'             { $$= new Return(null, @1.first_line, @1.first_column); }
+;
+
+FUNCION: 'varName' 'parentIzq' PARAMETROS 'parentDer' 'dospuntos' TIPODATO 'llabre' INSTRUCCIONES 'llcierra' {
+        $$= new Funcion($1,$3,$6,$8,@1.first_line, @1.first_column );
+    }
+;
+
+PARAMETROS: PARAMETROS 'tkn_coma' TIPODATO 'varName'   {$$=$1+", "+$3+" "+$4;}
+    | TIPODATO 'varName'     {$$ = $1+" "+$2;}
+;
+
+METODO: 'varName' 'parentIzq' PARAMETROS 'parentDer' 'dospuntos' 'pr_void' 'llabre' INSTRUCCIONES 'llcierra'{
+        $$= new Metodo($1,$3,$6,$8,@1.first_line, @1.first_column );
+    }
+;
+
+LLAMADA: 'varName' 'parentIzq' PARAMETROSCALL 'parentDer'{
+            $$= new Llamada($1,$3,@1.first_line, @1.first_column );
+        }
+    | 'varName' 'parentIzq' 'parentDer'{
+            $$= new Llamada($1,undefined,@1.first_line, @1.first_column )
+    } 
+;
+
+PARAMETROSCALL:  PARAMETROSCALL 'tkn_coma' EXPRESION {$$=$1+", "+$3;}
+    |  EXPRESION {$$ = $1+" ";}
+;
+
 
 PRINT: 'pr_print' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
     $$=new Print($1,$3,@1.first_line,@1.first_column);
     }
-; 
+;
+
+TOLOWER: 'pr_string' 'varName' 'equals' 'pr_toLower' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
+            $$=new Tolower($2,$6,@1.first_line,@1.first_column);
+        }
+    | 'pr_toLower' 'parentIzq' EXPRESION 'parentDer' 'ptcoma'{
+             $$=new Tolower("",$3,@1.first_line,@1.first_column);
+        }
+;
+
 
 PRINTLN: 'pr_println' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
     $$=new Println($1,$3,@1.first_line,@1.first_column);
@@ -364,6 +451,8 @@ EXPRESION: EXPRESION 'sum' EXPRESION {$$=$1 + "+" + $3;}
           | INCREMENTO {$$=[$1];}
           | DECREMENTO {$$=[$1];}
           | AVECTOR {$$=[$1];}
+          | CONDICIONAL {$$=$1;}
+          | LLAMADA {$$=$1;}
 ;
 
 BOOL: 'pr_false'

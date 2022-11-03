@@ -9,8 +9,8 @@ const fs = require("fs");
 export const parse = (req: Request , res: Response): void => {
     let parser = require('../../dist/utils/Interpreter/Arbol/analizador');
     //const env= new Env(null);
-
-    const peticion = req.body.entrada;
+    const peticion = fs.readFileSync("src/entrada.txt");
+    //const peticion = req.body;
     console.log("---" + peticion.toString());
     //var raiz=new Arbol();
     const ast = parser.parse(peticion.toString());
@@ -144,7 +144,7 @@ export const parse = (req: Request , res: Response): void => {
 
             {              
                 var nombreHijo = "nodo" + c;
-                var primerquite=hijo.getValor().replace("\""," ")
+                var primerquite=hijo.getValor().replace("\"","  ")
                 dot += nombreHijo + "[label=\"" + primerquite.replace("\"", " ") + "\"];\n";
                 dot += padre + "->" + nombreHijo + ";\n";
                 c++;

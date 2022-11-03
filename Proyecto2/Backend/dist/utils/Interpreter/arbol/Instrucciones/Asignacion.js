@@ -14,7 +14,10 @@ class Asignacion extends Instruccion_1.Instruccion {
     }
     getNodo() {
         var nodoDec = new nodo_1.default("ASIGNACION");
-        console.log();
+        this.nombre.forEach(id => {
+            nodoDec.agregarHijo(id);
+        });
+        nodoDec.agregarHijo(this.valor);
         return nodoDec;
     }
     ejecutar() {
