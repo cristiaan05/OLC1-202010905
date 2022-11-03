@@ -26,6 +26,7 @@
     const {Metodo}=require('./Instrucciones/Metodo');
     const {Llamada}=require('./Instrucciones/Llamada');
     const {Tolower}=require('./Instrucciones/ToLower');
+    const {ToUpper}=require('./Instrucciones/ToUpper');
 %}
 
 //--------------------LEXICAL ANALYZER-------------------
@@ -192,6 +193,7 @@ INSTRUCCION: DECLARACION { $$=$1; }
          | PRINT{$$=$1;}
          | PRINTLN {$$=$1;}
          | TOLOWER{$$=$1;}
+         | TOUPPER{$$=$1;}
          | error 'ptcoma'{ console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + @1.first_line + ', en la columna: ' + @1.first_column); }
 ;
 
@@ -390,10 +392,24 @@ PRINT: 'pr_print' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
 ;
 
 TOLOWER: 'pr_string' 'varName' 'equals' 'pr_toLower' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
-            $$=new Tolower($2,$6,@1.first_line,@1.first_column);
+            $$=new Tolower($2,$6,@1.first_line,@1.first_column,"de");
+        }
+    |  'varName' 'equals' 'pr_toLower' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
+            $$=new Tolower($1,$5,@1.first_line,@1.first_column,"asig");
         }
     | 'pr_toLower' 'parentIzq' EXPRESION 'parentDer' 'ptcoma'{
-             $$=new Tolower("",$3,@1.first_line,@1.first_column);
+             $$=new Tolower("null",$3,@1.first_line,@1.first_column);
+        }
+;
+
+TOUPPER: 'pr_string' 'varName' 'equals' 'pr_toUpper' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
+            $$=new ToUpper($2,$6,@1.first_line,@1.first_column,"de");
+        }
+    |  'varName' 'equals' 'pr_toUpper' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
+            $$=new ToUpper($1,$5,@1.first_line,@1.first_column,"asig");
+        }
+    | 'pr_toUpper' 'parentIzq' EXPRESION 'parentDer' 'ptcoma'{
+             $$=new ToUpper("null",$3,@1.first_line,@1.first_column);
         }
 ;
 

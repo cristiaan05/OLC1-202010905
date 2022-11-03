@@ -1,6 +1,7 @@
 import { Instruccion } from '../Abstract/Instruccion';
 import nodo from '../Ast/nodo';
-export class Tolower extends Instruccion {
+import { Declaracion } from './Declaration';
+export class ToUpper extends Instruccion {
 
     constructor(
         public declaracion: string,
@@ -11,7 +12,7 @@ export class Tolower extends Instruccion {
     }
     public getNodo() {
         if (this.declaracion == "null") {
-            var nodoDec = new nodo("TO LOWER");
+            var nodoDec = new nodo("TO UPPER");
             nodoDec.agregarHijo(this.valor)
             return nodoDec
         } else {
@@ -19,13 +20,13 @@ export class Tolower extends Instruccion {
             if (this.declaasig=="de" && this.declaasig!=undefined) {
                 nodoD= new nodo("DECLARACION");
                 nodoD.agregarHijo(this.declaracion)
-                var nodoDec = new nodo("TO LOWER");
+                var nodoDec = new nodo("TO UPPER");
                 nodoDec.agregarHijo(this.valor)
                 nodoD.agregarHijo_nodo(nodoDec)
             }else if (this.declaasig=="asig" && this.declaasig!=undefined) {
                 nodoD = new nodo("ASIGNACION");
                 nodoD.agregarHijo(this.declaracion)
-                var nodoDec = new nodo("TO LOWER");
+                var nodoDec = new nodo("TO UPPER");
                 nodoDec.agregarHijo(this.valor)
                 nodoD.agregarHijo_nodo(nodoDec)
             }
@@ -33,6 +34,6 @@ export class Tolower extends Instruccion {
         }
     }
     public ejecutar(): any {
-        console.log("Encontre un TO LOWER : " + this.valor + " lo encontre en la linea " + this.linea);
+        console.log("Encontre un TO UPPER : " + this.valor + " lo encontre en la linea " + this.linea);
     }
 }

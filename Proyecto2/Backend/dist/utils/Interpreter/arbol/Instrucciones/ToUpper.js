@@ -3,10 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Tolower = void 0;
+exports.ToUpper = void 0;
 const Instruccion_1 = require("../Abstract/Instruccion");
 const nodo_1 = __importDefault(require("../Ast/nodo"));
-class Tolower extends Instruccion_1.Instruccion {
+class ToUpper extends Instruccion_1.Instruccion {
     constructor(declaracion, valor, linea, columna, declaasig) {
         super(linea, columna);
         this.declaracion = declaracion;
@@ -15,7 +15,7 @@ class Tolower extends Instruccion_1.Instruccion {
     }
     getNodo() {
         if (this.declaracion == "null") {
-            var nodoDec = new nodo_1.default("TO LOWER");
+            var nodoDec = new nodo_1.default("TO UPPER");
             nodoDec.agregarHijo(this.valor);
             return nodoDec;
         }
@@ -24,14 +24,14 @@ class Tolower extends Instruccion_1.Instruccion {
             if (this.declaasig == "de" && this.declaasig != undefined) {
                 nodoD = new nodo_1.default("DECLARACION");
                 nodoD.agregarHijo(this.declaracion);
-                var nodoDec = new nodo_1.default("TO LOWER");
+                var nodoDec = new nodo_1.default("TO UPPER");
                 nodoDec.agregarHijo(this.valor);
                 nodoD.agregarHijo_nodo(nodoDec);
             }
             else if (this.declaasig == "asig" && this.declaasig != undefined) {
                 nodoD = new nodo_1.default("ASIGNACION");
                 nodoD.agregarHijo(this.declaracion);
-                var nodoDec = new nodo_1.default("TO LOWER");
+                var nodoDec = new nodo_1.default("TO UPPER");
                 nodoDec.agregarHijo(this.valor);
                 nodoD.agregarHijo_nodo(nodoDec);
             }
@@ -39,7 +39,7 @@ class Tolower extends Instruccion_1.Instruccion {
         }
     }
     ejecutar() {
-        console.log("Encontre un TO LOWER : " + this.valor + " lo encontre en la linea " + this.linea);
+        console.log("Encontre un TO UPPER : " + this.valor + " lo encontre en la linea " + this.linea);
     }
 }
-exports.Tolower = Tolower;
+exports.ToUpper = ToUpper;
