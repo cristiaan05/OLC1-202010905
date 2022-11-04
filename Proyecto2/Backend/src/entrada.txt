@@ -1,4 +1,1 @@
-toUpper("QWERT"+" ");
-
-string cad_1 = toUpper("hOla MunDo"); // cad_1 = "hola mundo"
-cad_2 = toUpper("RESULTADO = " + 100); // cad_2 = "resultado = 100"
+cad_1222 = "hola mundo";

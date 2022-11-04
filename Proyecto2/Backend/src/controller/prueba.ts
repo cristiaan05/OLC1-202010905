@@ -34,8 +34,8 @@ class ApiController {
     }
     public async parser(req: Request, res: Response) {
         try {
-
-            res.json({ msg: "hola mundo " + req.headers.nombre });
+            console.log(req.body.nombre)
+            res.json({ msg: "hola mundo " + req.body.nombre });
         } catch (error) {
             res.status(400).send({ msg: "error en funcion" });
         }

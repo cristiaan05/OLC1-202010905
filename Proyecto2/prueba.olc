@@ -573,7 +573,7 @@ saludo(String nombre):void{
                         articulos.pop();
                         boolean v_3= (boolean)true==true;
                     }
-                }
+                }         
                 for (int x=0; x<45+8;x++){
                     var_3 = (5+6>48+9/8)? 1:4+5;
                     continue;

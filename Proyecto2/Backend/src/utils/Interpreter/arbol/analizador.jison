@@ -200,10 +200,12 @@ INSTRUCCION: DECLARACION { $$=$1; }
 DECLARACION: TIPODATO LISTAID 'equals' EXPVECTORES 'ptcoma'{
             $$= new Declaracion($2,$1,$4,@1.first_line, @1.first_column);
             }
+    | TIPODATO LISTAID 'equals' EXPRESION 'ptcoma'{
+            $$= new Declaracion($2,$1,$4,@1.first_line, @1.first_column);
+        }
     | TIPODATO LISTAID 'ptcoma' {
         $$= new Declaracion($2,$1,"",@1.first_line, @1.first_column);
     }
-
 ;
 
 ASIGNACION: LISTAID 'equals' EXPVECTORES 'ptcoma' {
@@ -413,6 +415,10 @@ TOUPPER: 'pr_string' 'varName' 'equals' 'pr_toUpper' 'parentIzq' EXPRESION 'pare
         }
 ;
 
+ROUND: 'pr_double' LISTAID 'equals' 'pr_round' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
+    $$=new Round($2,$6,@1.first_line,@1.first_column);
+    }
+;
 
 PRINTLN: 'pr_println' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
     $$=new Println($1,$3,@1.first_line,@1.first_column);

@@ -55,7 +55,8 @@ class ApiController {
     parser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                res.json({ msg: "hola mundo " + req.headers.nombre });
+                console.log(req.body.nombre);
+                res.json({ msg: "hola mundo " + req.body.nombre });
             }
             catch (error) {
                 res.status(400).send({ msg: "error en funcion" });
