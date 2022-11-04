@@ -32,6 +32,8 @@
     const {Typeof}=require('./Instrucciones/Typeof');
     const {ToString}=require('./Instrucciones/ToString');
     const {ToCharA}=require('./Instrucciones/ToCharA');
+    const {Push}=require('./Instrucciones/Push');
+    const {Pop}=require('./Instrucciones/Pop');
 %}
 
 //--------------------LEXICAL ANALYZER-------------------
@@ -207,6 +209,8 @@ INSTRUCCION: DECLARACION { $$=$1; }
          | TYPEOF 'ptcoma'{$$=$1;}
          | TOSTRING 'ptcoma'{$$=$1;}
          | TOCHARARRAY 'ptcoma' {$$=$1;}
+         | PUSH 'ptcoma' {$$=$1;}
+         | POP 'ptcoma' {$$=$1;}
          | error INSTRUCCION {console.error('Este es un error sintáctico en Ins : ' + yytext + ', en la linea: ' + @1.first_line + ', en la columna: ' + @1.first_column);}
          | error 'ptcoma'{ console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + @1.first_line + ', en la columna: ' + @1.first_column); }
 ;
@@ -446,6 +450,16 @@ TOCHARARRAY: 'pr_toCharArray' 'parentIzq' EXPRESION 'parentDer' {
         }
 ;
 
+PUSH: 'varName' 'tkn_punto' 'pr_push' 'parentIzq' EXPRESION 'parentDer' {
+    $$=new Push($1,$5,@1.first_line,@1.first_column);
+    }
+;
+
+POP: 'varName' 'tkn_punto' 'pr_pop' 'parentIzq'  'parentDer' {
+    $$=new Pop($1,@1.first_line,@1.first_column);
+    }
+;
+
 
 /*
 CONDICIONAL: EXPRESION 'equalsEquals' EXPRESION {$$= $1+$2+$3;}
@@ -465,6 +479,8 @@ EXPVECTORES: CASTEO {$$=$1;}
     | TYPEOF {$$=[$1];}
     | TOSTRING {$$=[$1];}
     | TOCHARARRAY {$$=[$1];}
+    | PUSH {$$=[$1];}
+    | POP {$$=[$1];}
 ;
 
 

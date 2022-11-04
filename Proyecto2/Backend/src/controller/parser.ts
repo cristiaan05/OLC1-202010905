@@ -11,8 +11,8 @@ var grafo='';
 export const parse = (req: Request, res: Response): void => {
     let parser = require('../../dist/utils/Interpreter/Arbol/analizador');
     //const env= new Env(null);
-    const peticion = fs.readFileSync("src/entrada.txt");
-    //const peticion = req.body.peticion;
+    //const peticion = fs.readFileSync("src/entrada.txt");
+    const peticion = req.body.peticion;
     console.log("---" + peticion.toString());
     //var raiz=new Arbol();
     const ast = parser.parse(peticion.toString());
@@ -154,7 +154,7 @@ export const parse = (req: Request, res: Response): void => {
     }
 }
 
-/*
+
 export const ast = (req: Request, res: Response): void => {
     fs.writeFile("salida.dot", grafo, function (err: any) {
         if (err) {
@@ -164,4 +164,4 @@ export const ast = (req: Request, res: Response): void => {
     console.log("El archivo fue creado correctamente")
     exec('dot -Tpng salida.dot -o salida.png ')
     res.send({ "mensaje": "si lo genero" })
-}*/
+}

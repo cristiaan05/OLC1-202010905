@@ -63,6 +63,9 @@ saludo(String nombre):void{
                         string a_4=typeof(true);
                         string a_5=typeof("dsafdsa");
                         Char caracteres = toCharArray("Hola");
+                        vector2.push("bonito");
+                        vector1.pop();
+                        lista.pop();
                 }
             } while(lenguaje=="Type"+"Script");
     } while(lenguaje=="Type"+"Script");

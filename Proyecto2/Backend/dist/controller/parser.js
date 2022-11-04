@@ -3,16 +3,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.parse = void 0;
+exports.ast = exports.parse = void 0;
 //import Arbol from "../utils/Interpreter/arbol/Ast/Arbol";
 const nodo_1 = __importDefault(require("../utils/Interpreter/arbol/Ast/nodo"));
+const child_process_1 = require("child_process");
 const fs = require("fs");
 var grafo = '';
 const parse = (req, res) => {
     let parser = require('../../dist/utils/Interpreter/Arbol/analizador');
     //const env= new Env(null);
-    const peticion = fs.readFileSync("src/entrada.txt");
-    //const peticion = req.body.peticion;
+    //const peticion = fs.readFileSync("src/entrada.txt");
+    const peticion = req.body.peticion;
     console.log("---" + peticion.toString());
     //var raiz=new Arbol();
     const ast = parser.parse(peticion.toString());
@@ -144,14 +145,14 @@ const parse = (req, res) => {
     }
 };
 exports.parse = parse;
-/*
-export const ast = (req: Request, res: Response): void => {
-    fs.writeFile("salida.dot", grafo, function (err: any) {
+const ast = (req, res) => {
+    fs.writeFile("salida.dot", grafo, function (err) {
         if (err) {
-            return console.log(err)
+            return console.log(err);
         }
-    })
-    console.log("El archivo fue creado correctamente")
-    exec('dot -Tpng salida.dot -o salida.png ')
-    res.send({ "mensaje": "si lo genero" })
-}*/ 
+    });
+    console.log("El archivo fue creado correctamente");
+    (0, child_process_1.exec)('dot -Tpng salida.dot -o salida.png ');
+    res.send({ "mensaje": "si lo genero" });
+};
+exports.ast = ast;
