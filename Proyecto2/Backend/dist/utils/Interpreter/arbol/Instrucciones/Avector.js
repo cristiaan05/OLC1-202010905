@@ -14,7 +14,19 @@ class AVector extends Instruccion_1.Instruccion {
     }
     getNodo() {
         var nodoDec = new nodo_1.default("AVECTOR");
-        console.log();
+        nodoDec.agregarHijo("Nombre: " + this.nombre);
+        if (this.expresion instanceof (Array)) {
+            this.expresion.forEach(ins => {
+                try {
+                    nodoDec.agregarHijo_nodo(ins.getNodo());
+                }
+                catch (error) {
+                }
+            });
+        }
+        else {
+            nodoDec.agregarHijo("Pos: " + this.expresion);
+        }
         return nodoDec;
     }
     ejecutar() {

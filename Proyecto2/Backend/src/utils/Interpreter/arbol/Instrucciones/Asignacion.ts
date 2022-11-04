@@ -4,7 +4,7 @@ export class Asignacion extends Instruccion {
 
     constructor(
         public nombre:string[],
-        public valor:string,
+        public valor:any,
         linea:number,columna:number){
         super(linea,columna);
     }
@@ -13,8 +13,17 @@ export class Asignacion extends Instruccion {
         this.nombre.forEach(id => {
             nodoDec.agregarHijo(id);
         });
-
-        nodoDec.agregarHijo(this.valor)
+        if(this.valor instanceof Array<Instruccion>){
+            this.valor.forEach(ins => {
+                try {
+                    nodoDec.agregarHijo_nodo(ins.getNodo())   
+                } catch (error) {
+                    
+                }
+            });
+        }else{
+            nodoDec.agregarHijo(this.valor)
+        }
         return nodoDec;
     }
     public ejecutar():any {

@@ -4,14 +4,25 @@ export class AVector extends Instruccion {
 
     constructor(
         public nombre:string,
-        public expresion:Array<Instruccion>,
+        public expresion:any,
         linea:number,columna:number){
         super(linea,columna);
     }
     
     public getNodo() {
         var nodoDec = new nodo("AVECTOR")
-        console.log()
+        nodoDec.agregarHijo("Nombre: "+this.nombre);
+        if(this.expresion instanceof Array<Instruccion>){
+            this.expresion.forEach(ins => {
+                try {
+                    nodoDec.agregarHijo_nodo(ins.getNodo())   
+                } catch (error) {
+                    
+                }
+            });
+        }else{
+            nodoDec.agregarHijo("Pos: "+this.expresion)
+        }
         return nodoDec;
     }
     

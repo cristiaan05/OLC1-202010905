@@ -3,17 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ast = exports.parse = void 0;
+exports.parse = void 0;
 //import Arbol from "../utils/Interpreter/arbol/Ast/Arbol";
 const nodo_1 = __importDefault(require("../utils/Interpreter/arbol/Ast/nodo"));
-const child_process_1 = require("child_process");
 const fs = require("fs");
 var grafo = '';
 const parse = (req, res) => {
     let parser = require('../../dist/utils/Interpreter/Arbol/analizador');
     //const env= new Env(null);
-    //const peticion = fs.readFileSync("src/entrada.txt");
-    const peticion = req.body.peticion;
+    const peticion = fs.readFileSync("src/entrada.txt");
+    //const peticion = req.body.peticion;
     console.log("---" + peticion.toString());
     //var raiz=new Arbol();
     const ast = parser.parse(peticion.toString());
@@ -123,6 +122,9 @@ const parse = (req, res) => {
     function getDot(raiz) {
         dot = "";
         dot += "digraph grph {\n";
+        dot += "graph [label=\"ARB0L AST\", splines=polyline, nodesep=0.8]\n";
+        dot += "node [margin=0 fontcolor=black width=0.5 shape=box style=filled]\n";
+        dot += "edge[dir=\"forward\"]\n";
         dot += "nodo0[label=\"" + raiz.getValor().replace("\"", "\\\"") + "\"];\n";
         c = 1;
         recorrerAST("nodo0", raiz);
@@ -133,8 +135,8 @@ const parse = (req, res) => {
         //console.log("aqui"+padre)
         for (let hijo of nPadre.getHijos()) {
             var nombreHijo = "nodo" + c;
-            var primerquite = hijo.getValor().replace("\"", "  ");
-            dot += nombreHijo + "[label=\"" + primerquite.replace("\"", " ") + "\"];\n";
+            //var primerquite = hijo.getValor().replace("\"", "  ")
+            dot += nombreHijo + "[label=\"" + hijo.getValor() + "\"];\n";
             dot += padre + "->" + nombreHijo + ";\n";
             c++;
             recorrerAST(nombreHijo, hijo);
@@ -142,14 +144,14 @@ const parse = (req, res) => {
     }
 };
 exports.parse = parse;
-const ast = (req, res) => {
-    fs.writeFile("salida.dot", grafo, function (err) {
+/*
+export const ast = (req: Request, res: Response): void => {
+    fs.writeFile("salida.dot", grafo, function (err: any) {
         if (err) {
-            return console.log(err);
+            return console.log(err)
         }
-    });
-    console.log("El archivo fue creado correctamente");
-    (0, child_process_1.exec)('dot -Tpng salida.dot -o salida.png ');
-    res.send({ "mensaje": "si lo genero" });
-};
-exports.ast = ast;
+    })
+    console.log("El archivo fue creado correctamente")
+    exec('dot -Tpng salida.dot -o salida.png ')
+    res.send({ "mensaje": "si lo genero" })
+}*/ 

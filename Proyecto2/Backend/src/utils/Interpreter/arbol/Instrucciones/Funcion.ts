@@ -17,15 +17,20 @@ export class Funcion extends Instruccion {
         nodoDec.agregarHijo("Nombre Funcion: \n"+this.nombre);
        // this.parametros.forEach(ins=>{
             //console.log(ins)
-            nodoDec.agregarHijo("PARAMETROS: \n"+this.parametros.toString());
+        nodoDec.agregarHijo("PARAMETROS: \n"+this.parametros.toString());
        // })
         nodoDec.agregarHijo("Tipo Funcion: \n"+this.tipo);
 
         if (this.bloqueIns!=undefined) {
-            this.bloqueIns.forEach(ins=>{
-                nodoDec.agregarHijo_nodo(ins.getNodo());
-            })
-           // nodoDec.agregarHijo_nodo(no);
+            for (const iterator of this.bloqueIns) {
+                nodoDec.agregarHijo_nodo(iterator.getNodo())
+            }
+        //     console.log("xx")
+        //     this.bloqueIns.forEach(ins=>{
+        //         console.log("yy: "+ins.ejecutar())
+        //         nodoDec.agregarHijo_nodo(ins.getNodo());
+        //     })
+        //    // nodoDec.agregarHijo_nodo(no);
         }
         return nodoDec;
     }

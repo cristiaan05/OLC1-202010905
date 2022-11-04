@@ -8,7 +8,7 @@ export class Declaracion extends Instruccion {
     constructor(
         public nombre:string[],
         public tipo:string,
-        public ListInstruccion:string,
+        public ListInstruccion:any,
         linea:number,columna:number){
         super(linea,columna);
     }
@@ -23,8 +23,20 @@ export class Declaracion extends Instruccion {
         this.nombre.forEach(id => {
             nodoDec.agregarHijo(id);
         });
+        if (this.ListInstruccion!="n") {
+            if(this.ListInstruccion instanceof Array<Instruccion>){
+                this.ListInstruccion.forEach(ins => {
+                    try {
+                        nodoDec.agregarHijo_nodo(ins.getNodo())   
+                    } catch (error) {
+                        
+                    }
+                });
+            }else{
+                nodoDec.agregarHijo(this.ListInstruccion)
+            }
+        }
 
-        nodoDec.agregarHijo(this.ListInstruccion)
 
         // for (const instru of this.ListInstruccion) {
         //     //console.log("HELLLO PUTOS")

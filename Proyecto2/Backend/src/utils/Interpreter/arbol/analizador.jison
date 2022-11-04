@@ -27,6 +27,11 @@
     const {Llamada}=require('./Instrucciones/Llamada');
     const {Tolower}=require('./Instrucciones/ToLower');
     const {ToUpper}=require('./Instrucciones/ToUpper');
+    const {Round}=require('./Instrucciones/Round');
+    const {Length}=require('./Instrucciones/Length');
+    const {Typeof}=require('./Instrucciones/Typeof');
+    const {ToString}=require('./Instrucciones/ToString');
+    const {ToCharA}=require('./Instrucciones/ToCharA');
 %}
 
 //--------------------LEXICAL ANALYZER-------------------
@@ -35,17 +40,13 @@
 %options case-insensitive 
 
 
-//inicio analisis lexico
-cadena  "\""  [^\"]* "\""                                                                  //grammar for strings ""
-char "'"[^']"'"                                                                          //char ''
-decimal [0-9]+("."[0-9]+)\b                                                              //decimal 0.0-9.9                                                      
-varName ([a-zA-Z_])[a-zA-Z0-9_]*
-entero [0-9]+\b                 
+//inicio analisis lexico                   
 %%
+
 \s+                                                                               //blank space ignore
 [\/]\*[^*]*\*+([^/*][^*]*\*+)*[\/]                                                //multiline comments    
 [\/][\/][^\n]*                                                                    // line comments
-	
+
 
 "true"				return 'pr_true'
 "false"				return 'pr_false'
@@ -129,12 +130,19 @@ entero [0-9]+\b
 "^"                 return 'potence';
 "%"                 return 'mod';
 
+//cadena                                                                  //grammar for strings ""
+//char                                                                        //char ''
+//decimal                                                             //decimal 0.0-9.9                                                      
+//entero 
+//varName 
+
 //tipos de dato a reconocer
-{cadena}            return 'tkn_cadena'
-{char}              return 'tkn_char'
-{decimal}           return 'tkn_decimal'
-{entero}            return 'tkn_entero'
-{varName}           return 'varName'
+\"[^\"]*\"	            {yytext = yytext.substr(1,yyleng-2); return 'tkn_cadena';}
+"'"[^']"'"               {return 'tkn_char';} 
+[0-9]+("."[0-9]+)\b           { return 'tkn_decimal';}
+[0-9]+\b            { return 'tkn_entero';}
+([a-zA-Z_$])[a-zA-Z0-9_]*          {return 'varName';}
+
 <<EOF>>                     return 'EOF';
 .                   {
             console.log("Error Léxico: "+yytext +" linea: " + yylloc.first_line +", columna: "+ yylloc.first_column+1)
@@ -172,7 +180,7 @@ INSTRUCCIONES: INSTRUCCIONES INSTRUCCION { $1.push($2); $$=$1; }
 
 INSTRUCCION: DECLARACION { $$=$1; }
          | ASIGNACION {$$=$1;}
-         | CASTEO 'ptcoma' {$$=$1;}
+         | CASTEO  {$$=$1;}
          | INCREMENTO 'ptcoma' {$$=$1;}
          | DECREMENTO 'ptcoma' {$$=$1;}
          | VECTOR {$$=$1;}
@@ -192,19 +200,25 @@ INSTRUCCION: DECLARACION { $$=$1; }
          | LLAMADA 'ptcoma' {$$=$1;}
          | PRINT{$$=$1;}
          | PRINTLN {$$=$1;}
-         | TOLOWER{$$=$1;}
-         | TOUPPER{$$=$1;}
+         | TOLOWER 'ptcoma'{$$=$1;}
+         | TOUPPER 'ptcoma'{$$=$1;}
+         | ROUND 'ptcoma'{$$=$1;}
+         | LENGTH 'ptcoma'{$$=$1;}
+         | TYPEOF 'ptcoma'{$$=$1;}
+         | TOSTRING 'ptcoma'{$$=$1;}
+         | TOCHARARRAY 'ptcoma' {$$=$1;}
+         | error INSTRUCCION {console.error('Este es un error sintáctico en Ins : ' + yytext + ', en la linea: ' + @1.first_line + ', en la columna: ' + @1.first_column);}
          | error 'ptcoma'{ console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + @1.first_line + ', en la columna: ' + @1.first_column); }
 ;
 
 DECLARACION: TIPODATO LISTAID 'equals' EXPVECTORES 'ptcoma'{
             $$= new Declaracion($2,$1,$4,@1.first_line, @1.first_column);
             }
-    | TIPODATO LISTAID 'equals' EXPRESION 'ptcoma'{
+  /*  | TIPODATO LISTAID 'equals' EXPRESION 'ptcoma'{
             $$= new Declaracion($2,$1,$4,@1.first_line, @1.first_column);
-        }
+        }*/
     | TIPODATO LISTAID 'ptcoma' {
-        $$= new Declaracion($2,$1,"",@1.first_line, @1.first_column);
+        $$= new Declaracion($2,$1,"n",@1.first_line, @1.first_column);
     }
 ;
 
@@ -214,10 +228,10 @@ ASIGNACION: LISTAID 'equals' EXPVECTORES 'ptcoma' {
 ;
 
 
-CASTEO: TIPODATO LISTAID 'equals' 'parentIzq' TIPODATO 'parentDer' EXPRESION {
+CASTEO: TIPODATO LISTAID 'equals' 'parentIzq' TIPODATO 'parentDer' EXPRESION 'ptcoma' {
             $$= new Cast($2,$1,$5,$7,@1.first_line,@1.first_column);
         }
-    | 'parentIzq' TIPODATO 'parentDer' EXPRESION {
+    | 'parentIzq' TIPODATO 'parentDer' EXPRESION 'ptcoma'{
         $$= new Cast("","",$2,$4,@1.first_line,@1.first_column);
         }
 ;
@@ -366,13 +380,13 @@ FUNCION: 'varName' 'parentIzq' PARAMETROS 'parentDer' 'dospuntos' TIPODATO 'llab
     }
 ;
 
-PARAMETROS: PARAMETROS 'tkn_coma' TIPODATO 'varName'   {$$=$1+", "+$3+" "+$4;}
-    | TIPODATO 'varName'     {$$ = $1+" "+$2;}
-;
-
 METODO: 'varName' 'parentIzq' PARAMETROS 'parentDer' 'dospuntos' 'pr_void' 'llabre' INSTRUCCIONES 'llcierra'{
         $$= new Metodo($1,$3,$6,$8,@1.first_line, @1.first_column );
     }
+;
+
+PARAMETROS: PARAMETROS 'tkn_coma' TIPODATO 'varName'   {$$=$1+", "+$3+" "+$4;}
+    | TIPODATO 'varName'     {$$ = $1+" "+$2;}
 ;
 
 LLAMADA: 'varName' 'parentIzq' PARAMETROSCALL 'parentDer'{
@@ -387,36 +401,8 @@ PARAMETROSCALL:  PARAMETROSCALL 'tkn_coma' EXPRESION {$$=$1+", "+$3;}
     |  EXPRESION {$$ = $1+" ";}
 ;
 
-
 PRINT: 'pr_print' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
     $$=new Print($1,$3,@1.first_line,@1.first_column);
-    }
-;
-
-TOLOWER: 'pr_string' 'varName' 'equals' 'pr_toLower' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
-            $$=new Tolower($2,$6,@1.first_line,@1.first_column,"de");
-        }
-    |  'varName' 'equals' 'pr_toLower' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
-            $$=new Tolower($1,$5,@1.first_line,@1.first_column,"asig");
-        }
-    | 'pr_toLower' 'parentIzq' EXPRESION 'parentDer' 'ptcoma'{
-             $$=new Tolower("null",$3,@1.first_line,@1.first_column);
-        }
-;
-
-TOUPPER: 'pr_string' 'varName' 'equals' 'pr_toUpper' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
-            $$=new ToUpper($2,$6,@1.first_line,@1.first_column,"de");
-        }
-    |  'varName' 'equals' 'pr_toUpper' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
-            $$=new ToUpper($1,$5,@1.first_line,@1.first_column,"asig");
-        }
-    | 'pr_toUpper' 'parentIzq' EXPRESION 'parentDer' 'ptcoma'{
-             $$=new ToUpper("null",$3,@1.first_line,@1.first_column);
-        }
-;
-
-ROUND: 'pr_double' LISTAID 'equals' 'pr_round' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
-    $$=new Round($2,$6,@1.first_line,@1.first_column);
     }
 ;
 
@@ -425,16 +411,60 @@ PRINTLN: 'pr_println' 'parentIzq' EXPRESION 'parentDer' 'ptcoma' {
     }
 ;   
 
+TOLOWER: 'pr_toLower' 'parentIzq' EXPRESION 'parentDer' {
+             $$=new Tolower($3,@1.first_line,@1.first_column);
+        }
+;
+
+TOUPPER: 'pr_toUpper' 'parentIzq' EXPRESION 'parentDer' {
+             $$=new ToUpper($3,@1.first_line,@1.first_column);
+        }
+;
+
+ROUND: 'pr_round' 'parentIzq' EXPRESION 'parentDer' {
+             $$=new Round($3,@1.first_line,@1.first_column);
+        }
+;
+
+LENGTH: 'pr_length' 'parentIzq' EXPRESION 'parentDer' {
+             $$=new Length($3,@1.first_line,@1.first_column);
+        }
+;
+
+TYPEOF: 'pr_typeof' 'parentIzq' EXPRESION 'parentDer' {
+             $$=new Typeof($3,@1.first_line,@1.first_column);
+        }
+;
+
+TOSTRING: 'pr_toString' 'parentIzq' EXPRESION 'parentDer' {
+             $$=new ToString($3,@1.first_line,@1.first_column);
+        }
+;
+
+TOCHARARRAY: 'pr_toCharArray' 'parentIzq' EXPRESION 'parentDer' {
+             $$=new ToCharA($3,@1.first_line,@1.first_column);
+        }
+;
+
+
+/*
 CONDICIONAL: EXPRESION 'equalsEquals' EXPRESION {$$= $1+$2+$3;}
         | EXPRESION 'different' EXPRESION{$$= $1+$2+$3;}
         | EXPRESION 'tkn_mayorigual' EXPRESION {$$= $1+$2+$3;}
         | EXPRESION 'tkn_menoriugal' EXPRESION {$$= $1+$2+$3;}
         | EXPRESION 'tkn_mayor' EXPRESION {$$= $1+$2+$3;}
         | EXPRESION 'tkn_menor' EXPRESION {$$= $1+$2+$3;}
-;
+;*/
 
-EXPVECTORES: CASTEO {$$=$1}
-    | EXPRESION {$$=$1}
+EXPVECTORES: CASTEO {$$=$1;}
+    | EXPRESION {$$=$1;}
+    | TOLOWER {$$=[$1];}
+    | TOUPPER {$$=[$1];}
+    | ROUND {$$=[$1];}
+    | LENGTH {$$=[$1];}
+    | TYPEOF {$$=[$1];}
+    | TOSTRING {$$=[$1];}
+    | TOCHARARRAY {$$=[$1];}
 ;
 
 
@@ -448,7 +478,7 @@ TIPODATO:  'pr_int' 	    {$$=$1;}
 
 
 LISTAID: LISTAID 'tkn_coma' 'varName'         {$1.push($3); $$ = $1}
-    | 'varName'                     {$$ = [$1]}
+     | 'varName'                     {$$ = [$1]}
 ;
 
 EXPRESION: EXPRESION 'sum' EXPRESION {$$=$1 + "+" + $3;}
@@ -459,6 +489,12 @@ EXPRESION: EXPRESION 'sum' EXPRESION {$$=$1 + "+" + $3;}
           | EXPRESION 'mod' EXPRESION {$$=$1 + "%" + $3;}
           | EXPRESION 'or' EXPRESION {$$=$1 + $2 + $3;}
           | EXPRESION 'and' EXPRESION {$$=$1 + $2 + $3;}
+          | EXPRESION 'equalsEquals' EXPRESION {$$= $1+$2+$3;}
+          | EXPRESION 'different' EXPRESION{$$= $1+$2+$3;}
+          | EXPRESION 'tkn_mayorigual' EXPRESION {$$= $1+$2+$3;}
+          | EXPRESION 'tkn_menoriugal' EXPRESION {$$= $1+$2+$3;}
+          | EXPRESION 'tkn_mayor' EXPRESION {$$= $1+$2+$3;}
+          | EXPRESION 'tkn_menor' EXPRESION {$$= $1+$2+$3;}
           | 'not' EXPRESION %prec UNOT {$$=$1 +$2;}
           | 'parentIzq' EXPRESION 'parentDer' {$$= $1 + $2 + $3;}
           | 'corcheL' EXPRESION 'corcheR' {$$=$1+$2+$3;}
@@ -473,7 +509,7 @@ EXPRESION: EXPRESION 'sum' EXPRESION {$$=$1 + "+" + $3;}
           | INCREMENTO {$$=[$1];}
           | DECREMENTO {$$=[$1];}
           | AVECTOR {$$=[$1];}
-          | CONDICIONAL {$$=$1;}
+          //| EXPVECTORES {$$=$1;}
           | LLAMADA {$$=$1;}
 ;
 

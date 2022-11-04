@@ -23,10 +23,15 @@ class Funcion extends Instruccion_1.Instruccion {
         // })
         nodoDec.agregarHijo("Tipo Funcion: \n" + this.tipo);
         if (this.bloqueIns != undefined) {
-            this.bloqueIns.forEach(ins => {
-                nodoDec.agregarHijo_nodo(ins.getNodo());
-            });
-            // nodoDec.agregarHijo_nodo(no);
+            for (const iterator of this.bloqueIns) {
+                nodoDec.agregarHijo_nodo(iterator.getNodo());
+            }
+            //     console.log("xx")
+            //     this.bloqueIns.forEach(ins=>{
+            //         console.log("yy: "+ins.ejecutar())
+            //         nodoDec.agregarHijo_nodo(ins.getNodo());
+            //     })
+            //    // nodoDec.agregarHijo_nodo(no);
         }
         return nodoDec;
     }

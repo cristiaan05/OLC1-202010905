@@ -22,7 +22,20 @@ class Declaracion extends Instruccion_1.Instruccion {
         this.nombre.forEach(id => {
             nodoDec.agregarHijo(id);
         });
-        nodoDec.agregarHijo(this.ListInstruccion);
+        if (this.ListInstruccion != "n") {
+            if (this.ListInstruccion instanceof (Array)) {
+                this.ListInstruccion.forEach(ins => {
+                    try {
+                        nodoDec.agregarHijo_nodo(ins.getNodo());
+                    }
+                    catch (error) {
+                    }
+                });
+            }
+            else {
+                nodoDec.agregarHijo(this.ListInstruccion);
+            }
+        }
         // for (const instru of this.ListInstruccion) {
         //     //console.log("HELLLO PUTOS")
         //     //console.log("INSTRU: "+instru)

@@ -11,8 +11,8 @@ var grafo='';
 export const parse = (req: Request, res: Response): void => {
     let parser = require('../../dist/utils/Interpreter/Arbol/analizador');
     //const env= new Env(null);
-    //const peticion = fs.readFileSync("src/entrada.txt");
-    const peticion = req.body.peticion;
+    const peticion = fs.readFileSync("src/entrada.txt");
+    //const peticion = req.body.peticion;
     console.log("---" + peticion.toString());
     //var raiz=new Arbol();
     const ast = parser.parse(peticion.toString());
@@ -131,6 +131,9 @@ export const parse = (req: Request, res: Response): void => {
     function getDot(raiz: nodo) {
         dot = "";
         dot += "digraph grph {\n";
+        dot+="graph [label=\"ARB0L AST\", splines=polyline, nodesep=0.8]\n";
+        dot+="node [margin=0 fontcolor=black width=0.5 shape=box style=filled]\n";
+        dot+="edge[dir=\"forward\"]\n";
         dot += "nodo0[label=\"" + raiz.getValor().replace("\"", "\\\"") + "\"];\n";
         c = 1;
         recorrerAST("nodo0", raiz);
@@ -142,8 +145,8 @@ export const parse = (req: Request, res: Response): void => {
         //console.log("aqui"+padre)
         for (let hijo of nPadre.getHijos()) {
             var nombreHijo = "nodo" + c;
-            var primerquite = hijo.getValor().replace("\"", "  ")
-            dot += nombreHijo + "[label=\"" + primerquite.replace("\"", " ") + "\"];\n";
+            //var primerquite = hijo.getValor().replace("\"", "  ")
+            dot += nombreHijo + "[label=\"" + hijo.getValor() + "\"];\n";
             dot += padre + "->" + nombreHijo + ";\n";
             c++;
             recorrerAST(nombreHijo, hijo);
@@ -151,6 +154,7 @@ export const parse = (req: Request, res: Response): void => {
     }
 }
 
+/*
 export const ast = (req: Request, res: Response): void => {
     fs.writeFile("salida.dot", grafo, function (err: any) {
         if (err) {
@@ -160,4 +164,4 @@ export const ast = (req: Request, res: Response): void => {
     console.log("El archivo fue creado correctamente")
     exec('dot -Tpng salida.dot -o salida.png ')
     res.send({ "mensaje": "si lo genero" })
-}
+}*/
