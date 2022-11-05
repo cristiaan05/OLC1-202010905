@@ -8,16 +8,17 @@
       <ul class="navbar-nav mr-auto">
         <!--SOLO SI EL USUARIO ESTA LOGEADO-->
         <li class="nav-item">
-          <button class="nav-link btn btn-secondary" (click)="getDot()">Guardar</button>
+          <button class="nav-link btn btn-secondary" (click)="getDot()">AST</button>
         </li>
         <li class="nav-item dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Archivo
               </button>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Abrir Archivo</a>
+            <a class="dropdown-item">Abrir Archivo</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Guardar Archivo</a>
+            <a class="dropdown-item" (click)="guardarFile()">Guardar Archivo</a>
+            <!-- <input class="dropdown-item" type="file" class="file-upload" onchange="console.log(event.target.files)"> -->
           </ul>
         </li>
       </ul>
@@ -29,13 +30,23 @@
   </nav>
 
   <div class="container">
+    
+    <div class="text-center">
+      <input class="form-control" type="file" 
+              (change)="onChange($event)">
+
+      <button (click)="onUpload()" 
+          class="btn btn-success">
+          Upload
+      </button>
+    </div>
 
     <form #sendForm="ngForm" (ngSubmit)="setData(sendForm.value)" class="formi">
         <div class="form-group">
             <label for="email">Editor</label>
             <!-- <textarea name="txtarea" id="textarea" cols="30" rows="10" ngModel></textarea> -->
             <div class="form-floating">
-                <textarea class="form-control" name="txtarea" id="txtarea" cols="30" rows="20" placeholder="Codigo a ejecutar" id="floatingTextarea" ngModel></textarea>
+                <textarea  class="form-control" [value]="cunter" name="txtarea" id="txtarea" cols="30" rows="20" placeholder="Codigo a ejecutar"  id="floatingTextarea" ngModel>{{texting}}</textarea>
                 <!-- <label for="floatingTextarea">Comments</label> -->
               </div>
             <!-- <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" ngModel> -->
