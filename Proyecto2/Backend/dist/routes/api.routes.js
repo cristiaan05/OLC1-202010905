@@ -10,4 +10,5 @@ router.get("/ping", api_controller_1.default.ping);
 router.post("/prueba", api_controller_1.default.apiController.parser);
 router.post('/parsear', api_controller_1.default.parse);
 router.get('/ast', api_controller_1.default.ast);
+router.post('/garchivo', api_controller_1.default.archivoG);
 exports.default = router;

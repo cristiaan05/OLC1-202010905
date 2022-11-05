@@ -1,3 +1,17 @@
 .formi{
-    padding-top: 50px;
+    padding-top: 30px;
+}
+
+.text-center{
+    align-content: space-between;
+    width: 300px;
+}
+
+.form-control{
+    flex: auto;
+   position: relative;
+}
+
+.navbar-collapse{
+   align-items: flex-start;
 }

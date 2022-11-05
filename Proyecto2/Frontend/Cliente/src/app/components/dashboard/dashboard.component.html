@@ -29,16 +29,16 @@
     </div>
   </nav>
 
+  
   <div class="container">
     
-    <div class="text-center">
-      <input class="form-control" type="file" 
-              (change)="onChange($event)">
-
-      <button (click)="onUpload()" 
-          class="btn btn-success">
-          Upload
-      </button>
+    <!-- <div class="text-center">
+      <input class="form-control" type="file" (change)="onChange($event)">
+      <button (click)="onUpload()" class="btn btn-success">Cargar Archivo</button>
+    </div> -->
+    <div class="input-group">
+      <input type="file" class="form-control" (change)="onChange($event)" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+      <button class="btn btn-outline-secondary" (click)="onUpload()" type="button" id="inputGroupFileAddon04">Cargar</button>
     </div>
 
     <form #sendForm="ngForm" (ngSubmit)="setData(sendForm.value)" class="formi">
@@ -46,7 +46,7 @@
             <label for="email">Editor</label>
             <!-- <textarea name="txtarea" id="textarea" cols="30" rows="10" ngModel></textarea> -->
             <div class="form-floating">
-                <textarea  class="form-control" [value]="cunter" name="txtarea" id="txtarea" cols="30" rows="20" placeholder="Codigo a ejecutar"  id="floatingTextarea" ngModel>{{texting}}</textarea>
+                <textarea  class="form-control" [value]="cunter" name="txtarea" id="txtarea" cols="30" rows="18" placeholder="Codigo a ejecutar"  id="floatingTextarea" ngModel>{{texting}}</textarea>
                 <!-- <label for="floatingTextarea">Comments</label> -->
               </div>
             <!-- <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" ngModel> -->

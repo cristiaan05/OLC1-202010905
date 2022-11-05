@@ -21,8 +21,14 @@ export class UserService {
     return this.http.get(`${this.URL}/api/ast`)
   }
 
-  imprimir(){
-    return "hola"
+  guardarArchivo(json:any){
+    return this.http.post(`${this.URL}/api/garchivo`,json)
+  }
+
+  download(){
+    return this.http.get(`${this.URL}/api/garchivo`,
+      {responseType:'blob'}
+    )
   }
 
   // upload(file:any):Observable<any> {

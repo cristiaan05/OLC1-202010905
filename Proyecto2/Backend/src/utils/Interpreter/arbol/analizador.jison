@@ -34,6 +34,8 @@
     const {ToCharA}=require('./Instrucciones/ToCharA');
     const {Push}=require('./Instrucciones/Push');
     const {Pop}=require('./Instrucciones/Pop');
+    const {Singleton} = require('../arbol/Singleton/Singleton');
+    const {error} = require('../arbol/Errors/error');
 %}
 
 //--------------------LEXICAL ANALYZER-------------------
@@ -146,8 +148,11 @@
 ([a-zA-Z_$])[a-zA-Z0-9_]*          {return 'varName';}
 
 <<EOF>>                     return 'EOF';
-.                   {
-            console.log("Error Léxico: "+yytext +" linea: " + yylloc.first_line +", columna: "+ yylloc.first_column+1)
+
+.   {
+    console.log("Error Léxico: "+yytext +" linea: " + yylloc.first_line +", columna: "+ yylloc.first_column+1);
+    let s= Singleton.getInstance();
+    s.add_error(new error("Lexico", "Caracter invalido: "+yytext, yylineno +1, yylloc.first_column+1));
 }                           
 
 
@@ -211,8 +216,11 @@ INSTRUCCION: DECLARACION { $$=$1; }
          | TOCHARARRAY 'ptcoma' {$$=$1;}
          | PUSH 'ptcoma' {$$=$1;}
          | POP 'ptcoma' {$$=$1;}
-         | error INSTRUCCION {console.error('Este es un error sintáctico en Ins : ' + yytext + ', en la linea: ' + @1.first_line + ', en la columna: ' + @1.first_column);}
-         | error 'ptcoma'{ console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + @1.first_line + ', en la columna: ' + @1.first_column); }
+         | error 'ptcoma'{ 
+                console.error('Este es un error sintáctico: ' + yytext + ', en la linea: ' + @1.first_line + ', en la columna: ' + @1.first_column); 
+                let s = Singleton.getInstance();
+                s.add_error(new error("Sintactico", "No se esperaba el caracter " +yytext,yylineno+1,@1.first_column+ 1));
+            }
 ;
 
 DECLARACION: TIPODATO LISTAID 'equals' EXPVECTORES 'ptcoma'{

@@ -4,130 +4,36 @@ import { Instruccion } from "../utils/Interpreter/arbol/Abstract/Instruccion";
 //import Arbol from "../utils/Interpreter/arbol/Ast/Arbol";
 import nodo from "../utils/Interpreter/arbol/Ast/nodo";
 import { exec } from "child_process";
+import { Singleton } from "../utils/Interpreter/arbol/Singleton/Singleton";
 const fs = require("fs");
 
 
 var grafo='';
-export const parse = (req: Request, res: Response): void => {
+export const parse = (req: Request, res: Response) => {
     let parser = require('../../dist/utils/Interpreter/Arbol/analizador');
+    const s = Singleton.getInstance();
     //const env= new Env(null);
     //const peticion = fs.readFileSync("src/entrada.txt");
     const peticion = req.body.peticion;
     console.log("---" + peticion.toString());
-    //var raiz=new Arbol();
     const ast = parser.parse(peticion.toString());
-    //parser.parserError = function(msg:any, hash:any) { throw 'Unexpected "'+hash.token+'" on line '+hash.line; }
-    //console.log(raiz.recorrer_arbolito3(ast))
-
-
-    // for (const elemento  of ast) {
-    //     try {            
-    //             const res = elemento.ejecutar();
-    //             //let grafo = getDot(ast);
-
-    //     } catch (error) {
-    //         console.log(error);
-    //         // if (error instanceof Issue) {
-    //         //     singleton.add_errores(error)                
-    //         // }
-
-    //     }
-    // }
 
     var instrucciones = new nodo("INSTRUCCIONES");
     for (const instruccion of ast) {
+        
         try {
             instruccion.ejecutar();
             instrucciones.agregarHijo_nodo(instruccion.getNodo());
         } catch (error) {
-            // if (error instanceof Issue) {
-            //     singleton.add_errores(error)                
-            // }
+                s.add_error(error)                
 
         }
     }
 
-    grafo = '';
-    grafo = getDot(instrucciones);
-    console.log(grafo)
-    res.json({
-        "salida": grafo
-    })
-    /*  try {
-        let ast = new Three(parser.parse(peticion.toString()));
-        var tabla = new SymbolTable();
-        ast.settablaGlobal(tabla);
-        for (let i of ast.getinstrucciones()) {
-            if (i instanceof Errores) {
-                listaErrores.push(i);
-                ast.actualizaConsola((<Errores>i).returnError());
-            }
-            var resultador = i instanceof Instruccion ? i.interpretar(ast, tabla) : new Errores("ERROR SEMANTICO", "no se puede ejecutar la instruccion", 0, 0);
-            if (resultador instanceof Errores) {
-                listaErrores.push(resultador);
-                ast.actualizaConsola((<Errores>resultador).returnError());
-            }
-        }
-        res.json({ consola: ast.getconsola(), errores: listaErrores, simbolos: [] });
-    } catch (err) {
-        console.log(err)
-        res.json({ consola: '', error: err, errores: listaErrores, simbolos: [] });
-    }
-
-    res.json({ consola: "ok" });
-*/
-
-    /*
-        try {
-            let ast = new Three(parser.parse(peticion));
-            var tabla = new SymbolTable();
-            ast.settablaGlobal(tabla);
-            for (let i of ast.getinstrucciones()) {
-                if (i instanceof Errores) {
-                   // listaErrores.push(i);
-                    //ast.actualizaConsola((<Errores>i).returnError());
-                }
-                var resultador = i instanceof Instruccion ? i.interpretar(ast, tabla) : new Errores("ERROR SEMANTICO", "no se puede ejecutar la instruccion", 0, 0);
-                if (resultador instanceof Errores) {
-                    listaErrores.push(resultador);
-                    ast.actualizaConsola((<Errores>resultador).returnError());
-                }
-            }
-            res.json({ consola: ast.getconsola(), errores: listaErrores, simbolos: [] });
-        } catch (err) {
-            console.log(err)
-            res.json({ consola: '', error: err, errores: listaErrores, simbolos: [] });
-        }*/
-
-
-    /*
-    try {
-        const env= new Env(null);
-        let parser = require('../../dist/utils/Interpreter/Arbol/analizador');
-        const peticion = req.body.entrada;
-        //const peticion = fs.readFileSync("src/entrada.txt");
-        console.log("---" + peticion.toString());
-        const ast = parser.parse(peticion.toString());
-        res.json({
-            "hola": ast
-        })
-        for (const instruccion of ast) {
-            try {
-                instruccion.ejecutar(env);
-            } catch (error) {
-                console.log(error);
-                
-            }
-        }
-    
-        
-        
-    } catch (error) {
-        console.log(error);
-        
-    }*/
     var c = 0;
     var dot = "";
+    createFile("tablita.HTML",s.get_error());
+
     function getDot(raiz: nodo) {
         dot = "";
         dot += "digraph grph {\n";
@@ -152,6 +58,19 @@ export const parse = (req: Request, res: Response): void => {
             recorrerAST(nombreHijo, hijo);
         }
     }
+
+    function createFile(nameFile: string, data: string) {
+        fs.writeFile(nameFile, data, () => {
+            console.log('Se genero el archivo: ' + nameFile );
+        }) 
+    }
+
+    grafo = '';
+    grafo = getDot(instrucciones);
+    console.log(grafo)
+    res.json({
+        "salida": grafo
+    })
 }
 
 
@@ -165,3 +84,38 @@ export const ast = (req: Request, res: Response): void => {
     exec('dot -Tpng salida.dot -o salida.png ')
     res.send({ "mensaje": "si lo genero" })
 }
+
+
+export const archivoG = (req: Request, res: Response): void => {
+    let name=req.body.nombre;
+    let texto=req.body.texto;
+    fs.writeFile(name, texto, function (err: any) {
+        if (err) {
+            return console.log(err)
+        }
+    })
+    console.log("El archivo fue creado correctamente")
+    //exec('dot -Tpng salida.dot -o salida.png ')
+    //res.send({ "mensaje": "ARCHIVO CREADO" })
+    res.download('../../codigo.olc',function(err){
+        if (err) {
+            console.log(err)
+        }
+    })
+}
+
+
+// export const down = (req: Request, res: Response): void => {
+//     let name=req.body.nombre;
+//     let texto=req.body.texto;
+//     fs.writeFile(name, texto, function (err: any) {
+//         if (err) {
+//             return console.log(err)
+//         }
+//     })
+//     console.log("El archivo fue creado correctamente")
+//     //exec('dot -Tpng salida.dot -o salida.png ')
+//     res.send({ "mensaje": "ARCHIVO CREADO" })
+// }
+
+

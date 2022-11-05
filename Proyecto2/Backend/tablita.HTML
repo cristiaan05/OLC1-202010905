@@ -1,41 +1,4 @@
-export class Singleton {
-    private static instance: Singleton
-    private error: string = ""
 
-    private constructor() { }
-
-    public static getInstance(): Singleton {
-        if (!Singleton.instance) {
-            Singleton.instance = new Singleton();
-        }
-        return Singleton.instance;
-    }
-
-    /**
-   * Agrega un error a la lista.
-   *
-   * @remarks
-   * Recibe un objeto {tipo,descripcion, linea, columna} el cual es almacenado con un formato <tr> para presentar como una table en html
-   *
-   */
-    public add_error(data: any) {
-        if (data.titulo!=undefined) {
-            this.error +=
-            "<tr>" +
-            "<td>" + data.titulo + "</td>" +
-            "<td>" + data.descripcion + "</td>" +
-            "<td>" + data.linea + "</td>" +
-            "<td>" + data.columna + "</td>" +
-            "</tr>"
-        }
-    }
-
-    /**
-     * 
-     * @returns un string con el codigo con el formato html para reportar
-     */
-    public get_error() {
-        var inicio = `
         <!DOCTYPE html>
         <html lang="es">
         
@@ -80,13 +43,7 @@ export class Singleton {
             <h3>TABLA DE ERRORES</h3>
             <h5>CRISTIAN FERNANDO HERNANDEZ TELLO</h5>
             <h5>202010905</h5>
-            <table id="tabla" class="table table-striped">`;
-        var final = `
-                </tbody>
-                </table>
-                </body>   
-            </html>`
-        return inicio + `
+            <table id="tabla" class="table table-striped">
         <thead class="table-dark">
             <tr>
                 <th scope="col">TIPO</th>
@@ -94,6 +51,8 @@ export class Singleton {
                 <th scope="col">FILA</th>
                 <th scope="col">COLUMNA</th>
             </tr>
-        </thead>${this.error}` + final
-    }
-}
+        </thead><tr><td>Lexico</td><td>`</td><td>1</td><td>1</td></tr><tr><td>Lexico</td><td>@</td><td>1</td><td>2</td></tr><tr><td>Lexico</td><td>`</td><td>1</td><td>3</td></tr><tr><td>Lexico</td><td>@</td><td>1</td><td>4</td></tr><tr><td>Lexico</td><td>`</td><td>1</td><td>5</td></tr><tr><td>Lexico</td><td>@</td><td>1</td><td>6</td></tr><tr><td>Sintactico</td><td>No se esperaba el caracter ;</td><td>1</td><td>7</td></tr>
+                </tbody>
+                </table>
+                </body>   
+            </html>

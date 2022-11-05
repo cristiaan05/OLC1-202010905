@@ -7,13 +7,14 @@ import api from './routes/api.routes'
 //const port = 3000;
 const makeApp=async():Promise<typeof application>=>{
   const app = express();
+  const bodyParser=require('body-parser')
   app.use(morgan('dev',{
     skip:(req: Request)=>req.url==='/api/ping'
   }))
 
   app.use(cors());
   app.use(bodyParser.urlencoded({extended:false,limit:'100mb'}));
-  app.use(bodyParser.json({limit:'100mb'}));
+  app.use(bodyParser.json({type:'application/json'}));
 
   app.use('/api',api);
   return app

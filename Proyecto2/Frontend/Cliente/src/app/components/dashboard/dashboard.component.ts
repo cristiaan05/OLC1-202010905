@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { readFileSync, writeFileSync, promises as fsPromises } from 'fs';
 import { join } from 'path';
+import { ElementSchemaRegistry } from '@angular/compiler';
+import {saveAs} from 'file-saver'
 
 //import { graphviz } from "d3-graphviz";
 
@@ -52,7 +54,7 @@ export class DashboardComponent implements OnInit {
         variable=contenido;
         //this.cunter=contenido
         //pasando(contenido.toString());
-        //console.log(variable)
+        console.log(variable)
       }
       
     }
@@ -76,7 +78,7 @@ export class DashboardComponent implements OnInit {
 
     )
   }
-
+  
   setData(values: any): void {
     console.log("values: ", values.txtarea)
     //let x=JSON.parse(values)
@@ -101,8 +103,9 @@ export class DashboardComponent implements OnInit {
 
   getDot() {
     this.service.getDot().subscribe(
-      (res) => {
+      (res:any) => {
         console.log(res);
+        var win = window.open("./Ondox.html?id="+res.salida,'_blank');
       }, (err) => {
         console.log(err)
       }
@@ -110,10 +113,32 @@ export class DashboardComponent implements OnInit {
   }
 
   guardarFile(){
-    writeFileSync(join('../../../../../../example.txt', "filename"), this.geText, {
-      flag: 'w',
-    });
+      //download(this.geText,filename)
 
+      var nombreF;
+      let nombre=prompt("Please enter your name:", "codigo.olc");
+      if (nombre == null || nombre == "") {
+        nombreF = "codigo.olc";
+      } else {
+        nombreF=nombre
+      }
+    var json = {
+      "texto": this.geText,
+      "nombre":nombreF
+    }
+    this.service.guardarArchivo(json).subscribe((res:any)=>{
+      alert("ARCHIVO GUARDADO")
+    },(err)=>{
+
+    })
+
+  }
+
+  download(){
+    this.service.download().subscribe((data:Blob | MediaSource)=>{
+      let down=window.URL.createObjectURL(data)
+      saveAs(down);
+    })
   }
 
   // d3(){

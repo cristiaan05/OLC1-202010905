@@ -6,4 +6,5 @@ router.get("/ping",controller.ping)
 router.post("/prueba",controller.apiController.parser)
 router.post('/parsear',controller.parse);
 router.get('/ast',controller.ast);
+router.post('/garchivo',controller.archivoG);
 export default router;
