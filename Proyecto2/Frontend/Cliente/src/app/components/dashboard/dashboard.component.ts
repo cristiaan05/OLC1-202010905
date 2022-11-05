@@ -105,7 +105,7 @@ export class DashboardComponent implements OnInit {
     this.service.getDot().subscribe(
       (res:any) => {
         console.log(res);
-        var win = window.open("./Ondox.html?id="+res.salida,'_blank');
+        //var win = window.open("./Ondox.html?id="+res.salida,'_blank');
       }, (err) => {
         console.log(err)
       }
@@ -116,15 +116,10 @@ export class DashboardComponent implements OnInit {
       //download(this.geText,filename)
 
       var nombreF;
-      let nombre=prompt("Please enter your name:", "codigo.olc");
-      if (nombre == null || nombre == "") {
-        nombreF = "codigo.olc";
-      } else {
-        nombreF=nombre
-      }
+      alert('Archivo guardado,descarguelo en la opcion descargar archivo')
     var json = {
       "texto": this.geText,
-      "nombre":nombreF
+      "nombre":"codigo.olc"
     }
     this.service.guardarArchivo(json).subscribe((res:any)=>{
       alert("ARCHIVO GUARDADO")
@@ -136,6 +131,13 @@ export class DashboardComponent implements OnInit {
 
   download(){
     this.service.download().subscribe((data:Blob | MediaSource)=>{
+      let down=window.URL.createObjectURL(data)
+      saveAs(down);
+    })
+  }
+
+  downloadA(){
+    this.service.downloadA().subscribe((data:Blob | MediaSource)=>{
       let down=window.URL.createObjectURL(data)
       saveAs(down);
     })

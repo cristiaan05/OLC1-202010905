@@ -15,7 +15,9 @@
                 Archivo
               </button>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item">Abrir Archivo</a>
+            <a class="dropdown-item" (click)="download()">Abrir AST</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" (click)="downloadA()">Descargar Archivo</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" (click)="guardarFile()">Guardar Archivo</a>
             <!-- <input class="dropdown-item" type="file" class="file-upload" onchange="console.log(event.target.files)"> -->

@@ -466,8 +466,10 @@ division():string{
     string v_3= (string)true;
     string v_4= (string)'A';
     return "olc1";
-    mivar= tolower("QWERT"+" ")+"1+5";
-    mivar= toupper("QWERT"+" ")+"hola!";
+    mivar= tolower("QWERT"+" sss");
+    mivar= toupper("QWERT"+" ss");
+    //mivar= tolower("QWERT"+" ")+"1+5";
+    //mivar= toupper("QWERT"+" ")+"hola!";
     boolean v_2= (boolean)12.25;   
     string a_1=typeof(15);
     string a_2=typeof(15+6.5);

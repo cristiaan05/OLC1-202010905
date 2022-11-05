@@ -26,7 +26,13 @@ export class UserService {
   }
 
   download(){
-    return this.http.get(`${this.URL}/api/garchivo`,
+    return this.http.get(`${this.URL}/api/down`,
+      {responseType:'blob'}
+    )
+  }
+
+  downloadA(){
+    return this.http.get(`${this.URL}/api/downA`,
       {responseType:'blob'}
     )
   }
