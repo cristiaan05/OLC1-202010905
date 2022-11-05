@@ -67,7 +67,7 @@ export const parse = (req: Request, res: Response) => {
 
     grafo = '';
     grafo = getDot(instrucciones);
-    console.log(grafo)
+    //console.log(grafo)
     res.json({
         "salida": grafo
     })
@@ -96,26 +96,30 @@ export const archivoG = (req: Request, res: Response): void => {
     })
     console.log("El archivo fue creado correctamente")
     //exec('dot -Tpng salida.dot -o salida.png ')
-    //res.send({ "mensaje": "ARCHIVO CREADO" })
-    res.download('../../codigo.olc',function(err){
+    res.send({ "mensaje": "ARCHIVO CREADO" })
+
+}
+
+
+
+export const down = (req: Request, res: Response,next:any): void => {
+
+    //exec('dot -Tpng salida.dot -o salida.png ')
+    res.download(`D:/6TO SEMESTRE/LAB COMPI/OLC1-202010905/Proyecto2/Backend/salida.png`,function(err){
         if (err) {
-            console.log(err)
+            next(err)
         }
     })
 }
 
+export const downA = (req: Request, res: Response,next:any): void => {
 
-// export const down = (req: Request, res: Response): void => {
-//     let name=req.body.nombre;
-//     let texto=req.body.texto;
-//     fs.writeFile(name, texto, function (err: any) {
-//         if (err) {
-//             return console.log(err)
-//         }
-//     })
-//     console.log("El archivo fue creado correctamente")
-//     //exec('dot -Tpng salida.dot -o salida.png ')
-//     res.send({ "mensaje": "ARCHIVO CREADO" })
-// }
+    //exec('dot -Tpng salida.dot -o salida.png ')
+    res.download(`D:/6TO SEMESTRE/LAB COMPI/OLC1-202010905/Proyecto2/Backend/codigo.olc`,function(err){
+        if (err) {
+            next(err)
+        }
+    })
+}
 
 

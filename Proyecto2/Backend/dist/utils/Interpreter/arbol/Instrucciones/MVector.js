@@ -7,14 +7,21 @@ exports.MVector = void 0;
 const Instruccion_1 = require("../Abstract/Instruccion");
 const nodo_1 = __importDefault(require("../Ast/nodo"));
 class MVector extends Instruccion_1.Instruccion {
-    constructor(nombre, expresion, linea, columna) {
+    constructor(nombre, expresionV, expresion, linea, columna) {
         super(linea, columna);
         this.nombre = nombre;
+        this.expresionV = expresionV;
         this.expresion = expresion;
     }
     getNodo() {
         var nodoDec = new nodo_1.default("MVECTOR");
-        console.log();
+        nodoDec.agregarHijo(this.nombre);
+        this.expresionV.forEach(ins => {
+            nodoDec.agregarHijo_nodo(ins.getNodo());
+        });
+        this.expresion.forEach(ins => {
+            nodoDec.agregarHijo_nodo(ins.getNodo());
+        });
         return nodoDec;
     }
     ejecutar() {

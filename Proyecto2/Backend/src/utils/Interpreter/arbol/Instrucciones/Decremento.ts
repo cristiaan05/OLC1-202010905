@@ -9,7 +9,7 @@ export class Decremento extends Instruccion {
     }
     public getNodo() {
         var nodoDec = new nodo("DECREMENTO")
-        console.log()
+        nodoDec.agregarHijo(this.nombre);
         return nodoDec;
     }
     public ejecutar():any {

@@ -175,7 +175,7 @@ this.$=new AVector($$[$0-6],$$[$0-4],_$[$0-6].first_line,_$[$0-6].first_column);
 break;
 case 61:
 
-        this.$=new MVector($$[$0-6],$$[$0-1],_$[$0-6].first_line,_$[$0-6].first_column);
+        this.$=new MVector($$[$0-6],$$[$0-4],$$[$0-1],_$[$0-6].first_line,_$[$0-6].first_column);
         
 break;
 case 62:

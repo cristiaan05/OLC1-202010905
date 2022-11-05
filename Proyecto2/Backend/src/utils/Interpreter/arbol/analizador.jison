@@ -295,7 +295,7 @@ AVECTOR: 'varName' 'corcheL' EXPVECTORES 'corcheR' {$$=new AVector($1,$3,@1.firs
 ;
 
 MODIFICAVECTOR: 'varName' 'corcheL' EXPVECTORES 'corcheR' 'equals' EXPVECTORES 'ptcoma' {
-        $$=new MVector($1,$6,@1.first_line,@1.first_column);
+        $$=new MVector($1,$3,$6,@1.first_line,@1.first_column);
         }
 ;
 

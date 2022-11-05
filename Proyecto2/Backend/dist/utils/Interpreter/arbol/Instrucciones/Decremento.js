@@ -13,7 +13,7 @@ class Decremento extends Instruccion_1.Instruccion {
     }
     getNodo() {
         var nodoDec = new nodo_1.default("DECREMENTO");
-        console.log();
+        nodoDec.agregarHijo(this.nombre);
         return nodoDec;
     }
     ejecutar() {

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.archivoG = exports.ast = exports.parse = void 0;
+exports.downA = exports.down = exports.archivoG = exports.ast = exports.parse = void 0;
 //import Arbol from "../utils/Interpreter/arbol/Ast/Arbol";
 const nodo_1 = __importDefault(require("../utils/Interpreter/arbol/Ast/nodo"));
 const child_process_1 = require("child_process");
@@ -61,7 +61,7 @@ const parse = (req, res) => {
     }
     grafo = '';
     grafo = getDot(instrucciones);
-    console.log(grafo);
+    //console.log(grafo)
     res.json({
         "salida": grafo
     });
@@ -88,23 +88,24 @@ const archivoG = (req, res) => {
     });
     console.log("El archivo fue creado correctamente");
     //exec('dot -Tpng salida.dot -o salida.png ')
-    //res.send({ "mensaje": "ARCHIVO CREADO" })
-    res.download('../../codigo.olc', function (err) {
+    res.send({ "mensaje": "ARCHIVO CREADO" });
+};
+exports.archivoG = archivoG;
+const down = (req, res, next) => {
+    //exec('dot -Tpng salida.dot -o salida.png ')
+    res.download(`D:/6TO SEMESTRE/LAB COMPI/OLC1-202010905/Proyecto2/Backend/salida.png`, function (err) {
         if (err) {
-            console.log(err);
+            next(err);
         }
     });
 };
-exports.archivoG = archivoG;
-// export const down = (req: Request, res: Response): void => {
-//     let name=req.body.nombre;
-//     let texto=req.body.texto;
-//     fs.writeFile(name, texto, function (err: any) {
-//         if (err) {
-//             return console.log(err)
-//         }
-//     })
-//     console.log("El archivo fue creado correctamente")
-//     //exec('dot -Tpng salida.dot -o salida.png ')
-//     res.send({ "mensaje": "ARCHIVO CREADO" })
-// }
+exports.down = down;
+const downA = (req, res, next) => {
+    //exec('dot -Tpng salida.dot -o salida.png ')
+    res.download(`D:/6TO SEMESTRE/LAB COMPI/OLC1-202010905/Proyecto2/Backend/codigo.olc`, function (err) {
+        if (err) {
+            next(err);
+        }
+    });
+};
+exports.downA = downA;

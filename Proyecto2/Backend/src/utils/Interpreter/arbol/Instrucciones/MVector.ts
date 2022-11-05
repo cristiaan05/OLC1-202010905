@@ -4,6 +4,7 @@ export class MVector extends Instruccion {
 
     constructor(
         public nombre:string,
+        public expresionV:Array<Instruccion>,
         public expresion:Array<Instruccion>,
         linea:number,columna:number){
         super(linea,columna);
@@ -11,7 +12,13 @@ export class MVector extends Instruccion {
     
     public getNodo() {
         var nodoDec = new nodo("MVECTOR")
-        console.log()
+        nodoDec.agregarHijo(this.nombre);
+        this.expresionV.forEach(ins=>{
+            nodoDec.agregarHijo_nodo(ins.getNodo())
+        })
+        this.expresion.forEach(ins=>{
+            nodoDec.agregarHijo_nodo(ins.getNodo())
+        })
         return nodoDec;
     }
     

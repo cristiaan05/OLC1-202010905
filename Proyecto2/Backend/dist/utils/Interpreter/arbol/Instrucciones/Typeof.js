@@ -17,11 +17,7 @@ class Typeof extends Instruccion_1.Instruccion {
         var nodoDec = new nodo_1.default("TYPE OF");
         if (this.valor instanceof (Array)) {
             this.valor.forEach(ins => {
-                try {
-                    nodoDec.agregarHijo_nodo(ins.getNodo());
-                }
-                catch (error) {
-                }
+                nodoDec.agregarHijo_nodo(ins.getNodo());
             });
         }
         else {

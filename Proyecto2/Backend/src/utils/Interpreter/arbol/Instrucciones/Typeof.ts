@@ -12,11 +12,7 @@ export class Typeof extends Instruccion {
             var nodoDec = new nodo("TYPE OF");
             if(this.valor instanceof Array<Instruccion>){
                 this.valor.forEach(ins => {
-                    try {
-                        nodoDec.agregarHijo_nodo(ins.getNodo())   
-                    } catch (error) {
-                        
-                    }
+                    nodoDec.agregarHijo_nodo(ins.getNodo())   
                 });
             }else{
                 nodoDec.agregarHijo(this.valor)
