@@ -4,7 +4,7 @@
  - Introducción
  - Objetivos
  - Funciones
-	 - [Cambiar Frecuencia]( ##-cambiarFrecuencia )
+	 - [Cambiar Frecuencia]( #1-Cambiar-Frecuencia)
 	 - [Check Button](##-checkButton)
 	 - moverLetrero()
  - Conclusiones
@@ -13,7 +13,7 @@ Bienvenido al manual técnico para el prototipo de dispositivo interactivo dise�
 
 
 
-## cambiarFrecuencia
+##  1. Cambiar Frecuencia
 
 Este código lee el valor del potenciómetro, ajusta la frecuencia del tono generado y muestra la frecuencia en el monitor serie. Además, llama a la función "pintarFila" para iluminar ciertas filas de una matriz de LED, según el valor del potenciómetro.
 
